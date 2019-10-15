@@ -338,10 +338,10 @@ void desenhaRetangulo(retangulo &r)
     //Face que aponta para (0, -1, 0)
     glBegin(GL_QUADS);
 
-        glVertex3f(r.vetorPontos[0].x, r.vetorPontos[0].y, 0);
-        glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y, 0);
-        glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y, r.altura);
-        glVertex3f(r.vetorPontos[0].x, r.vetorPontos[0].y, r.altura);
+    glVertex3f(r.vetorPontos[0].x, r.vetorPontos[0].y, 0);
+    glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y, 0);
+    glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y, r.altura);
+    glVertex3f(r.vetorPontos[0].x, r.vetorPontos[0].y, r.altura);
 
 
     glEnd();
@@ -351,10 +351,10 @@ void desenhaRetangulo(retangulo &r)
     //Face que aponta para (1, 0, 0)
     glBegin(GL_QUADS);
 
-        glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y, 0);
-        glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y + r.altura, 0);
-        glVertex3f(r.vetorPontos[1].x , r.vetorPontos[1].y + r.altura, r.altura);
-        glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y, r.altura);
+    glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y, 0);
+    glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y + r.altura, 0);
+    glVertex3f(r.vetorPontos[1].x , r.vetorPontos[1].y + r.altura, r.altura);
+    glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y, r.altura);
 
 
     glEnd();
@@ -363,10 +363,10 @@ void desenhaRetangulo(retangulo &r)
 
     glBegin(GL_QUADS);
 
-        glVertex3f(r.vetorPontos[0].x, r.vetorPontos[0].y, 0);
-        glVertex3f(r.vetorPontos[0].x, r.vetorPontos[0].y, r.altura);
-        glVertex3f(r.vetorPontos[3].x, r.vetorPontos[3].y, r.altura);
-        glVertex3f(r.vetorPontos[3].x, r.vetorPontos[3].y, r.altura);
+    glVertex3f(r.vetorPontos[0].x, r.vetorPontos[0].y, 0);
+    glVertex3f(r.vetorPontos[0].x, r.vetorPontos[0].y, r.altura);
+    glVertex3f(r.vetorPontos[3].x, r.vetorPontos[3].y, r.altura);
+    glVertex3f(r.vetorPontos[3].x, r.vetorPontos[3].y, r.altura);
 
 
     glEnd();
@@ -426,7 +426,7 @@ void display(void) {
     else
     {
         if (width <= height)
-         glOrtho (-ortho, ortho, -ortho*height/width, ortho*height/width, 0, 200);
+            glOrtho (-ortho, ortho, -ortho*height/width, ortho*height/width, 0, 200);
         else
             glOrtho (-ortho*width/height, ortho*width/height, -ortho, ortho, 0, 200);
     }
@@ -462,7 +462,7 @@ void display(void) {
 
     //**************************************************************
 
-  //  glDisable(GL_LIGHTING);
+    //  glDisable(GL_LIGHTING);
 
 
     if(pause)
@@ -555,21 +555,33 @@ void updateState() {
 
             printf("colision happened?\n");
 
-            cout<<"x: "<<position[0]<<" y: "<<position[1]<<endl;
+
 
             if(position[1]+BALL_RADIUS < retangulos[j].pontosExtremos[0].y)
                 continue;
             printf("1\n");
             if(position[1] - BALL_RADIUS > retangulos[j].pontosExtremos[2].y)
+            {
+
+                pause = !pause;
                 continue;
+
+            }
             printf("2\n");
             if(position[0] + BALL_RADIUS < retangulos[j].pontosExtremos[0].x)
+            {
+                pause = !pause;
                 continue;
+            }
             printf("3\n");
             if(position[0] - BALL_RADIUS > retangulos[j].pontosExtremos[2].x)
                 continue;
 
+
+
             printf("colision happened!!\n");
+
+            pause = !pause;
 
             int side;
 
@@ -803,12 +815,12 @@ void mouse(int button, int state, int x, int y)
 
         else if(button == 3)
         {
-                initialDirection += 5;
+            initialDirection += 5;
 
         }
         else
         {
-                initialDirection -= 5;
+            initialDirection -= 5;
         }
 
         initialDirection = fixRange(initialDirection, -180, 180, true);
@@ -832,16 +844,16 @@ void generatePrisms()
         for (int i = 0; i < MaxRetanHorizontal; ++i)
         {  //4
 
-             makeRetangulo(x, y, retangulos[(j*MaxRetanHorizontal)+i]);
-             x += 0.39;
+            makeRetangulo(x, y, retangulos[(j*MaxRetanHorizontal)+i]);
+            x += 0.39;
 
-             //cout<<"x = "<<x<<" ";
+            //cout<<"x = "<<x<<" ";
 
 
 
         }
 
-      //  cout<<endl;
+        //  cout<<endl;
 
         x = -2 + 0.35/2.0;
         y += 0.4;
@@ -971,58 +983,58 @@ void passiveMotion(int x, int y)
     //cout<<"PassiveMotion\n";
 
 
-        if ((x - xAntigo) > 0) //movimento para direita
+    if ((x - xAntigo) > 0) //movimento para direita
+    {
+        if ((rebatedor.centro.x + rebatedor.largura / 2 + 0.1) < 2)
         {
-            if ((rebatedor.centro.x + rebatedor.largura / 2 + 0.1) < 2)
-            {
 
-                rebatedor.atualizaPosicao(rebatedor.centro.x + 0.1);
-            }
-
-        } else if ((x - xAntigo) < 0)
-        {
-            if (fabs(rebatedor.centro.x - rebatedor.largura / 2 - 0.1) < 2)
-            {
-
-                rebatedor.atualizaPosicao(rebatedor.centro.x - 0.1);
-            }
+            rebatedor.atualizaPosicao(rebatedor.centro.x + 0.1);
         }
 
-        if(!fullScreen)
+    } else if ((x - xAntigo) < 0)
+    {
+        if (fabs(rebatedor.centro.x - rebatedor.largura / 2 - 0.1) < 2)
         {
 
-            //cout << "X " << x << endl;
-            if (x >= 700 || x <= 200)
-            {
-
-
-                x = glutGet(GLUT_WINDOW_WIDTH) / 2;
-                y = glutGet(GLUT_WINDOW_HEIGHT) / 2;
-                glutWarpPointer(x, y);
-
-            }
-            //cout << "Y " << y;
-            if (y >= 400 || y <= 200 || y <= 20)
-            {
-
-
-                x = glutGet(GLUT_WINDOW_WIDTH) / 2;
-                y = glutGet(GLUT_WINDOW_HEIGHT) / 2;
-                glutWarpPointer(x, y);
-
-            }
+            rebatedor.atualizaPosicao(rebatedor.centro.x - 0.1);
         }
-        else
+    }
+
+    if(!fullScreen)
+    {
+
+        //cout << "X " << x << endl;
+        if (x >= 700 || x <= 200)
         {
-            //cout << "X " << x << endl;
-            if (x < 300 || x > 1000)
-            {
-                x = glutGet(GLUT_WINDOW_WIDTH) / 2;
-                y = glutGet(GLUT_WINDOW_HEIGHT) / 2;
-                glutWarpPointer(x, y);
 
-            }
+
+            x = glutGet(GLUT_WINDOW_WIDTH) / 2;
+            y = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+            glutWarpPointer(x, y);
+
         }
+        //cout << "Y " << y;
+        if (y >= 400 || y <= 200 || y <= 20)
+        {
+
+
+            x = glutGet(GLUT_WINDOW_WIDTH) / 2;
+            y = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+            glutWarpPointer(x, y);
+
+        }
+    }
+    else
+    {
+        //cout << "X " << x << endl;
+        if (x < 300 || x > 1000)
+        {
+            x = glutGet(GLUT_WINDOW_WIDTH) / 2;
+            y = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+            glutWarpPointer(x, y);
+
+        }
+    }
 
 
 
@@ -1033,16 +1045,7 @@ void passiveMotion(int x, int y)
     xAntigo = x;
 
 
-        return;
-
-
-
-
-
-
-
-
-
+    return;
 
 
 
