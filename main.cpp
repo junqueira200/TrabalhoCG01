@@ -30,9 +30,9 @@ const float FPS = 60;
 const float BHF = 2; // Board Half Width
 bool fullScreen = false;
 bool perspective = true;
-const int MaxRetanHorizontal = 2;//10
+const int MaxRetanHorizontal = 10;//10
 const int MaxRetanVertical = 1;//4
-const int NUMRETAN = 2; //40
+const int NUMRETAN = 10; //40
 
 const float RAIORETANGULO = 0.215058132;
 const float RAIO_REBATEDOR = 0.71    ;
@@ -285,10 +285,15 @@ void makeRetangulo(float x, float y, retangulo &r)
     r.vetorPontos[0].x = x - r.largura/2.0;
     r.vetorPontos[0].y = y - r.altura/2.0;
 
-    r.pontosExtremos[0] = {0, float(-0.125 + y), 0};
+/*    r.pontosExtremos[0] = {0, float(-0.125 + y), 0};
     r.pontosExtremos[1] ={float(0.175 + x), 0, 0};
     r.pontosExtremos[2] = {0, float(0.125 + y), 0};
-    r.pontosExtremos[3] = {float(-0.175 + x), 0, 0};
+    r.pontosExtremos[3] = {float(-0.175 + x), 0, 0};*/
+
+    r.pontosExtremos[0] = {float(x - r.largura/2.0), float(y - r.altura/2.0), 0};
+    r.pontosExtremos[1] ={float(x + r.largura/2.0), float(y - r.altura/2.0), 0};
+    r.pontosExtremos[2] = {float(x + r.largura/2.0), float(y + r.altura/2.0), 0};
+    r.pontosExtremos[3] = {float( x - r.largura/2.0), float(y + r.altura/2.0), 0};
 
 
 }
@@ -556,36 +561,116 @@ void updateState() {
             printf("colision happened?\n");
 
 
+            if(position[0] > 0 )
+            {
+                if(abs(position[0] + BALL_RADIUS) < abs(retangulos[j].pontosExtremos[0].x))
+                {
+                    cout<<"+0.0\n";
+                    //pause = !pause;
 
-            if(position[1]+BALL_RADIUS < retangulos[j].pontosExtremos[0].y)
-                continue;
-            printf("1\n");
-            if(position[1] - BALL_RADIUS > retangulos[j].pontosExtremos[2].y)
+                    continue;
+                }
+
+                if(abs(position[0] - BALL_RADIUS) > abs(retangulos[j].pontosExtremos[2].x))
+                {
+                    cout<<"+0.1\n";
+                   // pause = !pause;
+                    continue;
+
+                }
+            }
+            else
+            {
+                if((position[0] - BALL_RADIUS) < (retangulos[j].pontosExtremos[0].x))
+                {
+                    cout<<"-0.0\n";
+                    cout<<(retangulos[j].pontosExtremos[0].x)<<endl;
+                    cout<<(position[0] - BALL_RADIUS)<<endl<<endl;
+                    //pause = !pause;
+                    continue;
+                }
+
+                if((position[0] - BALL_RADIUS) > (retangulos[j].pontosExtremos[2].x))
+                {
+                    cout<<"-0.1\n";
+                    cout<<"1° : "<<position[0] - BALL_RADIUS<<"\n 2°: "<<(retangulos[j].pontosExtremos[2].x)<<endl;
+
+                    //pause = !pause;
+                    continue;
+
+                }
+            }
+
+            if(position[1] > 0)
             {
 
-                pause = !pause;
-                continue;
+
+                if (abs(position[1] + BALL_RADIUS) < abs(retangulos[j].pontosExtremos[0].y))
+                {
+                    cout<<"+1.0\n";
+                    //pause = !pause;
+                    continue;
+                }
+                if (abs(position[1] - BALL_RADIUS) > abs(retangulos[j].pontosExtremos[2].y))
+                {
+
+                    cout<<"+1.1\n";
+                    //pause = !pause;
+                    continue;
+
+                }
 
             }
-            printf("2\n");
-            if(position[0] + BALL_RADIUS < retangulos[j].pontosExtremos[0].x)
+            else
             {
-                pause = !pause;
-                continue;
+                if ((position[1] - BALL_RADIUS) < (retangulos[j].pontosExtremos[0].y))
+                {
+                    cout<<"-1.0\n";
+                    //pause = !pause;
+                    continue;
+                }
+
+                if (abs(position[1] + BALL_RADIUS) > abs(retangulos[j].pontosExtremos[2].y))
+                {
+                    cout<<"-1.1\n";
+                    //pause = !pause;
+                    continue;
+
+                }
             }
-            printf("3\n");
-            if(position[0] - BALL_RADIUS > retangulos[j].pontosExtremos[2].x)
-                continue;
 
 
 
-            printf("colision happened!!\n");
+            printf("!!!!!Colision happened!!!!!!\n");
 
-            pause = !pause;
+            //pause = !pause;
 
             int side;
 
-            if(position[1] > retangulos[j].pontosExtremos[2].y)
+            //Não indentifica o lado em algumas direções. Ex: ~= 90°
+
+            ///direita
+            if((position[0]) - BALL_RADIUS < (retangulos[j].pontosExtremos[2].x) &&
+            !(abs(position[1]) + BALL_RADIUS > abs(retangulos[j].pontosExtremos[2].y ))&&
+            !((abs(position[1]) + BALL_RADIUS > abs(retangulos[j].pontosExtremos[0].y ))))
+            {
+                printf("Lado direito\n");
+
+
+                side =3;
+            }
+            ///esquerda
+            else if((position[0]) - BALL_RADIUS < (retangulos[j].pontosExtremos[2].x)&&
+            !(abs(position[1]) + BALL_RADIUS > abs(retangulos[j].pontosExtremos[2].y ))&&
+            !((abs(position[1]) + BALL_RADIUS > abs(retangulos[j].pontosExtremos[0].y ))))
+            {
+                printf("Lado esquerdo\n");
+                side = 4;
+
+
+            }
+
+            else if(abs(position[1]) + BALL_RADIUS > abs(retangulos[j].pontosExtremos[2].y))
             {
                 side = 1;
 
@@ -594,31 +679,16 @@ void updateState() {
                 printf("Lado cima \n");
             }
 ///baixo
-            if(position[1] < retangulos[j].pontosExtremos[0].y){
+            else if(- abs(position[1]) + BALL_RADIUS < abs(retangulos[j].pontosExtremos[0].y))
+            {
                 printf("Lado baixo\n");
 
 
                 side = 2;
             }
-            ///direita
-            if(position[0]>retangulos[j].pontosExtremos[2].x)
-            {
-                printf("Lado direita\n");
 
 
-                side =3;
-            }
-            ///esquerda
-            if(position[0] < retangulos[j].pontosExtremos[0].x){
-                printf("Lado esquerda\n");
-                side = 4;
-
-
-            }
-
-
-
-
+            cout<<"Posicao[o] + raio = "<<position[0] + BALL_RADIUS<<"\npontoExtrmo[2].x = "<<retangulos[j].pontosExtremos[2].x<<endl<<endl;
             position[0] = fixRange(position[0] + movement * direction[0], maxRange[0], maxRange[1]);
             position[1] = fixRange(position[1] + movement * direction[1], maxRange[0], maxRange[1]);
 
@@ -835,6 +905,7 @@ void generatePrisms()
 
     float y = 0.5;
     float x = -2 + 0.35/2.0;
+    //float x = 0.5;
 
     //Desenha linha de retangulos
     for(int j = 0; j < MaxRetanVertical;++j)
