@@ -647,66 +647,89 @@ void updateState() {
 
             int side;
 
-            //Não indentifica o lado em algumas direções. Ex: ~= 90°
+            //Verifica colisão com as quinas
 
-            ///direita
-            if((position[0]) - BALL_RADIUS < (retangulos[j].pontosExtremos[2].x) &&
-            !(abs(position[1]) + BALL_RADIUS > abs(retangulos[j].pontosExtremos[2].y ))&&
-            !((abs(position[1]) + BALL_RADIUS > abs(retangulos[j].pontosExtremos[0].y ))))
+            bool colisaoQuina = 0;
+
+            for(int i = 0; i < 4; ++i)
             {
-                printf("Lado direito\n");
-
-
-                side =3;
-            }
-            ///esquerda
-            else if((position[0]) - BALL_RADIUS < (retangulos[j].pontosExtremos[2].x)&&
-            !(abs(position[1]) + BALL_RADIUS > abs(retangulos[j].pontosExtremos[2].y ))&&
-            !((abs(position[1]) + BALL_RADIUS > abs(retangulos[j].pontosExtremos[0].y ))))
-            {
-                printf("Lado esquerdo\n");
-                side = 4;
-
+                float dist = calcDistance(position[0], position[1], retangulos[j].pontosExtremos[i].x, retangulos[j].pontosExtremos[i].y );
+                if(fabs(dist - BALL_RADIUS)  <= 0.001)
+                {
+                    colisaoQuina = 1;
+                    break;
+                }
 
             }
 
-            else if(abs(position[1]) + BALL_RADIUS > abs(retangulos[j].pontosExtremos[2].y))
+            if(!colisaoQuina)
             {
-                side = 1;
+
+                ///direita
+                if (((position[0]) - BALL_RADIUS <= (retangulos[j].pontosExtremos[2].x)) &&
+                    (position[1] < retangulos[j].pontosExtremos[2].y) &&
+                    (position[1] > retangulos[j].pontosExtremos[0].y))
+                {
+                    printf("Lado direito\n");
 
 
+                    side = 3;
+                }
+                    ///esquerda
+                else if (((position[0]) + BALL_RADIUS >= (retangulos[j].pontosExtremos[0].x)) &&
+                         (position[1] < retangulos[j].pontosExtremos[2].y) &&
+                         (position[1] > retangulos[j].pontosExtremos[0].y))
+                {
+                    printf("Lado esquerdo\n");
+                    side = 4;
 
-                printf("Lado cima \n");
-            }
+
+                } else if ((position[1]) - BALL_RADIUS <= (retangulos[j].pontosExtremos[2].y))
+                {
+                    side = 1;
+
+
+                    printf("Lado cima \n");
+                }
 ///baixo
-            else if(- abs(position[1]) + BALL_RADIUS < abs(retangulos[j].pontosExtremos[0].y))
-            {
-                printf("Lado baixo\n");
+                else if ((position[1]) + BALL_RADIUS >= (retangulos[j].pontosExtremos[0].y))
+                {
+                    printf("Lado baixo\n");
 
 
-                side = 2;
+                    side = 2;
+                }
+
+
+                cout << "Posicao[o] + raio = " << position[0] + BALL_RADIUS << "\npontoExtrmo[2].x = "
+                     << retangulos[j].pontosExtremos[2].x << endl << endl;
+                position[0] = fixRange(position[0] + movement * direction[0], maxRange[0], maxRange[1]);
+                position[1] = fixRange(position[1] + movement * direction[1], maxRange[0], maxRange[1]);
+
+                if (side == 1)
+                {
+                    direction[1] = -direction[1];
+                } else if (side == 2)
+                {
+                    direction[1] = -direction[1];
+                } else if (side == 3)
+                {
+                    direction[0] = -direction[0];
+                } else if (side == 4)
+                {
+                    direction[0] = -direction[0];
+                }
             }
-
-
-            cout<<"Posicao[o] + raio = "<<position[0] + BALL_RADIUS<<"\npontoExtrmo[2].x = "<<retangulos[j].pontosExtremos[2].x<<endl<<endl;
-            position[0] = fixRange(position[0] + movement * direction[0], maxRange[0], maxRange[1]);
-            position[1] = fixRange(position[1] + movement * direction[1], maxRange[0], maxRange[1]);
-
-            if(side == 1 )
+            else
             {
+
+                position[0] = fixRange(position[0] + movement * direction[0], maxRange[0], maxRange[1]);
+                position[1] = fixRange(position[1] + movement * direction[1], maxRange[0], maxRange[1]);
+
                 direction[1] = -direction[1];
-            }
-            else if(side == 2)
-            {
-                direction[1] = -direction[1];
-            }
-            else if(side ==3)
-            {
                 direction[0] = -direction[0];
-            }
-            else if(side == 4)
-            {
-                direction[0] = -direction[0];
+
+                cout<<"Quina.\n";
             }
 
             retangulos[j].colisao = true;
