@@ -33,6 +33,9 @@ bool perspective = true;
 const int MaxRetanHorizontal = 10;//10
 const int MaxRetanVertical = 1;//4
 const int NUMRETAN = 10; //40
+vertex v1,v2,v3,v4,v5,v6,v0;
+
+
 
 const float RAIORETANGULO = 0.215058132;
 const float RAIO_REBATEDOR = 0.71    ;
@@ -414,6 +417,252 @@ void drawPrism(triangle t) {
     glPopMatrix();
 
 }
+
+
+void drawBorderss1(){
+
+
+ v1.z = v2.z = v3.z = v4.z = v5.z =v6.z = v0.z= 0.5;
+  v0.x = 2;
+  v0.y = 0;
+
+  v1.x  = 2;
+  v1.y  = 1;
+
+  v2.x  =  1.8;
+  v2.y  =  0.9;
+
+  v3.x  = 1.7;
+  v3.y  = 0.8;
+
+  v4.x = 1.6;
+  v4.y = 0.6;
+
+  v5.x=1.55;
+  v5.y = 0.4;
+
+  v6.x = 1.555;
+  v6.y = 0;
+
+   glPushMatrix();
+    glBegin(GL_TRIANGLES);
+    glVertex3f(v0.x,v0.y,v0.z);
+    glVertex3f(v1.x,v1.y,v1.z);
+    glVertex3f(v2.x,v2.y,v2.z);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(v0.x,v0.y,v0.z);
+    glVertex3f(v2.x,v2.y,v2.z);
+    glVertex3f(v3.x,v3.y,v3.z);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(v0.x,v0.y,v0.z);
+    glVertex3f(v3.x,v3.y,v3.z);
+    glVertex3f(v4.x,v4.y,v4.z);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(v0.x,v0.y,v0.z);
+    glVertex3f(v4.x,v4.y,v4.z);
+    glVertex3f(v5.x,v5.y,v5.z);
+    glEnd();
+
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(v0.x,v0.y,v0.z);
+    glVertex3f(v5.x,v5.y,v5.z);
+    glVertex3f(v6.x,v6.y,v6.z);
+    glEnd();
+
+    // desenho a outra metade  direita da parede
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(v0.x,v0.y,v0.z);
+    glVertex3f(v2.x,-v2.y,v2.z);
+    glVertex3f(v1.x,-v1.y,v1.z);
+
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(v0.x,v0.y,v0.z);
+    glVertex3f(v3.x,-v3.y,v3.z);
+    glVertex3f(v2.x,-v2.y,v2.z);
+
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(v0.x,v0.y,v0.z);
+     glVertex3f(v4.x,-v4.y,v4.z);
+     glVertex3f(v3.x,-v3.y,v3.z);
+
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(v0.x,v0.y,v0.z);
+    glVertex3f(v5.x,-v5.y,v5.z);
+    glVertex3f(v4.x,-v4.y,v4.z);
+
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(v0.x,v0.y,v0.z);
+    glVertex3f(v6.x,-v6.y,v6.z);
+    glVertex3f(v5.x,-v5.y,v5.z);
+
+    glEnd();
+   glPopMatrix();
+
+       glPushMatrix();
+    glBegin(GL_TRIANGLES);
+    glVertex3f(-v0.x,v0.y,v0.z);
+    glVertex3f(-v2.x,v2.y,v2.z);
+    glVertex3f(-v1.x,v1.y,v1.z);
+
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(-v0.x,v0.y,v0.z);
+    glVertex3f(-v3.x,v3.y,v3.z);
+    glVertex3f(-v2.x,v2.y,v2.z);
+
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(-v0.x,v0.y,v0.z);
+    glVertex3f(-v4.x,v4.y,v4.z);
+    glVertex3f(-v3.x,v3.y,v3.z);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(-v0.x,v0.y,v0.z);
+    glVertex3f(-v5.x,v5.y,v5.z);
+    glVertex3f(-v4.x,v4.y,v4.z);
+
+    glEnd();
+
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(-v0.x,v0.y,v0.z);
+    glVertex3f(-v6.x,v6.y,v6.z);
+    glVertex3f(-v5.x,v5.y,v5.z);
+
+    glEnd();
+
+    // desenho a outra metade da parede
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(-v0.x,-v0.y,v0.z);
+    glVertex3f(-v1.x,-v1.y,v1.z);
+    glVertex3f(-v2.x,-v2.y,v2.z);
+
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(-v0.x,-v0.y,v0.z);
+    glVertex3f(-v2.x,-v2.y,v2.z);
+    glVertex3f(-v3.x,-v3.y,v3.z);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(-v0.x,-v0.y,v0.z);
+     glVertex3f(-v3.x,-v3.y,v3.z);
+     glVertex3f(-v4.x,-v4.y,v4.z);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(-v0.x,-v0.y,v0.z);
+    glVertex3f(-v4.x,-v4.y,v4.z);
+    glVertex3f(-v5.x,-v5.y,v5.z);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(-v0.x,v0.y,v0.z);
+    glVertex3f(-v5.x,-v5.y,v5.z);
+    glVertex3f(-v6.x,-v6.y,v6.z);
+    glEnd();
+
+   glPopMatrix();
+
+}
+
+
+void drawBorderss2(){
+
+
+}
+
+
+void drawHitter(vertex center,float sizeHitter){
+  float deltaX = 0.2;
+  float deltaY = 0.13;
+
+  vertex v1,v2,v3,v4;
+
+  v1.z = v2.z =v3.z =v4.z =  0.2;
+  center.z= 0.2;
+
+  v1.x = center.x+sizeHitter;
+  v1.y =0;
+
+  v2.x = v1.x -deltaX;
+  v2.y = v1.y +deltaY;
+
+
+   int cont =0;
+   //desenho a primeira metade do rebatedor
+   glPushMatrix();
+   while(cont < 3){
+
+    glBegin(GL_QUADS);
+    glVertex3f(v2.x,v2.y,v2.z);
+    glVertex3f(v1.x,v1.y,v1.z);
+    glVertex3f(v1.x,v1.y,0.0);
+    glVertex3f(v2.x,v2.y,0.0);
+    glEnd();
+
+    glBegin(GL_QUADS);
+    glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
+    glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
+    glVertex3f(v2.x-2*(v2.x-center.x),v2.y,0.0);
+    glVertex3f(v1.x-2*(v1.x-center.x),v1.y,0.0);
+    glEnd();
+
+    //parte de baixo do rebatedor
+    glBegin(GL_QUADS);
+    glVertex3f(center.x+sizeHitter,center.y,center.z);
+    glVertex3f(center.x-sizeHitter,center.y,center.z);
+    glVertex3f(center.x-sizeHitter,center.y,0.0);
+    glVertex3f(center.x+sizeHitter,center.y,0.0);
+    glEnd();
+
+    glBegin(GL_TRIANGLES);
+    glVertex3f(center.x,center.y,center.z);
+    glVertex3f(v1.x,v1.y,v1.z);
+    glVertex3f(v2.x,v2.y,v2.z);
+    glEnd();
+
+    // desenho a outra metade do rebatedor
+    glBegin(GL_TRIANGLES);
+    glVertex3f(center.x,center.y,center.z);
+    glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
+    glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
+    glEnd();
+
+     v1.x = v2.x;
+     v1.y = v2.y;
+     v2.x = v2.x - deltaX;
+     v2.y = v2.y + deltaY/3;
+     cont++;
+   }
+   glPopMatrix();
+}
+
+
+
+
+
 
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
