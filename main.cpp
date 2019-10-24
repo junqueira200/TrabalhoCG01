@@ -34,7 +34,21 @@ const int MaxRetanHorizontal = 10;//10
 const int MaxRetanVertical = 1;//4
 const int NUMRETAN = 10; //40
 vertex v1,v2,v3,v4,v5,v6,v0;
+vector<vertex> normais;
 
+vector<triangle> vertices;
+triangle tn1,tn2,tn3,tn4,tn5,tn6,tn7,tn8,tn9,tn10;
+triangle tn11,tn12,tn13,tn14,tn15,tn16,tn17,tn18,tn19,tn20;
+int verticeAdded =0;
+vertex naux1,naux2,naux3,naux4,naux5,naux6,naux7,naux8,naux9,naux10;
+vertex naux11,naux12,naux13,naux14,naux15,naux16,naux17,naux18,naux19,naux20;
+vertex naux21,naux22,naux23,naux24,naux25,naux26,naux27,naux28,naux29,naux30;
+vertex naux31,naux32,naux33,naux34,naux35,naux36,naux37,naux38,naux39,naux40;
+
+class quad{
+public:
+    vertex v[4];
+};
 
 
 const float RAIORETANGULO = 0.215058132;
@@ -556,9 +570,19 @@ void drawPrism(triangle t) {
 
 }
 
-
 void drawBorderss1(){
 
+
+    GLfloat objeto_especular[] = { 0.4, 0.4, 0.4, 1.0 };
+    GLfloat objeto_brilho[]    = { 90.0f };
+    GLfloat objeto_ambient[]   = { 0.1, 0.1, 0.1, 1.0};
+
+    GLfloat objeto_difusa[]    = { 0.0, 1.0, 0.0, 1.0 };
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, objeto_ambient);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, objeto_difusa);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
 
  v1.z = v2.z = v3.z = v4.z = v5.z =v6.z = v0.z= 0.5;
   v0.x = 2;
@@ -582,111 +606,275 @@ void drawBorderss1(){
   v6.x = 1.555;
   v6.y = 0;
 
+
+
    glPushMatrix();
+
+    tn1.v[0]=v0;
+    tn1.v[1]=v1;
+    tn1.v[2]=v2;
+    vertex n1;
+    n1 = calcNormal(tn1);
+    glNormal3f(n1.x,n1.y,n1.z);
     glBegin(GL_TRIANGLES);
     glVertex3f(v0.x,v0.y,v0.z);
     glVertex3f(v1.x,v1.y,v1.z);
     glVertex3f(v2.x,v2.y,v2.z);
     glEnd();
+    if(verticeAdded ==0);
+    vertices.push_back(tn1);
+
 
     glBegin(GL_TRIANGLES);
     glVertex3f(v0.x,v0.y,v0.z);
     glVertex3f(v2.x,v2.y,v2.z);
     glVertex3f(v3.x,v3.y,v3.z);
     glEnd();
+    if(verticeAdded ==0){
+    tn2.v[0]=v0;
+    tn2.v[1]=v2;
+    tn2.v[2]=v3;
+    vertices.push_back(tn2);
+    }
 
     glBegin(GL_TRIANGLES);
     glVertex3f(v0.x,v0.y,v0.z);
     glVertex3f(v3.x,v3.y,v3.z);
     glVertex3f(v4.x,v4.y,v4.z);
     glEnd();
+ if(verticeAdded ==0){
+    tn3.v[0]=v0;
+    tn3.v[1]=v3;
+    tn3.v[2]=v4;
+    vertices.push_back(tn3);
+ }
 
     glBegin(GL_TRIANGLES);
     glVertex3f(v0.x,v0.y,v0.z);
     glVertex3f(v4.x,v4.y,v4.z);
     glVertex3f(v5.x,v5.y,v5.z);
     glEnd();
-
+    if(verticeAdded ==0){
+    tn4.v[0]=v0;
+    tn4.v[1]=v4;
+    tn4.v[2]=v5;
+    vertices.push_back(tn4);
+    }
 
     glBegin(GL_TRIANGLES);
     glVertex3f(v0.x,v0.y,v0.z);
     glVertex3f(v5.x,v5.y,v5.z);
     glVertex3f(v6.x,v6.y,v6.z);
     glEnd();
-
+    if(verticeAdded ==0){
+    tn5.v[0]=v0;
+    tn5.v[1]=v5;
+    tn5.v[2]=v6;
+    vertices.push_back(tn5);
+    }
     // desenho a outra metade  direita da parede
 
     glBegin(GL_TRIANGLES);
     glVertex3f(v0.x,v0.y,v0.z);
     glVertex3f(v2.x,-v2.y,v2.z);
     glVertex3f(v1.x,-v1.y,v1.z);
-
     glEnd();
+    if(verticeAdded ==0){
+     naux1.x= v2.x;
+     naux1.y= -v2.y;
+     naux1.z= v2.z;
+     naux2.x= v1.x;
+     naux2.y= -v1.y;
+     naux2.z= v1.z;
+    tn6.v[0]=v0;
+    tn6.v[1]=naux1;
+    tn6.v[2]=naux2;
+    vertices.push_back(tn6);
+    }
+
 
     glBegin(GL_TRIANGLES);
     glVertex3f(v0.x,v0.y,v0.z);
     glVertex3f(v3.x,-v3.y,v3.z);
     glVertex3f(v2.x,-v2.y,v2.z);
-
     glEnd();
+    if(verticeAdded ==0){
+     naux3.x= v3.x;
+     naux3.y= -v3.y;
+     naux3.z= v3.z;
+     naux4.x= v2.x;
+     naux4.y= -v2.y;
+     naux4.z= v2.z;
+    tn7.v[0]=v0;
+    tn7.v[1]=naux3;
+    tn7.v[2]=naux4;
+    vertices.push_back(tn7);
+    }
+
 
     glBegin(GL_TRIANGLES);
     glVertex3f(v0.x,v0.y,v0.z);
-     glVertex3f(v4.x,-v4.y,v4.z);
-     glVertex3f(v3.x,-v3.y,v3.z);
-
+    glVertex3f(v4.x,-v4.y,v4.z);
+    glVertex3f(v3.x,-v3.y,v3.z);
     glEnd();
+    if(verticeAdded ==0){
+     naux5.x= v3.x;
+     naux5.y= -v4.y;
+     naux5.z= v4.z;
+     naux6.x= v3.x;
+     naux6.y= -v3.y;
+     naux6.z= v3.z;
+    tn8.v[0]=v0;
+    tn8.v[1]=naux5;
+    tn8.v[2]=naux6;
+    vertices.push_back(tn8);
+    }
+
 
     glBegin(GL_TRIANGLES);
     glVertex3f(v0.x,v0.y,v0.z);
     glVertex3f(v5.x,-v5.y,v5.z);
     glVertex3f(v4.x,-v4.y,v4.z);
-
     glEnd();
+    if(verticeAdded ==0){
+    naux7.x= v5.x;
+    naux7.y= -v5.y;
+    naux7.z= v5.z;
+    naux8.x= v4.x;
+    naux8.y= -v4.y;
+    naux8.z= v4.z;
+    tn9.v[0]=v0;
+    tn9.v[1]=naux7;
+    tn9.v[2]=naux8;
+    vertices.push_back(tn9);
+    }
 
     glBegin(GL_TRIANGLES);
     glVertex3f(v0.x,v0.y,v0.z);
     glVertex3f(v6.x,-v6.y,v6.z);
     glVertex3f(v5.x,-v5.y,v5.z);
-
     glEnd();
-   glPopMatrix();
+    if(verticeAdded ==0){
+    naux9.x= v6.x;
+    naux9.y= -v6.y;
+    naux9.z= v6.z;
+    naux10.x= v5.x;
+    naux10.y= -v5.y;
+    naux10.z= v5.z;
+    tn10.v[0]=v0;
+    tn10.v[1]=naux9;
+    tn10.v[2]=naux10;
+    vertices.push_back(tn10);
+    }
 
-       glPushMatrix();
     glBegin(GL_TRIANGLES);
     glVertex3f(-v0.x,v0.y,v0.z);
     glVertex3f(-v2.x,v2.y,v2.z);
     glVertex3f(-v1.x,v1.y,v1.z);
-
     glEnd();
+    if(verticeAdded ==0){
+    naux11.x= -v0.x;
+    naux11.y= v0.y;
+    naux11.z= v0.z;
+    naux12.x= -v2.x;
+    naux12.y= v2.y;
+    naux12.z= v2.z;
+    naux13.x= -v1.x;
+    naux13.y= v1.y;
+    naux13.z= v1.z;
+    tn11.v[0]=naux11;
+    tn11.v[1]=naux12;
+    tn11.v[2]=naux13;
+    vertices.push_back(tn11);
+    }
 
     glBegin(GL_TRIANGLES);
     glVertex3f(-v0.x,v0.y,v0.z);
     glVertex3f(-v3.x,v3.y,v3.z);
     glVertex3f(-v2.x,v2.y,v2.z);
-
     glEnd();
+    if(verticeAdded ==0){
+    naux14.x= -v0.x;
+    naux14.y= v0.y;
+    naux14.z= v0.z;
+    naux15.x= -v3.x;
+    naux15.y= v3.y;
+    naux15.z= v3.z;
+    naux16.x= -v2.x;
+    naux16.y= v2.y;
+    naux16.z= v2.z;
+    tn12.v[0]=naux14;
+    tn12.v[1]=naux15;
+    tn12.v[2]=naux16;
+    vertices.push_back(tn12);
+    }
+
 
     glBegin(GL_TRIANGLES);
     glVertex3f(-v0.x,v0.y,v0.z);
     glVertex3f(-v4.x,v4.y,v4.z);
     glVertex3f(-v3.x,v3.y,v3.z);
     glEnd();
+    if(verticeAdded ==0){
+    naux17.x= -v0.x;
+    naux17.y= v0.y;
+    naux17.z= v0.z;
+    naux18.x= -v3.x;
+    naux18.y= v3.y;
+    naux18.z= v3.z;
+    naux19.x= -v2.x;
+    naux19.y= v2.y;
+    naux19.z= v2.z;
+    tn13.v[0]=naux17;
+    tn13.v[1]=naux18;
+    tn13.v[2]=naux19;
+    vertices.push_back(tn13);
+    }
+
 
     glBegin(GL_TRIANGLES);
     glVertex3f(-v0.x,v0.y,v0.z);
     glVertex3f(-v5.x,v5.y,v5.z);
     glVertex3f(-v4.x,v4.y,v4.z);
-
     glEnd();
+    if(verticeAdded ==0){
+    naux20.x= -v0.x;
+    naux20.y= v0.y;
+    naux20.z= v0.z;
+    naux21.x= -v5.x;
+    naux21.y= v5.y;
+    naux21.z= v5.z;
+    naux22.x= -v4.x;
+    naux22.y= v4.y;
+    naux22.z= v4.z;
+    tn14.v[0]=naux20;
+    tn14.v[1]=naux21;
+    tn14.v[2]=naux22;
+    vertices.push_back(tn14);
+    }
 
 
     glBegin(GL_TRIANGLES);
     glVertex3f(-v0.x,v0.y,v0.z);
     glVertex3f(-v6.x,v6.y,v6.z);
     glVertex3f(-v5.x,v5.y,v5.z);
-
     glEnd();
+    if(verticeAdded ==0){
+    naux23.x= -v0.x;
+    naux23.y= v0.y;
+    naux23.z= v0.z;
+    naux24.x= -v6.x;
+    naux24.y= v6.y;
+    naux24.z= v6.z;
+    naux25.x= -v5.x;
+    naux25.y= v5.y;
+    naux25.z= v5.z;
+    tn15.v[0]=naux23;
+    tn15.v[1]=naux24;
+    tn15.v[2]=naux25;
+    vertices.push_back(tn15);
+    }
+
 
     // desenho a outra metade da parede
 
@@ -694,45 +882,185 @@ void drawBorderss1(){
     glVertex3f(-v0.x,-v0.y,v0.z);
     glVertex3f(-v1.x,-v1.y,v1.z);
     glVertex3f(-v2.x,-v2.y,v2.z);
-
     glEnd();
+    if(verticeAdded ==0){
+    naux26.x= -v0.x;
+    naux26.y= -v0.y;
+    naux26.z= v0.z;
+    naux27.x= -v1.x;
+    naux27.y= -v1.y;
+    naux27.z= v1.z;
+    naux28.x= -v2.x;
+    naux28.y= -v2.y;
+    naux28.z= v2.z;
+    tn16.v[0]=naux26;
+    tn16.v[1]=naux27;
+    tn16.v[2]=naux28;
+    vertices.push_back(tn16);
+    }
 
     glBegin(GL_TRIANGLES);
     glVertex3f(-v0.x,-v0.y,v0.z);
     glVertex3f(-v2.x,-v2.y,v2.z);
     glVertex3f(-v3.x,-v3.y,v3.z);
     glEnd();
+     if(verticeAdded ==0){
+    naux29.x= -v0.x;
+    naux29.y= -v0.y;
+    naux29.z= v0.z;
+    naux30.x= -v2.x;
+    naux30.y= -v2.y;
+    naux30.z= v2.z;
+    naux31.x= -v3.x;
+    naux31.y= -v3.y;
+    naux31.z= v3.z;
+    tn17.v[0]=naux29;
+    tn17.v[1]=naux30;
+    tn17.v[2]=naux31;
+    vertices.push_back(tn17);
+    }
 
     glBegin(GL_TRIANGLES);
     glVertex3f(-v0.x,-v0.y,v0.z);
      glVertex3f(-v3.x,-v3.y,v3.z);
      glVertex3f(-v4.x,-v4.y,v4.z);
     glEnd();
+    if(verticeAdded ==0){
+    naux32.x= -v0.x;
+    naux32.y= -v0.y;
+    naux32.z= v0.z;
+    naux33.x= -v3.x;
+    naux33.y= -v3.y;
+    naux33.z= v3.z;
+    naux34.x= -v4.x;
+    naux34.y= -v4.y;
+    naux34.z= v4.z;
+    tn18.v[0]=naux32;
+    tn18.v[1]=naux33;
+    tn18.v[2]=naux34;
+    vertices.push_back(tn18);
+    }
+
 
     glBegin(GL_TRIANGLES);
     glVertex3f(-v0.x,-v0.y,v0.z);
     glVertex3f(-v4.x,-v4.y,v4.z);
     glVertex3f(-v5.x,-v5.y,v5.z);
     glEnd();
+    if(verticeAdded ==0){
+    naux35.x= -v0.x;
+    naux35.y= -v0.y;
+    naux35.z= v0.z;
+    naux36.x= -v4.x;
+    naux36.y= -v4.y;
+    naux36.z= v4.z;
+    naux37.x= -v5.x;
+    naux37.y= -v5.y;
+    naux37.z= v5.z;
+    tn19.v[0]=naux35;
+    tn19.v[1]=naux36;
+    tn19.v[2]=naux37;
+    vertices.push_back(tn19);
+    }
 
     glBegin(GL_TRIANGLES);
     glVertex3f(-v0.x,v0.y,v0.z);
     glVertex3f(-v5.x,-v5.y,v5.z);
     glVertex3f(-v6.x,-v6.y,v6.z);
     glEnd();
+    if(verticeAdded ==0){
+    naux38.x= -v0.x;
+    naux38.y= v0.y;
+    naux38.z= v0.z;
+    naux39.x= -v5.x;
+    naux39.y= -v5.y;
+    naux39.z= v5.z;
+    naux40.x= -v6.x;
+    naux40.y= -v6.y;
+    naux40.z= v6.z;
+    tn20.v[0]=naux38;
+    tn20.v[1]=naux39;
+    tn20.v[2]=naux40;
+    vertices.push_back(tn20);
+    }
 
    glPopMatrix();
+ verticeAdded =1;
+}
+
+
+int detecColision(triangle t){
+
+
+ if(position[1]+BALL_RADIUS < t.v[1].y)
+   return false;
+ if(position[1] - BALL_RADIUS > t.v[2].y)
+  return false;
+ if(position[0] + BALL_RADIUS < t.v[1].x)
+  return false;
+ if(position[0] - BALL_RADIUS > t.v[2].x)
+  return false;
+
+  printf("%s","COLISAO COLISAO COLISAO \n");
+  return true;
+ }
+
+
+void drawFaces(){
+
+GLfloat objeto_especular[] = { 0.4, 0.4, 0.4, 1.0 };
+    GLfloat objeto_brilho[]    = { 70.0f };
+    GLfloat objeto_ambient[]   = { 0.1, 0.1, 0.1, 1.0};
+
+    GLfloat objeto_difusa[]    = { 0.0, 1.0, 0.0, 1.0 };
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, objeto_ambient);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, objeto_difusa);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
+
+for(int i=0;i<vertices.size();i++){
+     vertex v;
+     v = calcNormal(vertices[i]);
+     if(detecColision(vertices[i])){
+     Fazer a soma vetorial aqui
+     position[0] = v.x- position[0]; ///
+     position[1] = v.y -position[1]; ///
+     }
+     glPushMatrix();
+     glNormal3f(v.x,v.y,v.z);
+    glBegin(GL_QUADS);glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,vertices[i].v[2].z);
+    glVertex3f(vertices[i].v[1].x,vertices[i].v[1].y,vertices[i].v[1].z);
+    glVertex3f(vertices[i].v[1].x,vertices[i].v[1].y,0);
+    glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,0);
+
+    glEnd();
+    glPopMatrix();
 
 }
 
 
-void drawBorderss2(){
-
-
 }
+
+
+
+
 
 
 void drawHitter(vertex center,float sizeHitter){
+
+    GLfloat objeto_especular[] = { 0.4, 0.4, 0.4, 1.0 };
+    GLfloat objeto_brilho[]    = { 90.0f };
+    GLfloat objeto_ambient[]   = { 0.1, 0.1, 0.1, 1.0};
+
+    GLfloat objeto_difusa[]    = { 0.0, 1.0, 0.0, 1.0 };
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, objeto_ambient);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, objeto_difusa);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
+
+
   float deltaX = 0.2;
   float deltaY = 0.13;
 
@@ -747,12 +1075,25 @@ void drawHitter(vertex center,float sizeHitter){
   v2.x = v1.x -deltaX;
   v2.y = v1.y +deltaY;
 
+   vertex aux1,aux2;
 
    int cont =0;
    //desenho a primeira metade do rebatedor
    glPushMatrix();
    while(cont < 3){
 
+    aux1.x = v1.x;
+    aux1.y = v1.y;
+    aux1.z = 0;
+
+    triangle r;
+
+    r.v[0] = v2;
+    r.v[1] = v1;
+    r.v[2] = aux1;
+    vertex normalVector;
+    normalVector = calcNormal(r);
+    glNormal3f(normalVector.x,normalVector.y,normalVector.z);
     glBegin(GL_QUADS);
     glVertex3f(v2.x,v2.y,v2.z);
     glVertex3f(v1.x,v1.y,v1.z);
@@ -760,6 +1101,17 @@ void drawHitter(vertex center,float sizeHitter){
     glVertex3f(v2.x,v2.y,0.0);
     glEnd();
 
+
+    aux1.x = v1.x;
+    aux1.y = v1.y;
+    aux1.z = 0;
+    triangle r1;
+    r1.v[0] = v2;
+    r1.v[1] = v1;
+    r1.v[2] = aux1;
+    vertex normalVector1;
+    normalVector1 = calcNormal(r1);
+    glNormal3f(normalVector1.x,normalVector1.y,normalVector1.z);
     glBegin(GL_QUADS);
     glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
     glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
@@ -768,6 +1120,32 @@ void drawHitter(vertex center,float sizeHitter){
     glEnd();
 
     //parte de baixo do rebatedor
+     aux1.x = v1.x;
+    aux1.y = v1.y;
+    aux1.z = 0;
+    triangle r3;
+
+    vertex vaux, vaux2,vaux3;
+
+    vaux.x= center.x+sizeHitter;
+    vaux.y = center.y;
+    vaux.z =  center.z;
+
+    vaux2.x= center.x-sizeHitter;
+    vaux2.y = center.y;
+    vaux2.z =  center.z;
+
+    vaux3.x= center.x+sizeHitter;
+    vaux3.y = center.y;
+    vaux3.z =  0;
+
+    r3.v[0] = v2;
+    r3.v[1] = aux1;
+    r3.v[2] = v1;
+    vertex normalVector3;
+    normalVector3 = calcNormal(r3);
+    glNormal3f(normalVector3.x,normalVector3.y,normalVector3.z);
+
     glBegin(GL_QUADS);
     glVertex3f(center.x+sizeHitter,center.y,center.z);
     glVertex3f(center.x-sizeHitter,center.y,center.z);
@@ -775,6 +1153,13 @@ void drawHitter(vertex center,float sizeHitter){
     glVertex3f(center.x+sizeHitter,center.y,0.0);
     glEnd();
 
+    triangle t4;
+    vertex normalVector4;
+    t4.v[0] = center;
+    t4.v[1] = v1;
+    t4.v[2] = v2;
+    normalVector4 =calcNormal(t4);
+    glNormal3f(normalVector4.x,normalVector4.y,normalVector4.z);
     glBegin(GL_TRIANGLES);
     glVertex3f(center.x,center.y,center.z);
     glVertex3f(v1.x,v1.y,v1.z);
@@ -782,12 +1167,21 @@ void drawHitter(vertex center,float sizeHitter){
     glEnd();
 
     // desenho a outra metade do rebatedor
+
+    triangle t2;
+    vertex normalVector2, aux11,aux12;
+    aux11.x = v2.x-2*(v2.x-center.x);
+    aux12.x = v1.x-2*(v1.x-center.x);
+
+    t2.v[0] = center;
+    t2.v[1] = aux11;
+    t2.v[2] = aux12;
+    normalVector2 =calcNormal(t2);
     glBegin(GL_TRIANGLES);
     glVertex3f(center.x,center.y,center.z);
     glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
     glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
     glEnd();
-
      v1.x = v2.x;
      v1.y = v2.y;
      v2.x = v2.x - deltaX;
@@ -805,8 +1199,8 @@ void drawHitter(vertex center,float sizeHitter){
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
     glMatrixMode(GL_PROJECTION);
+
 
     glLoadIdentity();
 
@@ -814,50 +1208,25 @@ void display(void) {
 
 
     if(perspective)
-    {
-
-        //gluPerspective(0, (GLfloat) width / (GLfloat) height, 0.01, 200.0);
-        gluPerspective(10.0, (GLfloat) 1000.0 / (GLfloat) 600.0, 4, -1);
-
-
-
-    }
+        gluPerspective(60, (GLfloat) width / (GLfloat) height, 0.01, 200.0);
     else
     {
-
-
-            glOrtho (-ortho, ortho, -ortho*1000.0/600.0, ortho*1000.0/600.0, -1, 1);
-
-
-
-
-        //glOrtho(-2, 2, -2, 2, -1.0f, 1.0f);
-        //glOrtho(-3.0, 3.0, -3.0, 3.0, -1.0, 1.0);
-
-
-
-
+        if (width <= height)
+            glOrtho (-ortho, ortho, -ortho*height/width, ortho*height/width, 0, 200);
+        else
+            glOrtho (-ortho*width/height, ortho*width/height, -ortho, ortho, 0, 200);
     }
-
-
-    glMatrixMode(GL_MODELVIEW);
-
-
-
-
-    gluLookAt(0.0, -1.0, 1, 0.0, 0.0, 0.0, 0.0, 0.2, 0);
-    glPushMatrix();
-
+   glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
-
-
-
+     gluLookAt (0.0, -1.5, zdist, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
     glRotatef(rotationY, 0, 1, 1);
     glRotatef(rotationX, 1, 0, 1);
     glRotatef(angulo, 1, 0, 0);
     glPushMatrix();
+  drawBorderss1();
+  drawFaces();
+    s
 
     if (!animate)
         drawArrow();
