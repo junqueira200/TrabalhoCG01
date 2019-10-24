@@ -8,7 +8,8 @@
 #include "etc.h" //TODO: reorganize modules
 #include <iostream>
 #include <cstring>
-
+#include <vector>
+#include <list>
 
 #define MAXLINHA 10
 
@@ -1019,11 +1020,12 @@ GLfloat objeto_especular[] = { 0.4, 0.4, 0.4, 1.0 };
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
 
+
 for(int i=0;i<vertices.size();i++){
      vertex v;
      v = calcNormal(vertices[i]);
      if(detecColision(vertices[i])){
-     Fazer a soma vetorial aqui
+     //Fazer a soma vetorial aqui
      position[0] = v.x- position[0]; ///
      position[1] = v.y -position[1]; ///
      }
@@ -1226,7 +1228,7 @@ void display(void) {
     glPushMatrix();
   drawBorderss1();
   drawFaces();
-    s
+
 
     if (!animate)
         drawArrow();
