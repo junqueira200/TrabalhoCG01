@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include <math.h>
 #include <float.h>
-#include "extras.h"
+//#include "extras.h"
 #include "etc.h" //TODO: reorganize modules
 #include <iostream>
 #include <cstring>
@@ -56,7 +56,27 @@ bool venceu = false;
 
 /// Functions
 void init(void) {
-    initLight(width, height); // Função extra para tratar iluminação.
+    //initLight(width, height); // Função extra para tratar iluminação.
+
+    glEnable(GL_LIGHTING);                 // Habilita luz
+    glEnable(GL_LIGHT0);                   // habilita luz 0
+    glEnable(GL_DEPTH_TEST);
+
+
+    GLfloat cor_luz[]     = { 1.0, 1.0, 1.0, 1.0};
+    // Posicao da fonte de luz. Ultimo parametro define se a luz sera direcional (0.0) ou tera uma posicional (1.0)
+    GLfloat posicao_luz[] = { (float) width, (float)height, 1000.0, 1.0};
+
+    // Define parametros da luz
+    glLightfv(GL_LIGHT0, GL_AMBIENT, cor_luz);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, cor_luz);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, cor_luz);
+    glLightfv(GL_LIGHT0, GL_POSITION, posicao_luz);
+
+    // Quando a opção "two_side lighting" está ativada, o opengl inverte a orientação das normais
+    // permitindo que tanto as faces externas quanto internas sejam iluminadas.
+    // Essa opção é mais lenta se comparada a renderização de apenas um dos lados
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
     glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH)/2, glutGet(GLUT_WINDOW_HEIGHT)/2);
     xAntigo = glutGet(GLUT_WINDOW_WIDTH)/2;
@@ -160,51 +180,110 @@ float calcDistance(float aX, float aY, float bX, float bY) {
 void drawBoard() {
     glPushMatrix();
 
-    setColorBase();
+
+    GLfloat objeto_especular[] = { 0.626, 0.626, 0.626, 1.0 };
+    GLfloat objeto_brilho[]    = { 90.0f };
+    GLfloat objeto_ambient[]   = { 0.6, 0.6, 0.0, 0.1 };
+
+
+    GLfloat objeto_difusa[]    = { 0.6, 0.6, 0.0, 1.0 };
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT, objeto_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, objeto_difusa);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, objeto_especular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, objeto_brilho);
+
+/*    glMaterialfv(GL_BACK, GL_AMBIENT, objeto_ambient);
+    glMaterialfv(GL_BACK, GL_DIFFUSE, objeto_difusa);
+    glMaterialfv(GL_BACK, GL_SPECULAR, objeto_especular);
+    glMaterialfv(GL_BACK, GL_SHININESS, objeto_brilho);*/
+
+
 
     // base
-    glNormal3f(0, 0, 1);
+
     glBegin(GL_TRIANGLE_FAN);
+
+    glNormal3f(0, 0, 1);
     glVertex3f(-BHF, -BHF, 0);
+
+    glNormal3f(0, 0, 1);
     glVertex3f(BHF, -BHF, 0);
+
+    glNormal3f(0, 0, 1);
     glVertex3f(BHF, BHF, 0);
+
+    glNormal3f(0, 0, 1);
     glVertex3f(-BHF, BHF, 0);
     glEnd();
 
     // bottom
-    glNormal3f(0, 1, 0);
+
     glBegin(GL_TRIANGLE_FAN);
+
+    glNormal3f(0, 1, 0);
     glVertex3f(-BHF, -BHF, 0.5);
+
+    glNormal3f(0, 1, 0);
     glVertex3f(BHF, -BHF, 0.5);
+
+    glNormal3f(0, 1, 0);
     glVertex3f(BHF, -BHF, 0);
+
+    glNormal3f(0, 1, 0);
     glVertex3f(-BHF, -BHF, 0);
     glEnd();
 
     // right
-    glNormal3f(-1, 0, 0);
+
     glBegin(GL_TRIANGLE_FAN);
+
+    glNormal3f(-1, 0, 0);
     glVertex3f(BHF, -BHF, 0.5);
+
+    glNormal3f(-1, 0, 0);
     glVertex3f(BHF, BHF, 0.5);
+
+    glNormal3f(-1, 0, 0);
     glVertex3f(BHF, BHF, 0);
+
+    glNormal3f(-1, 0, 0);
     glVertex3f(BHF, -BHF, 0);
     glEnd();
 
     // top
-    glNormal3f(0, -1, 0);
+
     glBegin(GL_TRIANGLE_FAN);
+
+    glNormal3f(0, -1, 0);
     glVertex3f(BHF, BHF, 0.5);
+
+    glNormal3f(0, -1, 0);
     glVertex3f(-BHF, BHF, 0.5);
+
+    glNormal3f(0, -1, 0);
     glVertex3f(-BHF, BHF, 0);
+
+    glNormal3f(0, -1, 0);
     glVertex3f(BHF, BHF, 0);
     glEnd();
 
     // left
-    glNormal3f(1, 0, 0);
+
     glBegin(GL_TRIANGLE_FAN);
+
+    glNormal3f(1, 0, 0);
     glVertex3f(-BHF, BHF, 0.5);
+
+    glNormal3f(1, 0, 0);
     glVertex3f(-BHF, -BHF, 0.5);
+
+    glNormal3f(1, 0, 0);
     glVertex3f(-BHF, -BHF, 0);
+
+    glNormal3f(1, 0, 0);
     glVertex3f(-BHF, BHF, 0);
+
     glEnd();
     glPopMatrix();
 }
@@ -213,7 +292,18 @@ void drawSphere() {
 
     glPushMatrix();
     glNormal3f(0, 0, 1);
-    setColor(0, 1, 0);
+
+    GLfloat objeto_especular[] = { 0.626, 0.626, 0.626, 1.0 };
+    GLfloat objeto_brilho[]    = { 90.0f };
+    GLfloat objeto_ambient[]   = { 0.1, 0.1, 0.1, 1.0 };
+
+    GLfloat objeto_difusa[]    = { 0, 1, 0, 1.0 };
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, objeto_ambient);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, objeto_difusa);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
+
     glTranslatef(position[0], position[1], BALL_RADIUS);
     glutSolidSphere(BALL_RADIUS, 100, 100);
     glPopMatrix();
@@ -226,7 +316,18 @@ void drawArrow() {
     glPushMatrix();
 
     glPushMatrix();
-    setColor(0, 0, 1);
+
+    GLfloat objeto_especular[] = { 0.626, 0.626, 0.626, 1.0 };
+    GLfloat objeto_brilho[]    = { 90.0f };
+    GLfloat objeto_ambient[]   = { 0.1, 0.1, 0.1, 1.0 };
+
+    GLfloat objeto_difusa[]    = { 0, 0, 1.0 };
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, objeto_ambient);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, objeto_difusa);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
+
     glTranslatef(position[0], position[1], BALL_RADIUS);
     glRotatef(initialDirection, 0, 0, 1);
     glTranslatef(0, BALL_RADIUS * 1.2, 0);
@@ -331,53 +432,90 @@ void desenhaRetangulo(retangulo &r)
 
     glPushMatrix();
 
-    setColor(1, 0, 0);
-    glNormal3f(0, 0, 1);
+
+
+    //GLfloat objeto_especular[] = { 0.626, 0.626, 0.626, 1.0 };
+    GLfloat objeto_especular[] = { 1.0, 0.0, 0.0, 0.2 };
+    GLfloat objeto_brilho[]    = { 20.0f };
+    GLfloat objeto_ambient[]   = { 0, 0.0, 0.0, 0.001 };
+
+
+    GLfloat objeto_difusa[]    = { 1, 0, 0, 1.0 };
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT, objeto_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, objeto_difusa);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, objeto_especular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, objeto_brilho);
+
+    //glNormal3f(0, 0, 1);
     glBegin(GL_QUADS);
     for (i = 0; i < 4; ++i)
+    {
+        glNormal3f(0, 0, 1);
         glVertex3f(r.vetorPontos[i].x, r.vetorPontos[i].y, r.altura); //Face superior
+
+    }
+
     glEnd();
 
-    glNormal3f(0,0,1);
+    //glNormal3f(0,0,1);
 
     //Face que aponta para (0, -1, 0)
     glBegin(GL_QUADS);
 
+    glNormal3f(0,-1,0);
     glVertex3f(r.vetorPontos[0].x, r.vetorPontos[0].y, 0);
+
+    glNormal3f(0,-1,0);
     glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y, 0);
+
+    glNormal3f(0,-1,0);
     glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y, r.altura);
+
+    glNormal3f(0,-1,0);
     glVertex3f(r.vetorPontos[0].x, r.vetorPontos[0].y, r.altura);
 
 
     glEnd();
 
-    glNormal3f(0,-1,0);
+    //glNormal3f(0,-1,0);
 
     //Face que aponta para (1, 0, 0)
     glBegin(GL_QUADS);
 
+    glNormal3f(1, 0,0);
     glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y, 0);
+
+    glNormal3f(1, 0,0);
     glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y + r.altura, 0);
+
+    glNormal3f(1, 0,0);
     glVertex3f(r.vetorPontos[1].x , r.vetorPontos[1].y + r.altura, r.altura);
+
+    glNormal3f(1, 0,0);
     glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y, r.altura);
 
 
     glEnd();
 
-    glNormal3f(1, 0, 0);
+    //glNormal3f(-1, 0, 0);
 
     glBegin(GL_QUADS);
 
+    glNormal3f(-1, 0, 0);
     glVertex3f(r.vetorPontos[0].x, r.vetorPontos[0].y, 0);
+
+    glNormal3f(-1, 0, 0);
     glVertex3f(r.vetorPontos[0].x, r.vetorPontos[0].y, r.altura);
+
+    glNormal3f(-1, 0, 0);
     glVertex3f(r.vetorPontos[3].x, r.vetorPontos[3].y, r.altura);
-    glVertex3f(r.vetorPontos[3].x, r.vetorPontos[3].y, r.altura);
+
+    glNormal3f(-1, 0, 0);
+    glVertex3f(r.vetorPontos[3].x, r.vetorPontos[3].y, 0);
 
 
     glEnd();
-
-    glNormal3f(-1, 0, 0);
-
     glPopMatrix();
 }
 
@@ -387,7 +525,7 @@ void drawPrism(triangle t) {
 
     glPushMatrix();
 
-    setColor(1, 0, 0);
+    //setColor(1, 0, 0);
     glNormal3f(0, 0, 1);
     glBegin(GL_TRIANGLES);
     for (i = 0; i < 3; ++i)
@@ -418,8 +556,8 @@ void drawPrism(triangle t) {
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glMatrixMode(GL_MODELVIEW);
 
+    glMatrixMode(GL_PROJECTION);
 
     glLoadIdentity();
 
@@ -427,20 +565,45 @@ void display(void) {
 
 
     if(perspective)
-        gluPerspective(0, (GLfloat) width / (GLfloat) height, 0.01, 200.0);
+    {
+
+        //gluPerspective(0, (GLfloat) width / (GLfloat) height, 0.01, 200.0);
+        gluPerspective(10.0, (GLfloat) 1000.0 / (GLfloat) 600.0, 4, -1);
+
+
+
+    }
     else
     {
-        if (width <= height)
-            glOrtho (-ortho, ortho, -ortho*height/width, ortho*height/width, 0, 200);
-        else
-            glOrtho (-ortho*width/height, ortho*width/height, -ortho, ortho, 0, 200);
+
+
+            glOrtho (-ortho, ortho, -ortho*1000.0/600.0, ortho*1000.0/600.0, -1, 1);
+
+
+
+
+        //glOrtho(-2, 2, -2, 2, -1.0f, 1.0f);
+        //glOrtho(-3.0, 3.0, -3.0, 3.0, -1.0, 1.0);
+
+
+
+
     }
 
 
+    glMatrixMode(GL_MODELVIEW);
+
+
+
+
+    gluLookAt(0.0, -1.0, 1, 0.0, 0.0, 0.0, 0.0, 0.2, 0);
+    glPushMatrix();
 
     glLoadIdentity();
 
-    gluLookAt(0.0, 0.0, zdist, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+
+
+
 
     glRotatef(rotationY, 0, 1, 1);
     glRotatef(rotationX, 1, 0, 1);
@@ -509,7 +672,9 @@ void display(void) {
 
     }
 
+    glPopMatrix();
     glutSwapBuffers();
+    glutPostRedisplay();
 
 }
 
@@ -832,10 +997,10 @@ void keyboard(unsigned char key, int x, int y) {
 
                 perspective = !perspective;
 
-                if(angulo == -30)
+/*                if(angulo == -30)
                     angulo = 0;
                 else
-                    angulo = -30;
+                    angulo = -30;*/
 
 
                 break;
@@ -1169,7 +1334,10 @@ int main(int argc, char **argv) {
     glutPassiveMotionFunc(passiveMotion);
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(Spekeyboard);
-
+    glShadeModel(GL_SMOOTH);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glEnable(GL_DEPTH_TEST);
     glutIdleFunc(idle);
 
 
