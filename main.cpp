@@ -20,6 +20,7 @@ float fixRange(float value, float min, float max, bool circular = false);
 bool colisaoRebatedor(float movement, const float maxRange[]);
 
 /// Globals
+vertex normalFaces;
 float zdist = 4.0;
 float rotationX = 0, rotationY = 0;
 int last_x, last_y;
@@ -1016,6 +1017,38 @@ void drawBorderss1()
     verticeAdded =1;
 }
 
+
+
+void CalculaNormal2(vertex v0p, vertex v1p, vertex v2p,vertex *vn)/// função modificada para fazer o calculo da normal dos
+{                                                                    /// quadrados
+    vertex v_0  =  v0p,
+            v_1 =  v1p,
+            v_2 =  v2p;
+    vertex v1, v2;
+    double len;
+
+    /* Encontra vetor v1 */
+    v1.x = v_1.x - v_0.x;
+    v1.y = v_1.y - v_0.y;
+    v1.z = v_1.z - v_0.z;
+
+    /* Encontra vetor v2 */
+    v2.x = v_2.x - v_0.x;
+    v2.y = v_2.y - v_0.y;
+    v2.z = v_2.z - v_0.z;
+
+    /* Calculo do produto vetorial de v1 e v2 */
+    vn->x = (v1.y * v2.z) - (v1.z * v2.y);
+    vn->y = (v1.z * v2.x) - (v1.x * v2.z);
+    vn->z = (v1.x * v2.y) - (v1.y * v2.x);
+
+    /* normalizacao de n */
+    len = sqrt(pow(vn->x,2) + pow(vn->y,2) + pow(vn->z,2));
+
+    vn->x /= len;
+    vn->y /= len;
+    vn->z /= len;
+}
 
 int detecColision(triangle t)
 {
