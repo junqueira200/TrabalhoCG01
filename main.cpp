@@ -1272,14 +1272,16 @@ void display(void) {
 
     glMatrixMode(GL_PROJECTION);
 
-
+ float yVision= 0;
     glLoadIdentity();
 
     int ortho = 2;
 
 
-    if(perspective)
+    if(perspective){
         gluPerspective(60, (GLfloat) width / (GLfloat) height, 0.01, 200.0);
+        yVision =-1.5;
+        }
     else
     {
         if (width <= height)
@@ -1289,7 +1291,7 @@ void display(void) {
     }
    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-     gluLookAt (0.0, -1.5, zdist, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+     gluLookAt (0.0, yVision, zdist, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
     glRotatef(rotationY, 0, 1, 1);
     glRotatef(rotationX, 1, 0, 1);
@@ -2034,3 +2036,4 @@ int main(int argc, char **argv) {
 
     return 0;
 }
+
