@@ -1088,9 +1088,26 @@ void drawBorderss1()
 }
 
 
+int detecColisionLadoDireito(triangle t)
+{
 
 
-int detecColision(triangle t)
+    if(position[1]+BALL_RADIUS < t.v[2].y)
+        return false;
+    if(position[1] - BALL_RADIUS > t.v[1].y)
+        return false;
+    if(position[0] + BALL_RADIUS < t.v[2].x)
+        return false;
+    if(position[0] - BALL_RADIUS > t.v[1].x)
+        return false;
+
+    printf("%s","COLISAO COLISAO COLISAO \n");
+    return true;
+}
+
+
+
+int detecColisionLadoEsquerdo(triangle t)
 {
 
 
@@ -1132,7 +1149,7 @@ void drawFaces()
         CalculaNormal2(auxCalcNormal,vertices[i].v[2],vertices[i].v[1],&normalFaces);
         normalFaces.z =0;
         //normalFaces.z= 0.5;
-        if( timerColision <20 && detecColision(vertices[i]))
+        if( timerColision <20 && (detecColisionLadoDireito(vertices[i])||detecColisionLadoEsquerdo(vertices[i])))
         {
             ///Fazer a soma vetorial aqui
              printf("x directionAntes %f ",direction[0]);
@@ -1207,7 +1224,7 @@ void drawHitter(vertex center,float sizeHitter){
     r.v[2] = aux1;
 
     CalculaNormal2(v2,v1,aux1,&normalVector);
-     if(detecColision(r)){
+     if(detecColisionLadoDireito(r)|| detecColisionLadoEsquerdo(r)){
         position[0]= position[0]+normalVector.x;
         position[1] = position[1]+normalVector.y;
      }
@@ -1230,7 +1247,7 @@ void drawHitter(vertex center,float sizeHitter){
     r1.v[2] = aux1;
 
     CalculaNormal2(v2,v1,aux1,&normalVector);
-     if(detecColision(r)){
+     if(detecColisionLadoDireito(r)|| detecColisionLadoEsquerdo(r)){
         direction[0]= direction[0]+normalVector.x;
         direction[1] = direction[1]+normalVector.y;
      }
