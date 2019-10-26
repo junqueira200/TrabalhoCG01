@@ -24,8 +24,10 @@ vertex normalFaces;
 float zdist = 4.0;
 float rotationX = 0, rotationY = 0;
 int last_x, last_y;
+vertex centroRebatedor;
 int width, height;
 int angulo = 0;
+vertex normalBorder;
 const float BALL_RADIUS = 0.10;
 const float TRIANGLE_RADIUS = 0.3;
 const float FPS = 60;
@@ -40,6 +42,7 @@ vector<vertex> normais;
 
 int timerColision = 100;
 vector<triangle> vertices;
+vector<triangle> vertices2;
 triangle tn1,tn2,tn3,tn4,tn5,tn6,tn7,tn8,tn9,tn10;
 triangle tn11,tn12,tn13,tn14,tn15,tn16,tn17,tn18,tn19,tn20;
 int verticeAdded =0;
@@ -47,7 +50,8 @@ vertex naux1,naux2,naux3,naux4,naux5,naux6,naux7,naux8,naux9,naux10;
 vertex naux11,naux12,naux13,naux14,naux15,naux16,naux17,naux18,naux19,naux20;
 vertex naux21,naux22,naux23,naux24,naux25,naux26,naux27,naux28,naux29,naux30;
 vertex naux31,naux32,naux33,naux34,naux35,naux36,naux37,naux38,naux39,naux40;
-vertex naux41,naux42,naux43,naux44,naux45,naux46,naux47;
+vertex naux41,naux42,naux43,naux44,naux45,naux46,naux47,naux48,naux49;
+vertex naux50,naux51,naux52,naux53,naux54,nau55,naux56,naux57;
 
 class quad{
 public:
@@ -65,11 +69,11 @@ char texto[100];
 float velocity = 1.5 * 0.5;
 float initialDirection = 0;
 float direction[2] = {0.5, 0.5};
-float position[2] = {0, -1.01};
+float position[2] = {0,-1.01};
 triangle prismas[4];
 retangulo retangulos[44];
 Rebatedor rebatedor = Rebatedor();
-
+vertex auxCalcNormal;
 int xAntigo;
 
 bool animate = false;
@@ -447,6 +451,39 @@ triangle makeTriangle(float x = 0, float y = 0, float rotation = 0) {
     return t;
 }
 
+
+void CalculaNormal2(vertex v0p, vertex v1p, vertex v2p,vertex *vn)/// função modificada para fazer o calculo da normal dos
+{                                                                    /// quadrados
+    vertex v_0  =  v0p,
+            v_1 =  v1p,
+            v_2 =  v2p;
+    vertex v1, v2;
+    double len;
+
+    /* Encontra vetor v1 */
+    v1.x = v_1.x - v_0.x;
+    v1.y = v_1.y - v_0.y;
+    v1.z = v_1.z - v_0.z;
+
+    /* Encontra vetor v2 */
+    v2.x = v_2.x - v_0.x;
+    v2.y = v_2.y - v_0.y;
+    v2.z = v_2.z - v_0.z;
+
+    /* Calculo do produto vetorial de v1 e v2 */
+    vn->x = (v1.y * v2.z) - (v1.z * v2.y);
+    vn->y = (v1.z * v2.x) - (v1.x * v2.z);
+    vn->z = (v1.x * v2.y) - (v1.y * v2.x);
+
+    /* normalizacao de n */
+    len = sqrt(pow(vn->x,2) + pow(vn->y,2) + pow(vn->z,2));
+
+    vn->x /= len;
+    vn->y /= len;
+    vn->z /= len;
+}
+
+
 void desenhaRetangulo(retangulo &r)
 {
     int i;
@@ -576,9 +613,9 @@ void drawPrism(triangle t) {
 
 void drawBorderss1()
 {
-    GLfloat objeto_especular[] = { 0.4, 0.4, 0.4, 1.0 };
+    GLfloat objeto_especular[] = { 0.3, 0.3, 0.3, 1.0 };
     GLfloat objeto_brilho[]    = { 90.0f };
-    GLfloat objeto_ambient[]   = { 0.1, 0.1, 0.1, 1.0};
+    GLfloat objeto_ambient[]   = { 0.2, 0.2, 0.2, 1.0};
 
     GLfloat objeto_difusa[]    = { 0.0, 1.0, 0.0, 1.0 };
 
@@ -608,28 +645,25 @@ void drawBorderss1()
 
     v6.x = 1.71;
     v6.y = 0;
-
-    glPushMatrix();
-
-
-    vertex n1;
     naux41.x = v0.x;
     naux41.y = v0.y;
     naux41.z = 0;
-    tn1.v[0]=naux41;
-    tn1.v[1]=v1;
-    tn1.v[2]=v2;
-    n1 = calcNormal(tn1);
-    glNormal3f(0.0,0.0,1.0);
+    CalculaNormal2(v0,v1,v2,&normalBorder);
+    glPushMatrix();
+    glNormal3f(normalBorder.x,normalBorder.y,normalBorder.z);
+    //glNormal3f(0,0,1);
     glBegin(GL_TRIANGLES);
     glVertex3f(v0.x,v0.y,v0.z);
     glVertex3f(v1.x,v1.y,v1.z);
     glVertex3f(v2.x,v2.y,v2.z);
     glEnd();
-    printf("NORMAL %f: %f: %f \n",n1.x,v2.y,v2.z);
+   // printf("NORMAL %f: %f: %f \n",n1.x,v2.y,v2.z);
     if(verticeAdded ==0);
     {
 
+    tn1.v[0]=naux41;
+    tn1.v[1]=v1;
+    tn1.v[2]=v2;
     vertices.push_back(tn1);
     }
 
@@ -654,8 +688,12 @@ void drawBorderss1()
     glVertex3f(v4.x,v4.y,v4.z);
     glEnd();
     if(verticeAdded ==0)
-    {
-        tn3.v[0]=v0;
+    {   naux43.x = v0.x;
+        naux43.x = v0.y;
+        naux43.x = 0;
+
+
+        tn3.v[0]=naux43;
         tn3.v[1]=v3;
         tn3.v[2]=v4;
         vertices.push_back(tn3);
@@ -667,8 +705,11 @@ void drawBorderss1()
     glVertex3f(v5.x,v5.y,v5.z);
     glEnd();
     if(verticeAdded ==0)
-    {
-        tn4.v[0]=v0;
+    {   naux44.x = v0.x;
+        naux44.y= v0.y;
+        naux44.z= 0;
+
+        tn4.v[0] = naux44;
         tn4.v[1]=v4;
         tn4.v[2]=v5;
         vertices.push_back(tn4);
@@ -681,7 +722,11 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
-        tn5.v[0]=v0;
+        naux45.x = v0.x;
+        naux45.y = v0.y;
+        naux45.z = 0;
+
+        tn5.v[0]=naux45;
         tn5.v[1]=v5;
         tn5.v[2]=v6;
         vertices.push_back(tn5);
@@ -693,18 +738,21 @@ void drawBorderss1()
     glVertex3f(v2.x,-v2.y,v2.z);
     glVertex3f(v1.x,-v1.y,v1.z);
     glEnd();
-    if(verticeAdded ==0)
+    if(verticeAdded == 0)
     {
+        naux46.x = v0.x;
+        naux46.x =v0.y;
+        naux46.z =0;
         naux1.x= v2.x;
         naux1.y= -v2.y;
         naux1.z= v2.z;
         naux2.x= v1.x;
         naux2.y= -v1.y;
         naux2.z= v1.z;
-        tn6.v[0]=v0;
+        tn6.v[0]=naux46;
         tn6.v[1]=naux1;
         tn6.v[2]=naux2;
-        vertices.push_back(tn6);
+       vertices.push_back(tn6);
     }
 
 
@@ -715,13 +763,18 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
+        naux47.x = v0.x;
+        naux47.x =v0.y;
+        naux47.z =0;
+
+
         naux3.x= v3.x;
         naux3.y= -v3.y;
         naux3.z= v3.z;
         naux4.x= v2.x;
         naux4.y= -v2.y;
         naux4.z= v2.z;
-        tn7.v[0]=v0;
+        tn7.v[0]=naux47;
         tn7.v[1]=naux3;
         tn7.v[2]=naux4;
         vertices.push_back(tn7);
@@ -735,14 +788,19 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
-        naux5.x= v3.x;
+        naux48.x = v0.x;
+        naux48.x =v0.y;
+        naux48.z =0;
+
+        naux5.x= v4.x;
         naux5.y= -v4.y;
         naux5.z= v4.z;
         naux6.x= v3.x;
         naux6.y= -v3.y;
         naux6.z= v3.z;
-        tn8.v[0]=v0;
-        tn8.v[1]=naux5;
+
+        tn8.v[0]=naux48;
+        tn8.v[1]= naux5;
         tn8.v[2]=naux6;
         vertices.push_back(tn8);
     }
@@ -755,13 +813,16 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
+        naux49.x = v0.x;
+        naux49.x =-v0.y;
+        naux49.z = 0;
         naux7.x= v5.x;
         naux7.y= -v5.y;
         naux7.z= v5.z;
         naux8.x= v4.x;
         naux8.y= -v4.y;
         naux8.z= v4.z;
-        tn9.v[0]=v0;
+        tn9.v[0]=naux49;
         tn9.v[1]=naux7;
         tn9.v[2]=naux8;
         vertices.push_back(tn9);
@@ -774,17 +835,23 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
+        naux50.x= v0.x;
+        naux50.y =-v0.y;
+        naux50.z = 0;
         naux9.x= v6.x;
         naux9.y= -v6.y;
         naux9.z= v6.z;
         naux10.x= v5.x;
         naux10.y= -v5.y;
         naux10.z= v5.z;
-        tn10.v[0]=v0;
+        tn10.v[0]=naux50;
         tn10.v[1]=naux9;
-        tn10.v[2]=naux10;
+        tn10.v[2]= naux10;
         vertices.push_back(tn10);
     }
+
+
+    ///aksnkansdkanjkandjknjsndjdsd
 
     glBegin(GL_TRIANGLES);
     glVertex3f(-v0.x,v0.y,v0.z);
@@ -818,12 +885,15 @@ void drawBorderss1()
         naux14.x= -v0.x;
         naux14.y= v0.y;
         naux14.z= 0;
+
         naux15.x= -v3.x;
         naux15.y= v3.y;
         naux15.z= v3.z;
+
         naux16.x= -v2.x;
         naux16.y= v2.y;
         naux16.z= v2.z;
+
         tn12.v[0]=naux14;
         tn12.v[1]=naux15;
         tn12.v[2]=naux16;
@@ -841,12 +911,12 @@ void drawBorderss1()
         naux17.x= -v0.x;
         naux17.y= v0.y;
         naux17.z= 0;
-        naux18.x= -v3.x;
-        naux18.y= v3.y;
-        naux18.z= v3.z;
-        naux19.x= -v2.x;
-        naux19.y= v2.y;
-        naux19.z= v2.z;
+        naux18.x= -v4.x;
+        naux18.y= v4.y;
+        naux18.z= v4.z;
+        naux19.x= -v3.x;
+        naux19.y= v3.y;
+        naux19.z= v3.z;
         tn13.v[0]=naux17;
         tn13.v[1]=naux18;
         tn13.v[2]=naux19;
@@ -1019,36 +1089,6 @@ void drawBorderss1()
 
 
 
-void CalculaNormal2(vertex v0p, vertex v1p, vertex v2p,vertex *vn)/// função modificada para fazer o calculo da normal dos
-{                                                                    /// quadrados
-    vertex v_0  =  v0p,
-            v_1 =  v1p,
-            v_2 =  v2p;
-    vertex v1, v2;
-    double len;
-
-    /* Encontra vetor v1 */
-    v1.x = v_1.x - v_0.x;
-    v1.y = v_1.y - v_0.y;
-    v1.z = v_1.z - v_0.z;
-
-    /* Encontra vetor v2 */
-    v2.x = v_2.x - v_0.x;
-    v2.y = v_2.y - v_0.y;
-    v2.z = v_2.z - v_0.z;
-
-    /* Calculo do produto vetorial de v1 e v2 */
-    vn->x = (v1.y * v2.z) - (v1.z * v2.y);
-    vn->y = (v1.z * v2.x) - (v1.x * v2.z);
-    vn->z = (v1.x * v2.y) - (v1.y * v2.x);
-
-    /* normalizacao de n */
-    len = sqrt(pow(vn->x,2) + pow(vn->y,2) + pow(vn->z,2));
-
-    vn->x /= len;
-    vn->y /= len;
-    vn->z /= len;
-}
 
 int detecColision(triangle t)
 {
@@ -1071,11 +1111,10 @@ int detecColision(triangle t)
 void drawFaces()
 {
 
-    GLfloat objeto_especular[] = { 0.6, 0.6, 0.6, 1.0 };
+    GLfloat objeto_especular[] = { 0.7, 0.7, 0.7, 1.0 };
     GLfloat objeto_brilho[]    = { 90.0f };
-    GLfloat objeto_ambient[]   = { 0.1, 0.1, 0.1, 1.0};
-
-    GLfloat objeto_difusa[]    = { 0.0, 1.0, 0.0, 2.0 };
+    GLfloat objeto_ambient[]   = { 0.3, 0.3, 0.3, 1.0};
+    GLfloat objeto_difusa[]    = { 0.0, 1.0, 0.0, 1.0 };
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, objeto_ambient);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, objeto_difusa);
@@ -1084,15 +1123,20 @@ void drawFaces()
 
     bool flagColisao = false;
    timerColision--;
+   glPushMatrix();
     for(int i=0; i<vertices.size(); i++)
     {
-
-        CalculaNormal2(vertices[i].v[0],vertices[i].v[1],vertices[i].v[2],&normalFaces);
+        auxCalcNormal.x = vertices[i].v[2].x;
+        auxCalcNormal.y = vertices[i].v[2].y;
+        auxCalcNormal.z = 0;
+        CalculaNormal2(auxCalcNormal,vertices[i].v[2],vertices[i].v[1],&normalFaces);
+        normalFaces.z =0;
+        //normalFaces.z= 0.5;
         if( timerColision <20 && detecColision(vertices[i]))
         {
             ///Fazer a soma vetorial aqui
-            // printf("x directionAntes %f ",v.x);
-            //printf("y directionAntes %f \n",v.y);
+             printf("x directionAntes %f ",direction[0]);
+            printf("y directionAntes %f \n",direction[1]);
             direction[0] = direction[0]+normalFaces.x;
             direction[1] = direction[1]+normalFaces.y;
             printf("x direction %f ",direction[0]);
@@ -1100,27 +1144,26 @@ void drawFaces()
             timerColision =100;
 
         }
-        glPushMatrix();
         glNormal3f(normalFaces.x,normalFaces.y,normalFaces.z);
         glBegin(GL_QUADS);
         glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,vertices[i].v[2].z);
         glVertex3f(vertices[i].v[1].x,vertices[i].v[1].y,vertices[i].v[1].z);
         glVertex3f(vertices[i].v[1].x,vertices[i].v[1].y,0);
         glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,0);
-
         glEnd();
-    glPopMatrix();
   }
 
-}
 
+
+glPopMatrix();
+}
 
 
 
 
 void drawHitter(vertex center,float sizeHitter){
 
-    GLfloat objeto_especular[] = { 0.4, 0.4, 0.4, 1.0 };
+    GLfloat objeto_especular[] = { 0.2, 0.6, 0.2, 1.0 };
     GLfloat objeto_brilho[]    = { 90.0f };
     GLfloat objeto_ambient[]   = { 0.1, 0.1, 0.1, 1.0};
 
@@ -1146,7 +1189,7 @@ void drawHitter(vertex center,float sizeHitter){
   v2.x = v1.x -deltaX;
   v2.y = v1.y +deltaY;
 
-   vertex aux1,aux2;
+   vertex aux1,normalVector,aux2;
 
    int cont =0;
    //desenho a primeira metade do rebatedor
@@ -1162,8 +1205,12 @@ void drawHitter(vertex center,float sizeHitter){
     r.v[0] = v2;
     r.v[1] = v1;
     r.v[2] = aux1;
-    vertex normalVector;
-    normalVector = calcNormal(r);
+
+    CalculaNormal2(v2,v1,aux1,&normalVector);
+     if(detecColision(r)){
+        position[0]= position[0]+normalVector.x;
+        position[1] = position[1]+normalVector.y;
+     }
     glNormal3f(normalVector.x,normalVector.y,normalVector.z);
     glBegin(GL_QUADS);
     glVertex3f(v2.x,v2.y,v2.z);
@@ -1173,16 +1220,21 @@ void drawHitter(vertex center,float sizeHitter){
     glEnd();
 
 
-    aux1.x = v1.x;
+    aux1.x = v1.x-2*(v1.x-center.x);
     aux1.y = v1.y;
     aux1.z = 0;
     triangle r1;
+
     r1.v[0] = v2;
     r1.v[1] = v1;
     r1.v[2] = aux1;
-    vertex normalVector1;
-    normalVector1 = calcNormal(r1);
-    glNormal3f(normalVector1.x,normalVector1.y,normalVector1.z);
+
+    CalculaNormal2(v2,v1,aux1,&normalVector);
+     if(detecColision(r)){
+        direction[0]= direction[0]+normalVector.x;
+        direction[1] = direction[1]+normalVector.y;
+     }
+    glNormal3f(normalVector.x,normalVector.y,normalVector.z);
     glBegin(GL_QUADS);
     glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
     glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
@@ -1264,9 +1316,6 @@ void drawHitter(vertex center,float sizeHitter){
 
 
 
-
-
-
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -1296,10 +1345,13 @@ void display(void) {
     glRotatef(rotationY, 0, 1, 1);
     glRotatef(rotationX, 1, 0, 1);
     glRotatef(angulo, 1, 0, 0);
+    centroRebatedor.x = float(last_x);
+    centroRebatedor.y = 0;
+    centroRebatedor.z =0;
     glPushMatrix();
   drawBorderss1();
   drawFaces();
-
+   drawHitter(centroRebatedor,0.6);
 
     if (!animate)
         drawArrow();
@@ -1639,8 +1691,6 @@ void idle()
 
         updateState();
 
-
-
         glutPostRedisplay();
     }
 
@@ -1939,6 +1989,7 @@ void passiveMotion(int x, int y)
         {
 
             rebatedor.atualizaPosicao(rebatedor.centro.x + 0.1);
+            centroRebatedor.x = centroRebatedor.x +0.1;
         }
 
     } else if ((x - xAntigo) < 0)
@@ -1947,6 +1998,7 @@ void passiveMotion(int x, int y)
         {
 
             rebatedor.atualizaPosicao(rebatedor.centro.x - 0.1);
+            centroRebatedor.x = centroRebatedor.x -0.1;
         }
     }
 
@@ -1994,11 +2046,7 @@ void passiveMotion(int x, int y)
     }
     xAntigo = x;
 
-
     return;
-
-
-
 }
 
 /// Main
