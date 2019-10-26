@@ -657,14 +657,14 @@ void drawBorderss1()
     glVertex3f(v1.x,v1.y,v1.z);
     glVertex3f(v2.x,v2.y,v2.z);
     glEnd();
-   // printf("NORMAL %f: %f: %f \n",n1.x,v2.y,v2.z);
+    // printf("NORMAL %f: %f: %f \n",n1.x,v2.y,v2.z);
     if(verticeAdded ==0);
     {
 
-    tn1.v[0]=naux41;
-    tn1.v[1]=v1;
-    tn1.v[2]=v2;
-    vertices.push_back(tn1);
+        tn1.v[0]=naux41;
+        tn1.v[1]=v1;
+        tn1.v[2]=v2;
+        vertices.push_back(tn1);
     }
 
     glBegin(GL_TRIANGLES);
@@ -752,7 +752,7 @@ void drawBorderss1()
         tn6.v[0]=naux46;
         tn6.v[1]=naux1;
         tn6.v[2]=naux2;
-       vertices.push_back(tn6);
+        vertices.push_back(tn6);
     }
 
 
@@ -1139,8 +1139,8 @@ void drawFaces()
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
 
     bool flagColisao = false;
-   timerColision--;
-   glPushMatrix();
+    timerColision--;
+    glPushMatrix();
     for(int i=0; i<vertices.size(); i++)
     {
         auxCalcNormal.x = vertices[i].v[2].x;
@@ -1152,7 +1152,7 @@ void drawFaces()
         if( timerColision <20 && (detecColisionLadoDireito(vertices[i])||detecColisionLadoEsquerdo(vertices[i])))
         {
             ///Fazer a soma vetorial aqui
-             printf("x directionAntes %f ",direction[0]);
+            printf("x directionAntes %f ",direction[0]);
             printf("y directionAntes %f \n",direction[1]);
             direction[0] = direction[0]+normalFaces.x;
             direction[1] = direction[1]+normalFaces.y;
@@ -1168,11 +1168,11 @@ void drawFaces()
         glVertex3f(vertices[i].v[1].x,vertices[i].v[1].y,0);
         glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,0);
         glEnd();
-  }
+    }
 
 
 
-glPopMatrix();
+    glPopMatrix();
 }
 
 
@@ -1192,143 +1192,146 @@ void drawHitter(vertex center,float sizeHitter){
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
 
 
-  float deltaX = 0.2;
-  float deltaY = 0.13;
+    float deltaX = 0.2;
+    float deltaY = 0.13;
 
-  vertex v1,v2,v3,v4;
+    vertex v1,v2,v3,v4;
 
-  v1.z = v2.z =v3.z =v4.z =  0.2;
-  center.z= 0.2;
+    v1.z = v2.z =v3.z =v4.z =  0.2;
+    center.z= 0.2;
 
-  v1.x = center.x+sizeHitter;
-  v1.y =0;
+    v1.x = center.x+sizeHitter;
+    v1.y =0;
 
-  v2.x = v1.x -deltaX;
-  v2.y = v1.y +deltaY;
+    v2.x = v1.x -deltaX;
+    v2.y = v1.y +deltaY;
 
-   vertex aux1,normalVector,aux2;
+    vertex aux1,normalVector,aux2;
 
-   int cont =0;
-   //desenho a primeira metade do rebatedor
-   glPushMatrix();
-   while(cont < 3){
+    int cont =0;
+    //desenho a primeira metade do rebatedor
+    glPushMatrix();
+    while(cont < 3){
 
-    aux1.x = v1.x;
-    aux1.y = v1.y;
-    aux1.z = 0;
+        aux1.x = v1.x;
+        aux1.y = v1.y;
+        aux1.z = 0;
 
-    triangle r;
+        triangle r;
 
-    r.v[0] = v2;
-    r.v[1] = v1;
-    r.v[2] = aux1;
+        r.v[0] = v2;
+        r.v[1] = v1;
+        r.v[2] = aux1;
 
-    CalculaNormal2(v2,v1,aux1,&normalVector);
-     if(detecColisionLadoDireito(r)|| detecColisionLadoEsquerdo(r)){
-        position[0]= position[0]+normalVector.x;
-        position[1] = position[1]+normalVector.y;
-     }
-    glNormal3f(normalVector.x,normalVector.y,normalVector.z);
-    glBegin(GL_QUADS);
-    glVertex3f(v2.x,v2.y,v2.z);
-    glVertex3f(v1.x,v1.y,v1.z);
-    glVertex3f(v1.x,v1.y,0.0);
-    glVertex3f(v2.x,v2.y,0.0);
-    glEnd();
+        CalculaNormal2(v2,v1,aux1,&normalVector);
+        if(detecColisionLadoDireito(r)|| detecColisionLadoEsquerdo(r)){
+            /*position[0]= position[0]+normalVector.x;
+            position[1] = position[1]+normalVector.y;*/
+
+            direction[0]= direction[0]+normalVector.x;
+            direction[1] = direction[1]+normalVector.y;
+        }
+        glNormal3f(normalVector.x,normalVector.y,normalVector.z);
+        glBegin(GL_QUADS);
+        glVertex3f(v2.x,v2.y,v2.z);
+        glVertex3f(v1.x,v1.y,v1.z);
+        glVertex3f(v1.x,v1.y,0.0);
+        glVertex3f(v2.x,v2.y,0.0);
+        glEnd();
 
 
-    aux1.x = v1.x-2*(v1.x-center.x);
-    aux1.y = v1.y;
-    aux1.z = 0;
-    triangle r1;
+        aux1.x = v1.x-2*(v1.x-center.x);
+        aux1.y = v1.y;
+        aux1.z = 0;
+        triangle r1;
 
-    r1.v[0] = v2;
-    r1.v[1] = v1;
-    r1.v[2] = aux1;
+        r1.v[0] = v2;
+        r1.v[1] = v1;
+        r1.v[2] = aux1;
 
-    CalculaNormal2(v2,v1,aux1,&normalVector);
-     if(detecColisionLadoDireito(r)|| detecColisionLadoEsquerdo(r)){
-        direction[0]= direction[0]+normalVector.x;
-        direction[1] = direction[1]+normalVector.y;
-     }
-    glNormal3f(normalVector.x,normalVector.y,normalVector.z);
-    glBegin(GL_QUADS);
-    glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
-    glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
-    glVertex3f(v2.x-2*(v2.x-center.x),v2.y,0.0);
-    glVertex3f(v1.x-2*(v1.x-center.x),v1.y,0.0);
-    glEnd();
+        CalculaNormal2(v2,v1,aux1,&normalVector);
+        if(detecColisionLadoDireito(r)|| detecColisionLadoEsquerdo(r)){
+            direction[0]= direction[0]+normalVector.x;
+            direction[1] = direction[1]+normalVector.y;
+        }
+        glNormal3f(normalVector.x,normalVector.y,normalVector.z);
+        glBegin(GL_QUADS);
+        glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
+        glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
+        glVertex3f(v2.x-2*(v2.x-center.x),v2.y,0.0);
+        glVertex3f(v1.x-2*(v1.x-center.x),v1.y,0.0);
+        glEnd();
 
-    //parte de baixo do rebatedor
-     aux1.x = v1.x;
-    aux1.y = v1.y;
-    aux1.z = 0;
-    triangle r3;
+        //parte de baixo do rebatedor
+        aux1.x = v1.x;
+        aux1.y = v1.y;
+        aux1.z = 0;
+        triangle r3;
 
-    vertex vaux, vaux2,vaux3;
+        vertex vaux, vaux2,vaux3;
 
-    vaux.x= center.x+sizeHitter;
-    vaux.y = center.y;
-    vaux.z =  center.z;
+        vaux.x= center.x+sizeHitter;
+        vaux.y = center.y;
+        vaux.z =  center.z;
 
-    vaux2.x= center.x-sizeHitter;
-    vaux2.y = center.y;
-    vaux2.z =  center.z;
+        vaux2.x= center.x-sizeHitter;
+        vaux2.y = center.y;
+        vaux2.z =  center.z;
 
-    vaux3.x= center.x+sizeHitter;
-    vaux3.y = center.y;
-    vaux3.z =  0;
+        vaux3.x= center.x+sizeHitter;
+        vaux3.y = center.y;
+        vaux3.z =  0;
 
-    r3.v[0] = v2;
-    r3.v[1] = aux1;
-    r3.v[2] = v1;
-    vertex normalVector3;
-    normalVector3 = calcNormal(r3);
-    glNormal3f(normalVector3.x,normalVector3.y,normalVector3.z);
+        r3.v[0] = v2;
+        r3.v[1] = aux1;
+        r3.v[2] = v1;
+        vertex normalVector3;
+        normalVector3 = calcNormal(r3);
+        glNormal3f(normalVector3.x,normalVector3.y,normalVector3.z);
 
-    glBegin(GL_QUADS);
-    glVertex3f(center.x+sizeHitter,center.y,center.z);
-    glVertex3f(center.x-sizeHitter,center.y,center.z);
-    glVertex3f(center.x-sizeHitter,center.y,0.0);
-    glVertex3f(center.x+sizeHitter,center.y,0.0);
-    glEnd();
+        glBegin(GL_QUADS);
+        glVertex3f(center.x+sizeHitter,center.y,center.z);
+        glVertex3f(center.x-sizeHitter,center.y,center.z);
+        glVertex3f(center.x-sizeHitter,center.y,0.0);
+        glVertex3f(center.x+sizeHitter,center.y,0.0);
+        glEnd();
 
-    triangle t4;
-    vertex normalVector4;
-    t4.v[0] = center;
-    t4.v[1] = v1;
-    t4.v[2] = v2;
-    normalVector4 =calcNormal(t4);
-    glNormal3f(normalVector4.x,normalVector4.y,normalVector4.z);
-    glBegin(GL_TRIANGLES);
-    glVertex3f(center.x,center.y,center.z);
-    glVertex3f(v1.x,v1.y,v1.z);
-    glVertex3f(v2.x,v2.y,v2.z);
-    glEnd();
+        triangle t4;
+        vertex normalVector4;
+        t4.v[0] = center;
+        t4.v[1] = v1;
+        t4.v[2] = v2;
+        normalVector4 =calcNormal(t4);
+        glNormal3f(normalVector4.x,normalVector4.y,normalVector4.z);
+        glBegin(GL_TRIANGLES);
+        glVertex3f(center.x,center.y,center.z);
+        glVertex3f(v1.x,v1.y,v1.z);
+        glVertex3f(v2.x,v2.y,v2.z);
+        glEnd();
 
-    // desenho a outra metade do rebatedor
+        // desenho a outra metade do rebatedor
 
-    triangle t2;
-    vertex normalVector2, aux11,aux12;
-    aux11.x = v2.x-2*(v2.x-center.x);
-    aux12.x = v1.x-2*(v1.x-center.x);
+        triangle t2;
+        vertex normalVector2, aux11,aux12;
+        aux11.x = v2.x-2*(v2.x-center.x);
+        aux12.x = v1.x-2*(v1.x-center.x);
 
-    t2.v[0] = center;
-    t2.v[1] = aux11;
-    t2.v[2] = aux12;
-    normalVector2 =calcNormal(t2);
-    glBegin(GL_TRIANGLES);
-    glVertex3f(center.x,center.y,center.z);
-    glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
-    glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
-    glEnd();
-     v1.x = v2.x;
-     v1.y = v2.y;
-     v2.x = v2.x - deltaX;
-     v2.y = v2.y + deltaY/3;
-     cont++;
-   }
-   glPopMatrix();
+        t2.v[0] = center;
+        t2.v[1] = aux11;
+        t2.v[2] = aux12;
+        normalVector2 =calcNormal(t2);
+        glBegin(GL_TRIANGLES);
+        glVertex3f(center.x,center.y,center.z);
+        glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
+        glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
+        glEnd();
+        v1.x = v2.x;
+        v1.y = v2.y;
+        v2.x = v2.x - deltaX;
+        v2.y = v2.y + deltaY/3;
+        cont++;
+    }
+    glPopMatrix();
 }
 
 
@@ -1338,7 +1341,7 @@ void display(void) {
 
     glMatrixMode(GL_PROJECTION);
 
- float yVision= 0;
+    float yVision= 0;
     glLoadIdentity();
 
     int ortho = 2;
@@ -1347,7 +1350,7 @@ void display(void) {
     if(perspective){
         gluPerspective(60, (GLfloat) width / (GLfloat) height, 0.01, 200.0);
         yVision =-1.5;
-        }
+    }
     else
     {
         if (width <= height)
@@ -1355,9 +1358,9 @@ void display(void) {
         else
             glOrtho (-ortho*width/height, ortho*width/height, -ortho, ortho, 0, 200);
     }
-   glMatrixMode(GL_MODELVIEW);
+    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-     gluLookAt (0.0, yVision, zdist, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    gluLookAt (0.0, yVision, zdist, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
     glRotatef(rotationY, 0, 1, 1);
     glRotatef(rotationX, 1, 0, 1);
@@ -1366,9 +1369,9 @@ void display(void) {
     centroRebatedor.y = 0;
     centroRebatedor.z =0;
     glPushMatrix();
-  drawBorderss1();
-  drawFaces();
-   drawHitter(centroRebatedor,0.6);
+    drawBorderss1();
+    drawFaces();
+    drawHitter(centroRebatedor,0.6);
 
     if (!animate)
         drawArrow();
@@ -1449,8 +1452,12 @@ void updateState() {
 
     // maximum board position
     const float maxRange[] = {-BHF + BALL_RADIUS, BHF - BALL_RADIUS};
-    float movement = velocity * 0.1;
+    float movement = velocity * 0.12;
 
+    float tam = sqrt(pow(direction[0],2) + pow(direction[1],2));
+
+    direction[0] /=tam;
+    direction[1] /=tam;
 
     // Move the ball and handle overflow
     position[0] = fixRange(position[0] + movement * direction[0], maxRange[0], maxRange[1]);
@@ -1499,7 +1506,7 @@ void updateState() {
                 if(abs(position[0] - BALL_RADIUS) > abs(retangulos[j].pontosExtremos[2].x))
                 {
                     cout<<"+0.1\n";
-                   // pause = !pause;
+                    // pause = !pause;
                     continue;
 
                 }
