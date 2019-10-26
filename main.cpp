@@ -40,6 +40,9 @@ const int NUMRETAN = 10; //40
 vertex v1,v2,v3,v4,v5,v6,v0;
 vector<vertex> normais;
 
+float xCamera = 0;
+float yCamera = -2;
+
 int timerColision = 100;
 vector<triangle> vertices;
 vector<triangle> vertices2;
@@ -1349,7 +1352,7 @@ void display(void) {
 
     if(perspective){
         gluPerspective(60, (GLfloat) width / (GLfloat) height, 0.01, 200.0);
-        yVision =-1.5;
+
     }
     else
     {
@@ -1357,10 +1360,18 @@ void display(void) {
             glOrtho (-ortho, ortho, -ortho*height/width, ortho*height/width, 0, 200);
         else
             glOrtho (-ortho*width/height, ortho*width/height, -ortho, ortho, 0, 200);
+
+        yCamera = xCamera = 0.0;
+        zdist = 4.0;
+
     }
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt (0.0, yVision, zdist, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    //gluLookAt (0.0, yVision, zdist, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    gluLookAt (xCamera, yCamera, zdist, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+
+
+
 
     glRotatef(rotationY, 0, 1, 1);
     glRotatef(rotationX, 1, 0, 1);
@@ -1600,7 +1611,7 @@ void updateState() {
                 ///direita
                 if (((position[0]) - BALL_RADIUS <= (retangulos[j].pontosExtremos[2].x)) &&
                     (position[1] < retangulos[j].pontosExtremos[2].y) &&
-                    (position[1] > retangulos[j].pontosExtremos[0].y))
+                    (position[1] > retangulos[j].pontosExtremos[0].y) && (position[0]) > (retangulos[j].pontosExtremos[0].x))
                 {
                     printf("Lado direito\n");
 
@@ -1616,7 +1627,7 @@ void updateState() {
                     side = 4;
 
 
-                } else if ((position[1]) - BALL_RADIUS <= (retangulos[j].pontosExtremos[2].y))
+                } else if (((position[1]) - BALL_RADIUS <= (retangulos[j].pontosExtremos[2].y))&& (position[1] > retangulos[j].pontosExtremos[0].y))
                 {
                     side = 1;
 
@@ -1640,16 +1651,20 @@ void updateState() {
 
                 if (side == 1)
                 {
-                    direction[1] = -direction[1];
+                    if(direction[1] < 0)
+                        direction[1] = -direction[1];
                 } else if (side == 2)
                 {
-                    direction[1] = -direction[1];
+                    if(direction[1] > 0)
+                        direction[1] = -direction[1];
                 } else if (side == 3)
                 {
-                    direction[0] = -direction[0];
+                    if(direction[0] < 0)
+                        direction[0] = -direction[0];
                 } else if (side == 4)
                 {
-                    direction[0] = -direction[0];
+                    if(direction[0] > 0)
+                        direction[0] = -direction[0];
                 }
             }
             else
@@ -1774,8 +1789,19 @@ void keyboard(unsigned char key, int x, int y) {
                 reiniciaJogo();
                 break;
 
+
+
             case 27:
                 exit(0);
+                break;
+
+            case ' ':
+
+                if(pause)
+                    pause=0;
+                else
+                    pause = 1;
+
                 break;
 
 
@@ -1787,6 +1813,11 @@ void keyboard(unsigned char key, int x, int y) {
         direction[1] = sin((initialDirection + 90) * M_PI / 180);
     } else
     {
+        double cosAngulo, senAngulo;
+        float xNew, yNew, zNew;
+
+        GLfloat cor_luz[]     = { 1.0, 1.0, 1.0, 1.0};
+        GLfloat posicao_luz[] = { xCamera , yCamera, zdist, 1.0};
 
         switch(tolower(key))
         {
@@ -1813,6 +1844,139 @@ void keyboard(unsigned char key, int x, int y) {
             case 27:
                 exit(0);
                 break;
+
+            case 'd':
+                cosAngulo = cos((5*3.14)/180);
+                senAngulo = sin((5*3.14)/180);
+
+                xNew = xCamera*cosAngulo - yCamera*senAngulo;
+                yNew = xCamera*senAngulo + yCamera*cosAngulo;
+
+
+                xCamera = xNew;
+                yCamera = yNew;
+
+
+                // Posicao da fonte de luz. Ultimo parametro define se a luz sera direcional (0.0) ou tera uma posicional (1.0)
+
+                glEnable(GL_LIGHTING);                 // Habilita luz
+                glEnable(GL_LIGHT0);                   // habilita luz 0
+                glEnable(GL_DEPTH_TEST);
+
+                posicao_luz[0] =  xCamera;
+                posicao_luz[1] = yCamera;
+                posicao_luz[2] = 1000;
+
+                // Define parametros da luz
+                glLightfv(GL_LIGHT0, GL_AMBIENT, cor_luz);
+                glLightfv(GL_LIGHT0, GL_DIFFUSE, cor_luz);
+                glLightfv(GL_LIGHT0, GL_SPECULAR, cor_luz);
+                glLightfv(GL_LIGHT0, GL_POSITION, posicao_luz);
+
+
+                break;
+
+            case 'a':
+                cosAngulo = cos((-5*3.14)/180);
+                senAngulo = sin((-5*3.14)/180);
+
+                xNew = xCamera*cosAngulo - yCamera*senAngulo;
+                yNew = xCamera*senAngulo + yCamera*cosAngulo;
+
+                xCamera = xNew;
+                yCamera = yNew;
+
+
+                // Posicao da fonte de luz. Ultimo parametro define se a luz sera direcional (0.0) ou tera uma posicional (1.0)
+                posicao_luz[0] =  xCamera;
+                posicao_luz[1] = yCamera;
+                posicao_luz[2] = 1000;
+
+                glEnable(GL_LIGHTING);                 // Habilita luz
+                glEnable(GL_LIGHT0);                   // habilita luz 0
+                glEnable(GL_DEPTH_TEST);
+
+                // Define parametros da luz
+                glLightfv(GL_LIGHT0, GL_AMBIENT, cor_luz);
+                glLightfv(GL_LIGHT0, GL_DIFFUSE, cor_luz);
+                glLightfv(GL_LIGHT0, GL_SPECULAR, cor_luz);
+                glLightfv(GL_LIGHT0, GL_POSITION, posicao_luz);
+
+
+
+
+                break;
+
+            case 'w':
+
+                cosAngulo = cos((5*3.14)/180);
+                senAngulo = sin((5*3.14)/180);
+
+                yNew = yCamera*cosAngulo - zdist*senAngulo;
+                zNew = yCamera*senAngulo + zdist*cosAngulo;
+
+                yCamera = yNew;
+                zdist = zNew;
+
+
+                // Posicao da fonte de luz. Ultimo parametro define se a luz sera direcional (0.0) ou tera uma posicional (1.0)
+                posicao_luz[0] =  xCamera;
+                posicao_luz[1] = yCamera;
+                posicao_luz[2] = 1000;
+
+                glEnable(GL_LIGHTING);                 // Habilita luz
+                glEnable(GL_LIGHT0);                   // habilita luz 0
+                glEnable(GL_DEPTH_TEST);
+
+                // Define parametros da luz
+                glLightfv(GL_LIGHT0, GL_AMBIENT, cor_luz);
+                glLightfv(GL_LIGHT0, GL_DIFFUSE, cor_luz);
+                glLightfv(GL_LIGHT0, GL_SPECULAR, cor_luz);
+                glLightfv(GL_LIGHT0, GL_POSITION, posicao_luz);
+
+
+
+                break;
+
+            case 's':
+
+                cosAngulo = cos((-5*3.14)/180);
+                senAngulo = sin((-5*3.14)/180);
+
+                yNew = yCamera*cosAngulo - zdist*senAngulo;
+                zNew = yCamera*senAngulo + zdist*cosAngulo;
+
+                yCamera = yNew;
+                zdist = zNew;
+
+
+                // Posicao da fonte de luz. Ultimo parametro define se a luz sera direcional (0.0) ou tera uma posicional (1.0)
+                posicao_luz[0] =  xCamera;
+                posicao_luz[1] = yCamera;
+                posicao_luz[2] = 1000;
+
+                glEnable(GL_LIGHTING);                 // Habilita luz
+                glEnable(GL_LIGHT0);                   // habilita luz 0
+                glEnable(GL_DEPTH_TEST);
+
+                // Define parametros da luz
+                glLightfv(GL_LIGHT0, GL_AMBIENT, cor_luz);
+                glLightfv(GL_LIGHT0, GL_DIFFUSE, cor_luz);
+                glLightfv(GL_LIGHT0, GL_SPECULAR, cor_luz);
+                glLightfv(GL_LIGHT0, GL_POSITION, posicao_luz);
+
+                break;
+/*
+                GLfloat cor_luz[]     = { 1.0, 1.0, 1.0, 1.0};
+                // Posicao da fonte de luz. Ultimo parametro define se a luz sera direcional (0.0) ou tera uma posicional (1.0)
+                GLfloat posicao_luz[] = { xCamera , yCamera, 1000.0, 1.0};
+
+                // Define parametros da luz
+                glLightfv(GL_LIGHT0, GL_AMBIENT, cor_luz);
+                glLightfv(GL_LIGHT0, GL_DIFFUSE, cor_luz);
+                glLightfv(GL_LIGHT0, GL_SPECULAR, cor_luz);
+                glLightfv(GL_LIGHT0, GL_POSITION, posicao_luz);*/
+
 
         }
     }
@@ -2098,8 +2262,7 @@ int main(int argc, char **argv) {
     glutKeyboardFunc(keyboard);
     glutSpecialFunc(Spekeyboard);
     glShadeModel(GL_SMOOTH);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+
     glEnable(GL_DEPTH_TEST);
     glutIdleFunc(idle);
 
