@@ -92,8 +92,8 @@ bool venceu = false;
 ///object managing
 char objectFiles[NUM_OBJECTS][50] =
 {
-   "./obj/soccerball.obj",
-    "./obj/dolphins.obj"
+   "../data/obj/soccerball.obj",
+    "../data/obj/dolphins.obj"
 };
 
 typedef struct
@@ -118,8 +118,11 @@ float deltaYobject2 = 0.01;
 
 float randomStart[9] ={0.01,-0.02,0.03,-0.04,-0.05,0.06,0.-07,0.08,-0.09};
 triangle auxColisionObjects;
-float scaleObject1 = 0.5;
-float scaleObject2 = 0.5;
+float deltaScaleObject1 = 0.08;
+float deltaScaleObject2 = 0.08;
+int timerDeathObject1 =200;
+int timerDeathObject2 =200;
+
 vector<int> objectsALives;
 float lastXObject,lastYObject;
 
@@ -1658,13 +1661,27 @@ bool chechColisionwithHitter(){
 
 }
 
+void killObject(int id){
+    if(id == 0){
+    objectsALives[0] = 0;
+    timerDeathObject1 = 200;
+    }
+    if(id ==1){
+    objectsALives[1] = 0;
+    timerDeathObject2 = 200;
+
+    }
+}
+
+
  void handleColisionsWithObjects(){
    ///colisao com objeto 1
    if(chekColisionwithBall(positionXObject1,positionYObject1)){
-     objectsALives[0] =0;
+     killObject(0);
    }
    if(chekColisionwithBall(positionXObject2,positionYObject2)){
-     objectsALives[1] =0;
+     killObject(1);
+
    }
  }
 
@@ -1673,7 +1690,7 @@ void drawObjects(){
     glPushMatrix();
     drawExits();
     updateObjects1Position();
-    if(objectsALives[0]==0){
+    if(objectsALives[0]==0 && timerDeathObject1 ==0){
      positionXObject1 = -1.5;
      positionYObject1 = 1.8;
      int i = rand() % 8;
@@ -1687,30 +1704,51 @@ void drawObjects(){
     objectManager->Unitize();
     glPushMatrix();
     glTranslatef(positionXObject1,positionYObject1,0.2);
-    objectManager->Scale(scaleObject1);
+    if(timerDeathObject1>0){
+    objectManager->Scale(0.5-deltaScaleObject1);
+    deltaScaleObject1 = deltaScaleObject1+0.005;
+    timerDeathObject1--;
+    if(0.5-deltaScaleObject1<0){
+        timerDeathObject1 = 0;
+        objectsALives[0]=0;
+        deltaScaleObject1 = 0.08;
+    }
+    }else{
+        objectManager->Scale(0.5);
+    }
     objectManager->Draw();
     glPopMatrix();
 
 
      ///desenho o segundo objeto
-    if(objectsALives[1]==0){
+    if(objectsALives[1]==0 && timerDeathObject2 ==0){
      positionXObject2 = 1.5;
      positionYObject2 = 1.8;
-      objectsALives[1] =1;
-      int i = rand() % 7;
-     deltaXobject2 = randomStart[i];
-     objectsALives[0] =1;
+     int i = rand() % 7;
+     deltaXobject1 = randomStart[i];
+     objectsALives[1] =1;
      i = NULL;
     }
-     objectManager->SelectObject(1);
-     objectManager->SetShadingMode(selectedShading); // Possible values: FLAT_SHADING e SMOOTH_SHADING
-     objectManager->SetRenderMode(selectedRender);     // Possible values: USE_COLOR, USE_MATERIAL, USE_TEXTURE (not available in this example)
-     objectManager->Unitize();
-     glPushMatrix();
-     glTranslatef(positionXObject2,positionYObject2,0.2);
-     objectManager->Scale(scaleObject2);
-     objectManager->Draw();
-     glPopMatrix();
+    objectManager->SelectObject(1);
+    objectManager->SetShadingMode(selectedShading); // Possible values: FLAT_SHADING e SMOOTH_SHADING
+    objectManager->SetRenderMode(selectedRender);     // Possible values: USE_COLOR, USE_MATERIAL, USE_TEXTURE (not available in this example)
+    objectManager->Unitize();
+    glPushMatrix();
+    glTranslatef(positionXObject2,positionYObject2,0.2);
+    if(timerDeathObject2>0){
+    objectManager->Scale(0.5-deltaScaleObject2);
+    deltaScaleObject2 = deltaScaleObject2+0.005;
+    timerDeathObject2--;
+    if(0.5-deltaScaleObject2<0){
+        timerDeathObject2 = 0;
+        objectsALives[1]=0;
+        deltaScaleObject2 = 0.08;
+    }
+    }else{
+        objectManager->Scale(0.5);
+    }
+    objectManager->Draw();
+    glPopMatrix();
 glPopMatrix();
 }
 
