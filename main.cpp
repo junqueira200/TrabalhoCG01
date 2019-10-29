@@ -92,13 +92,13 @@ bool venceu = false;
 ///object managing
 char objectFiles[NUM_OBJECTS][50] =
 {
-    "./obj/soccerball.obj",
+   "./obj/soccerball.obj",
     "./obj/dolphins.obj"
 };
 
 typedef struct
 {
-    //GLMmodel* pmodel = NULL;
+    //GLMmodel* pmodel = NULL
 glcWavefrontObject *pmodel = NULL;
 } object;
 
@@ -116,13 +116,12 @@ float deltaYobject1 = 0.01;
 float deltaXobject2 = 0.01;
 float deltaYobject2 = 0.01;
 
-float randomStart[9] ={0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09};
+float randomStart[9] ={0.01,-0.02,0.03,-0.04,-0.05,0.06,0.-07,0.08,-0.09};
 triangle auxColisionObjects;
 float scaleObject1 = 0.5;
 float scaleObject2 = 0.5;
 vector<int> objectsALives;
 float lastXObject,lastYObject;
-
 
 int fase = 0;
 int vidas = 5;
@@ -287,8 +286,8 @@ void drawBoard() {
     glPushMatrix();
 
 
-    GLfloat objeto_especular[] = { 1, 1, 1, 1.0 };
-    GLfloat objeto_brilho[]    = { 20.0f };
+    GLfloat objeto_especular[] = { 0.6, 0.6, 0.6, 1.0 };
+    GLfloat objeto_brilho[]    = { 40.0f };
     GLfloat objeto_ambient[]   = { 0.6, 0.6, 0.0, 0.1 };
 
 
@@ -1727,7 +1726,6 @@ void display(void) {
 
     if(perspective){
         gluPerspective(60, (GLfloat) width / (GLfloat) height, 0.01, 200.0);
-        yCamera = -2.3;
         }
     else
     {
@@ -1735,7 +1733,6 @@ void display(void) {
             glOrtho (-ortho, ortho, -ortho*height/width, ortho*height/width, 0, 200);
         else
             glOrtho (-ortho*width/height, ortho*width/height, -ortho, ortho, 0, 200);
-
 
     }
    glMatrixMode(GL_MODELVIEW);
@@ -2469,6 +2466,13 @@ void keyboard(unsigned char key, int x, int y) {
 
 // Motion callback
 void motion(int x, int y) {
+
+ if(pause ==1){ /// Se o game está pausado, então eu posso girar a câmera livremente
+    rotationX += (float) (y - last_y);
+    last_y = y;
+    rotationY += (float) (x - last_x);
+    last_x = x;
+    }
 
 }
 
