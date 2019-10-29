@@ -3,7 +3,9 @@ project(TrabalhoCG01)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(TrabalhoCG01 main.cpp)
+add_executable(TrabalhoCG01 main.cpp
+        glcWavefrontObject.h
+        glcWavefrontObject.cpp)
 
-target_link_libraries(TrabalhoCG01  -lglut -lGL -lGLU)
+target_link_libraries(TrabalhoCG01 -lglut -lGL -lGLU )
 

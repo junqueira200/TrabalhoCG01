@@ -41,11 +41,11 @@ bool perspective = true;
 const int MaxRetanHorizontal = 10;//10
 int timerInicialColision = 30;
 const int MaxRetanVertical = 1;//4
-const int NUMRETAN = 10; //40
+const int NUMRETAN = 29; //40
 vertex v1,v2,v3,v4,v5,v6,v0;
 vector<vertex> normais;
 int gameStarted =0;
-
+bool perdeu = false;
 int timerColision = 100;
 ///triangulo utilizado como modelo para organizar vertices para calcular normais das faces da parte oval
 vector<triangle> vertices;
@@ -81,7 +81,7 @@ float initialDirection = 0;
 float direction[2] = {0.5, 0.5};
 float position[2] = {0,-1.01};
 triangle prismas[4];
-retangulo retangulos[44];
+retangulo retangulos[29];
 Rebatedor rebatedor = Rebatedor();
 vertex auxCalcNormal;
 int xAntigo;
@@ -123,6 +123,28 @@ float scaleObject2 = 0.5;
 vector<int> objectsALives;
 float lastXObject,lastYObject;
 
+
+int fase = 0;
+int vidas = 5;
+
+typedef struct
+{
+    GLfloat objeto_ambient[4];
+    GLfloat objeto_difusa[4];
+}Cor;
+
+Cor corBlocos[3] = {{{ 0.0, 0.0, 0.0, 0.1 }, { 1, 0, 0, 1.0 }},
+                    {{ 0.0, 0.0, 1.0, 0.1 }, { 0.0, 1.0, 0.0, 1.0 }},
+                    {{ 0.0, 1.0, 0.0, 0.1 }, { 0.0, 0.0, 1.0, 1.0 }}};
+
+
+Cor corParede[3] = {{{ 0.6, 0.6, 0.0, 0.1 }, { 0.6, 0.6, 0.0, 1.0 }},
+                    {{ 0,1.0,1.0, 0.1 }, { 0,1.0,1.0, 1.0 }},
+                    {{ 139/255.0,69/255.0,19/255.0, 0.1 }, { 139/255.0,69/255.0,19/255.0, 1.0 }}};
+
+Cor corRebatedorLaterais[3] = {{{ 0.0, 0.0, 0.0, 0.1 },{ 0.0, 1.0, 0.0, 1.0 }},
+                               {{ 0.0, 0.0, 0.0, 0.1 },{ 0.0, 0.0, 1.0, 1.0 }},
+                               {{ 0.0, 0.0, 0.0, 0.1 },{ 1.0, 0.0, 0.0, 1.0 }}};
 
 /// Functions
 void init(void) {
@@ -265,17 +287,17 @@ void drawBoard() {
     glPushMatrix();
 
 
-    GLfloat objeto_especular[] = { 0.626, 0.626, 0.626, 1.0 };
-    GLfloat objeto_brilho[]    = { 90.0f };
+    GLfloat objeto_especular[] = { 1, 1, 1, 1.0 };
+    GLfloat objeto_brilho[]    = { 20.0f };
     GLfloat objeto_ambient[]   = { 0.6, 0.6, 0.0, 0.1 };
 
 
     GLfloat objeto_difusa[]    = { 0.6, 0.6, 0.0, 1.0 };
 
-    glMaterialfv(GL_FRONT, GL_AMBIENT, objeto_ambient);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, objeto_difusa);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, objeto_especular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, objeto_brilho);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, corParede[fase].objeto_ambient);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, corParede[fase].objeto_difusa);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
 
 /*    glMaterialfv(GL_BACK, GL_AMBIENT, objeto_ambient);
     glMaterialfv(GL_BACK, GL_DIFFUSE, objeto_difusa);
@@ -392,6 +414,18 @@ void drawSphere() {
     glutSolidSphere(BALL_RADIUS, 100, 100);
     glPopMatrix();
 
+    for(int i = 0; i < vidas; ++i)
+    {
+
+        glPushMatrix();
+        glTranslatef(-5 + i*0.5, 2.5, BALL_RADIUS);
+        glutSolidSphere(BALL_RADIUS, 20, 20);
+
+        glPopMatrix();
+
+
+    }
+
 }
 
 
@@ -431,6 +465,7 @@ void reiniciaJogo()
     pause = false;
     venceu = false;
     animate = false;
+    perdeu = false;
 
     rebatedor.atualizaPosicao();
     initialDirection = 0;
@@ -550,16 +585,13 @@ void desenhaRetangulo(retangulo &r)
 
 
 
-    //GLfloat objeto_especular[] = { 0.626, 0.626, 0.626, 1.0 };
-    GLfloat objeto_especular[] = { 1.0, 0.0, 0.0, 0.2 };
-    GLfloat objeto_brilho[]    = { 20.0f };
+    GLfloat objeto_especular[] = { 1.0, 1.0, 1.0, 0.4 };
+    GLfloat objeto_brilho[]    = { 50.0f };
     GLfloat objeto_ambient[]   = { 0, 0.0, 0.0, 0.001 };
-
-
     GLfloat objeto_difusa[]    = { 1, 0, 0, 1.0 };
 
     glMaterialfv(GL_FRONT, GL_AMBIENT, objeto_ambient);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, objeto_difusa);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, corBlocos[fase].objeto_difusa);
     glMaterialfv(GL_FRONT, GL_SPECULAR, objeto_especular);
     glMaterialfv(GL_FRONT, GL_SHININESS, objeto_brilho);
 
@@ -590,6 +622,24 @@ void desenhaRetangulo(retangulo &r)
 
     glNormal3f(0,-1,0);
     glVertex3f(r.vetorPontos[0].x, r.vetorPontos[0].y, r.altura);
+
+
+    glEnd();
+
+    //Face que aponta para (0, 1, 0)
+    glBegin(GL_QUADS);
+
+    glNormal3f(0,1,0);
+    glVertex3f(r.vetorPontos[0].x, r.vetorPontos[1].y+r.altura, r.altura);
+
+    glNormal3f(0,1,0);
+    glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y+r.altura, r.altura);
+
+    glNormal3f(0,1,0);
+    glVertex3f(r.vetorPontos[1].x,r.vetorPontos[1].y+r.altura, 0);
+
+    glNormal3f(0,1,0);
+    glVertex3f(r.vetorPontos[0].x, r.vetorPontos[1].y+r.altura, 0);
 
 
     glEnd();
@@ -633,6 +683,7 @@ void desenhaRetangulo(retangulo &r)
 
     glEnd();
     glPopMatrix();
+
 }
 
 
@@ -671,14 +722,13 @@ void drawPrism(triangle t) {
 
 void drawBorderss1()
 {
-    GLfloat objeto_especular[] = { 0.3, 0.3, 0.3, 1.0 };
+    GLfloat objeto_especular[] = { 1.0, 1.0, 1.0, 1.0 };
     GLfloat objeto_brilho[]    = { 90.0f };
-    GLfloat objeto_ambient[]   = { 0.2, 0.2, 0.2, 1.0};
+    GLfloat objeto_ambient[]   = { 0, 0.0, 0.0, 0.001 };
 
-    GLfloat objeto_difusa[]    = { 0.0, 1.0, 0.0, 1.0 };
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, objeto_ambient);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, objeto_difusa);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, corRebatedorLaterais[fase].objeto_difusa);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
 
@@ -1191,13 +1241,13 @@ int detecColisionLadoEsquerdo(triangle t)
 void drawFaces()
 {
 
-    GLfloat objeto_especular[] = { 0.7, 0.7, 0.7, 1.0 };
-    GLfloat objeto_brilho[]    = { 90.0f };
-    GLfloat objeto_ambient[]   = { 0.3, 0.3, 0.3, 1.0};
-    GLfloat objeto_difusa[]    = { 0.0, 1.0, 0.0, 1.0 };
+    GLfloat objeto_especular[] = { 1.0, 1.0, 1.0, 1.0 };
+    GLfloat objeto_brilho[]    = { 40.0f };
+    GLfloat objeto_ambient[]   = { 0, 0.0, 0.0, 0.001 };
+    GLfloat objeto_difusa[]    = { 1.0, 0.0, 0.0, 1.0 };
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, objeto_ambient);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, objeto_difusa);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, corRebatedorLaterais[fase].objeto_difusa);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
 
@@ -1686,13 +1736,13 @@ void display(void) {
         else
             glOrtho (-ortho*width/height, ortho*width/height, -ortho, ortho, 0, 200);
 
-        yCamera = xCamera = 0.0;
-        zdist = 4.0;
+
     }
    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
    gluLookAt (xCamera, yCamera, zdist, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
+   cout<<xCamera<<" "<<yCamera<<" "<<zdist<<endl;
 
     glRotatef(rotationY, 0, 1, 1);
     glRotatef(rotationX, 1, 0, 1);
@@ -1738,7 +1788,30 @@ void display(void) {
 
     //  glDisable(GL_LIGHTING);
 
+    if(perdeu)
+    {
+        glDisable(GL_LIGHTING);
 
+        glRasterPos2f(0, 0);
+
+        glColor3f(0, 0, 1);
+
+        glTranslatef(-0.5, -0.1, rebatedor.centro.z + 0.5);
+
+        strcpy(texto, "Voce Perdeu");
+        glScalef(0.001, 0.001, 0.001);
+
+
+
+        for (int i = 0; texto[i] != '\0'; i++)
+        {
+            glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, texto[i]);
+        }
+
+        glEnable(GL_LIGHTING);
+    }
+
+    else
     if(pause)
     {
 
@@ -1754,15 +1827,17 @@ void display(void) {
         if(pause)
         {
             strcpy(texto, "Jogo Pausado");
-            glTranslatef(-0.7, -0.01, rebatedor.centro.z + 0.5);
+            glTranslatef(-0.5, -0.1, rebatedor.centro.z + 0.5);
 
         }
 
         if(venceu)
         {
             strcpy(texto, "Voce Venceu");
-            glTranslatef(0.05, -0.01, rebatedor.centro.z + 0.5);
+            glTranslatef(0.05, -0.5, rebatedor.centro.z + 0.5);
         }
+
+
 
         glScalef(0.001, 0.001, 0.001);
 
@@ -1803,12 +1878,21 @@ void updateState() {
     position[0] = fixRange(position[0] + movement * direction[0], maxRange[0], maxRange[1]);
     position[1] = fixRange(position[1] + movement * direction[1], maxRange[0], maxRange[1]);
 
-    if((position[1] - BALL_RADIUS) <= - BHF )
+    if(((position[1] - BALL_RADIUS) <= - BHF) && vidas > 0)
     {
+        vidas -= 1;
         animate = false;
         position[0] = rebatedor.centro.x;
         position[1] = -1.01;
         timerInicialColision =30;
+
+        if(vidas <= 0)
+        {
+            animate = false;
+            perdeu = true;
+            pause = true;
+        }
+
         return;
     }
 
@@ -2021,7 +2105,20 @@ void updateState() {
             }
 
             if(venceu)
-                pause = true;
+            {
+
+                if(fase == 2)
+                {
+                    pause = true;
+
+                }
+                else
+                {
+                    fase +=1;
+                    reiniciaJogo();
+                    venceu = false;
+                }
+            }
 
             break;
 
@@ -2102,17 +2199,7 @@ void keyboard(unsigned char key, int x, int y) {
     if (!animate && !pause) {
         switch (tolower(key)) {
 
-            case 'p':
 
-                perspective = !perspective;
-
-/*                if(angulo == -30)
-                    angulo = 0;
-                else
-                    angulo = -30;*/
-
-
-                break;
 
             case 'r':
                 reiniciaJogo();
@@ -2152,6 +2239,35 @@ void keyboard(unsigned char key, int x, int y) {
 
         switch(tolower(key))
         {
+
+            case 'p':
+
+                perspective = !perspective;
+                glDisable(GL_LIGHTING);                 // Habilita luz
+                glDisable(GL_LIGHT0);                   // habilita luz 0
+                glDisable(GL_DEPTH_TEST);
+                xCamera = yCamera = 0;
+                posicao_luz[0] =  xCamera;
+                posicao_luz[1] = yCamera;
+                posicao_luz[2] = 1000;
+
+                // Define parametros da luz
+                glLightfv(GL_LIGHT0, GL_AMBIENT, cor_luz);
+                glLightfv(GL_LIGHT0, GL_DIFFUSE, cor_luz);
+                glLightfv(GL_LIGHT0, GL_SPECULAR, cor_luz);
+                glLightfv(GL_LIGHT0, GL_POSITION, posicao_luz);
+
+                glEnable(GL_LIGHTING);                 // Habilita luz
+                glEnable(GL_LIGHT0);                   // habilita luz 0
+                glEnable(GL_DEPTH_TEST);
+
+                glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+
+                updateState();
+
+
+                break;
+
             case ' ':
 
                 if(pause)
@@ -2162,11 +2278,6 @@ void keyboard(unsigned char key, int x, int y) {
                 break;
 
 
-            case 'p':
-
-                perspective = !perspective;
-
-                break;
 
 
             case 'r':
@@ -2177,9 +2288,12 @@ void keyboard(unsigned char key, int x, int y) {
                 exit(0);
                 break;
 
-                case 'd':
+            case 'd':
 
+                if(!perspective)
+                    break;
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
                 cosAngulo = cos((5*3.14)/180);
                 senAngulo = sin((5*3.14)/180);
 
@@ -2193,9 +2307,11 @@ void keyboard(unsigned char key, int x, int y) {
 
                 // Posicao da fonte de luz. Ultimo parametro define se a luz sera direcional (0.0) ou tera uma posicional (1.0)
 
-                glEnable(GL_LIGHTING);                 // Habilita luz
-                glEnable(GL_LIGHT0);                   // habilita luz 0
-                glEnable(GL_DEPTH_TEST);
+
+
+                glDisable(GL_LIGHTING);                 // Habilita luz
+                glDisable(GL_LIGHT0);                   // habilita luz 0
+                glDisable(GL_DEPTH_TEST);
 
                 posicao_luz[0] =  xCamera;
                 posicao_luz[1] = yCamera;
@@ -2217,7 +2333,10 @@ void keyboard(unsigned char key, int x, int y) {
 
             case 'a':
 
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                if(!perspective)
+                    break;
+
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
                 cosAngulo = cos((-5*3.14)/180);
                 senAngulo = sin((-5*3.14)/180);
@@ -2234,9 +2353,9 @@ void keyboard(unsigned char key, int x, int y) {
                 posicao_luz[1] = yCamera;
                 posicao_luz[2] = 1000;
 
-                glEnable(GL_LIGHTING);                 // Habilita luz
-                glEnable(GL_LIGHT0);                   // habilita luz 0
-                glEnable(GL_DEPTH_TEST);
+                glDisable(GL_LIGHTING);                 // Habilita luz
+                glDisable(GL_LIGHT0);                   // habilita luz 0
+                glDisable(GL_DEPTH_TEST);
 
                 // Define parametros da luz
                 glLightfv(GL_LIGHT0, GL_AMBIENT, cor_luz);
@@ -2254,7 +2373,11 @@ void keyboard(unsigned char key, int x, int y) {
                 break;
 
             case 'w':
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+                if(!perspective)
+                    break;
+
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
                 cosAngulo = cos((5*3.14)/180);
                 senAngulo = sin((5*3.14)/180);
@@ -2271,9 +2394,9 @@ void keyboard(unsigned char key, int x, int y) {
                 posicao_luz[1] = yCamera;
                 posicao_luz[2] = 1000;
 
-                glEnable(GL_LIGHTING);                 // Habilita luz
-                glEnable(GL_LIGHT0);                   // habilita luz 0
-                glEnable(GL_DEPTH_TEST);
+                glDisable(GL_LIGHTING);                 // Habilita luz
+                glDisable(GL_LIGHT0);                   // habilita luz 0
+                glDisable(GL_DEPTH_TEST);
 
                 // Define parametros da luz
                 glLightfv(GL_LIGHT0, GL_AMBIENT, cor_luz);
@@ -2287,10 +2410,13 @@ void keyboard(unsigned char key, int x, int y) {
 
                 glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
-
                 break;
 
             case 's':
+
+                if(!perspective)
+                    break;
+
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
                 cosAngulo = cos((-5*3.14)/180);
@@ -2308,9 +2434,9 @@ void keyboard(unsigned char key, int x, int y) {
                 posicao_luz[1] = yCamera;
                 posicao_luz[2] = 1000;
 
-                glEnable(GL_LIGHTING);                 // Habilita luz
-                glEnable(GL_LIGHT0);                   // habilita luz 0
-                glEnable(GL_DEPTH_TEST);
+                glDisable(GL_LIGHTING);                 // Habilita luz
+                glDisable(GL_LIGHT0);                   // habilita luz 0
+                glDisable(GL_DEPTH_TEST);
 
                 // Define parametros da luz
                 glLightfv(GL_LIGHT0, GL_AMBIENT, cor_luz);
@@ -2325,15 +2451,6 @@ void keyboard(unsigned char key, int x, int y) {
                 glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
                 break;
-/*
-                GLfloat cor_luz[]     = { 1.0, 1.0, 1.0, 1.0};
-                // Posicao da fonte de luz. Ultimo parametro define se a luz sera direcional (0.0) ou tera uma posicional (1.0)
-                GLfloat posicao_luz[] = { xCamera , yCamera, 1000.0, 1.0};
-                // Define parametros da luz
-                glLightfv(GL_LIGHT0, GL_AMBIENT, cor_luz);
-                glLightfv(GL_LIGHT0, GL_DIFFUSE, cor_luz);
-                glLightfv(GL_LIGHT0, GL_SPECULAR, cor_luz);
-                glLightfv(GL_LIGHT0, GL_POSITION, posicao_luz);*/
 
 
              case '32':
@@ -2390,18 +2507,16 @@ void generatePrisms()
 {
 
     float y = 0.5;
-    float x = -2 + 0.35/2.0;
+    float x = -1.7 + 0.35/2.0;
     //float x = 0.5;
 
     //Desenha linha de retangulos
-    for(int j = 0; j < MaxRetanVertical;++j)
-    {
 
 
-        for (int i = 0; i < MaxRetanHorizontal; ++i)
+        for (int i = 0; i < 9; ++i)
         {  //4
 
-            makeRetangulo(x, y, retangulos[(j*MaxRetanHorizontal)+i]);
+            makeRetangulo(x, y, retangulos[i]);
             x += 0.39;
 
             //cout<<"x = "<<x<<" ";
@@ -2409,14 +2524,49 @@ void generatePrisms()
 
         //  cout<<endl;
 
-        x = -2 + 0.35/2.0;
         y += 0.4;
-    }
+        x = -1.9 + 0.35/2.0;
 
-    for(int i = 0; i < NUMRETAN; ++i)
-    {
-        //cout<<"Centro: "<<retangulos[i].centro.x<<" "<<retangulos[i].centro.y<<endl;
-    }
+
+        for (int i = 0; i < 10; ++i)
+        {  //4
+
+            makeRetangulo(x, y, retangulos[9+i]);
+            x += 0.39;
+
+            //cout<<"x = "<<x<<" ";
+        }
+
+        //  cout<<endl;
+
+    x = -2 + 0.35/2.0;
+    y += 0.4;
+
+        for (int i = 0; i < 10; ++i)
+        {  //4
+
+        makeRetangulo(x, y, retangulos[19+i]);
+        x += 0.39;
+
+        //cout<<"x = "<<x<<" ";
+         }
+
+/*    x = -2 + 0.35/2.0;
+    y += 0.3;
+
+    for (int i = 0; i < 10; ++i)
+    {  //4
+
+        makeRetangulo(x, y, retangulos[i]);
+        x += 0.39;
+
+        //cout<<"x = "<<x<<" ";
+    }*/
+
+
+
+
+
 }
 
 bool colisaoRebatedor(float movement, const float maxRange[])
