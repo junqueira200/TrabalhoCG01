@@ -92,8 +92,8 @@ bool venceu = false;
 ///object managing
 char objectFiles[NUM_OBJECTS][50] =
 {
-   "../data/obj/soccerball.obj",
-    "../data/obj/dolphins.obj"
+   "./obj/soccerball.obj",
+    "./obj/dolphins.obj"
 };
 
 typedef struct
