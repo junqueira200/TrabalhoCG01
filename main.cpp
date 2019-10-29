@@ -92,8 +92,8 @@ bool venceu = false;
 ///object managing
 char objectFiles[NUM_OBJECTS][50] =
 {
-   "./obj/soccerball.obj",
-    "./obj/dolphins.obj"
+   "../data/obj/soccerball.obj",
+    "../data/obj/dolphins.obj"
 };
 
 typedef struct
@@ -1735,9 +1735,15 @@ void display(void) {
             glOrtho (-ortho*width/height, ortho*width/height, -ortho, ortho, 0, 200);
 
     }
+
    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
    gluLookAt (xCamera, yCamera, zdist, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+
+    if(pause ==0){
+             rotationX = 0.0;
+             rotationY=  0.0;
+            }
 
    cout<<xCamera<<" "<<yCamera<<" "<<zdist<<endl;
 
@@ -2467,9 +2473,11 @@ void keyboard(unsigned char key, int x, int y) {
 // Motion callback
 void motion(int x, int y) {
 
- if(pause ==1){ /// Se o game está pausado, então eu posso girar a câmera livremente
+ if(pause ==1){/// Se o game está pausado, então eu posso girar a câmera livremente
+     printf("CAMERA %f",yCamera);
     rotationX += (float) (y - last_y);
     last_y = y;
+
     rotationY += (float) (x - last_x);
     last_x = x;
     }
