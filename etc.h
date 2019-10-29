@@ -28,6 +28,8 @@ public:
     {
         centro.z = 0;
         colisao = false;
+        reduzir = false;
+        escala = 1.0;
     }
 
     vertex vetorPontos[4]; //infEsq, infDir, supDir, supEsq;
@@ -37,6 +39,8 @@ public:
 
     float largura, altura;
     bool colisao;
+    bool reduzir;
+    float escala;
 
 };
 

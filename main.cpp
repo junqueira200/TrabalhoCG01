@@ -92,8 +92,8 @@ bool venceu = false;
 ///object managing
 char objectFiles[NUM_OBJECTS][50] =
 {
-   "../data/obj/soccerball.obj",
-    "../data/obj/dolphins.obj"
+   "data/obj/soccerball.obj",
+    "data/obj/dolphins.obj"
 };
 
 typedef struct
@@ -462,6 +462,8 @@ void reiniciaJogo()
     for(int i = 0; i < NUMRETAN;++i)
     {
         retangulos[i].colisao = false;
+        retangulos[i].reduzir = false;
+        retangulos[i].escala = 1.0;
     }
 
     pause = false;
@@ -597,12 +599,21 @@ void desenhaRetangulo(retangulo &r)
     glMaterialfv(GL_FRONT, GL_SPECULAR, objeto_especular);
     glMaterialfv(GL_FRONT, GL_SHININESS, objeto_brilho);
 
+    if(r.reduzir)
+        r.escala -= 0.02;
+
+    if(r.escala <= 0.0)
+    {
+        r.colisao = true;
+        r.reduzir = false;
+    }
+
     //glNormal3f(0, 0, 1);
     glBegin(GL_QUADS);
     for (i = 0; i < 4; ++i)
     {
         glNormal3f(0, 0, 1);
-        glVertex3f(r.vetorPontos[i].x, r.vetorPontos[i].y, r.altura); //Face superior
+        glVertex3f(r.vetorPontos[i].x * r.escala, r.vetorPontos[i].y*r.escala, r.altura*r.escala); //Face superior
 
     }
 
@@ -614,16 +625,16 @@ void desenhaRetangulo(retangulo &r)
     glBegin(GL_QUADS);
 
     glNormal3f(0,-1,0);
-    glVertex3f(r.vetorPontos[0].x, r.vetorPontos[0].y, 0);
+    glVertex3f(r.vetorPontos[0].x*r.escala, r.vetorPontos[0].y*r.escala, 0);
 
     glNormal3f(0,-1,0);
-    glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y, 0);
+    glVertex3f(r.vetorPontos[1].x*r.escala, r.vetorPontos[1].y*r.escala, 0);
 
     glNormal3f(0,-1,0);
-    glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y, r.altura);
+    glVertex3f(r.vetorPontos[1].x*r.escala, r.vetorPontos[1].y*r.escala, r.altura*r.escala);
 
     glNormal3f(0,-1,0);
-    glVertex3f(r.vetorPontos[0].x, r.vetorPontos[0].y, r.altura);
+    glVertex3f(r.vetorPontos[0].x*r.escala, r.vetorPontos[0].y*r.escala, r.altura*r.escala);
 
 
     glEnd();
@@ -632,16 +643,16 @@ void desenhaRetangulo(retangulo &r)
     glBegin(GL_QUADS);
 
     glNormal3f(0,1,0);
-    glVertex3f(r.vetorPontos[0].x, r.vetorPontos[1].y+r.altura, r.altura);
+    glVertex3f(r.vetorPontos[0].x*r.escala, (r.vetorPontos[1].y+r.altura)*r.escala, r.altura*r.escala);
 
     glNormal3f(0,1,0);
-    glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y+r.altura, r.altura);
+    glVertex3f(r.vetorPontos[1].x*r.escala, (r.vetorPontos[1].y+r.altura)*r.escala, r.altura*r.escala);
 
     glNormal3f(0,1,0);
-    glVertex3f(r.vetorPontos[1].x,r.vetorPontos[1].y+r.altura, 0);
+    glVertex3f(r.vetorPontos[1].x*r.escala,(r.vetorPontos[1].y+r.altura)*r.escala, 0);
 
     glNormal3f(0,1,0);
-    glVertex3f(r.vetorPontos[0].x, r.vetorPontos[1].y+r.altura, 0);
+    glVertex3f(r.vetorPontos[0].x*r.escala, (r.vetorPontos[1].y+r.altura)*r.escala, 0);
 
 
     glEnd();
@@ -652,16 +663,16 @@ void desenhaRetangulo(retangulo &r)
     glBegin(GL_QUADS);
 
     glNormal3f(1, 0,0);
-    glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y, 0);
+    glVertex3f(r.vetorPontos[1].x*r.escala, r.vetorPontos[1].y*r.escala, 0);
 
     glNormal3f(1, 0,0);
-    glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y + r.altura, 0);
+    glVertex3f(r.vetorPontos[1].x*r.escala, (r.vetorPontos[1].y + r.altura)*r.escala, 0);
 
     glNormal3f(1, 0,0);
-    glVertex3f(r.vetorPontos[1].x , r.vetorPontos[1].y + r.altura, r.altura);
+    glVertex3f(r.vetorPontos[1].x*r.escala , (r.vetorPontos[1].y + r.altura)*r.escala, r.altura*r.escala);
 
     glNormal3f(1, 0,0);
-    glVertex3f(r.vetorPontos[1].x, r.vetorPontos[1].y, r.altura);
+    glVertex3f(r.vetorPontos[1].x*r.escala, r.vetorPontos[1].y*r.escala, r.altura*r.escala);
 
 
     glEnd();
@@ -671,16 +682,16 @@ void desenhaRetangulo(retangulo &r)
     glBegin(GL_QUADS);
 
     glNormal3f(-1, 0, 0);
-    glVertex3f(r.vetorPontos[0].x, r.vetorPontos[0].y, 0);
+    glVertex3f(r.vetorPontos[0].x*r.escala, r.vetorPontos[0].y*r.escala, 0);
 
     glNormal3f(-1, 0, 0);
-    glVertex3f(r.vetorPontos[0].x, r.vetorPontos[0].y, r.altura);
+    glVertex3f(r.vetorPontos[0].x*r.escala, r.vetorPontos[0].y*r.escala, r.altura*r.escala);
 
     glNormal3f(-1, 0, 0);
-    glVertex3f(r.vetorPontos[3].x, r.vetorPontos[3].y, r.altura);
+    glVertex3f(r.vetorPontos[3].x*r.escala, r.vetorPontos[3].y*r.escala, r.altura*r.escala);
 
     glNormal3f(-1, 0, 0);
-    glVertex3f(r.vetorPontos[3].x, r.vetorPontos[3].y, 0);
+    glVertex3f(r.vetorPontos[3].x*r.escala, r.vetorPontos[3].y*r.escala, 0);
 
 
     glEnd();
@@ -1813,7 +1824,12 @@ void display(void) {
 
     for (int i = 0; i < NUMRETAN; ++i)
     {
-        if(!retangulos[i].colisao)
+        if(retangulos[i].reduzir && !retangulos[i].colisao)
+        {
+            desenhaRetangulo(retangulos[i]);
+        }
+
+        else if(!retangulos[i].colisao)
             desenhaRetangulo(retangulos[i]);
     }
 
@@ -2133,6 +2149,7 @@ void updateState() {
                 cout<<"Quina.\n";
             }
 
+            retangulos[j].reduzir = true;
             retangulos[j].colisao = true;
             venceu = true;
 
@@ -2158,9 +2175,10 @@ void updateState() {
                     fase +=1;
                     reiniciaJogo();
                     venceu = false;
+                    break;
                 }
             }
-
+            retangulos[j].colisao = false;
             break;
 
         }
