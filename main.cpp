@@ -92,8 +92,8 @@ bool venceu = false;
 ///object managing
 char objectFiles[NUM_OBJECTS][50] =
 {
-   "../data/obj/soccerball.obj",
-    "../data/obj/dolphins.obj"
+   "./obj/soccerball.obj",
+    "./obj/dolphins.obj"
 };
 
 typedef struct
@@ -1697,7 +1697,7 @@ void drawObjects(){
      positionXObject2 = 1.5;
      positionYObject2 = 1.8;
       objectsALives[1] =1;
-      int i = rand() % 8;
+      int i = rand() % 7;
      deltaXobject2 = randomStart[i];
      objectsALives[0] =1;
      i = NULL;
