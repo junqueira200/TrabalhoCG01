@@ -10,5 +10,6 @@
 
 vertex calcNormal(triangle t);
 void setCalcNormal(triangle t);
+void CalculaNormal2(vertex v0p, vertex v1p, vertex v2p,vertex *vn);
 
 #endif //TRABALHOCG01_NORMAL_H
