@@ -92,10 +92,7 @@ int selectedRender = USE_MATERIAL;
 float randomStart[9] ={0.01,-0.02,0.03,-0.04,-0.05,0.06,0.-07,0.08,-0.09};
 float deltaScaleObject1 = 0.08;
 float deltaScaleObject2 = 0.08;
-int timerDeathObject1 =200;
-int timerDeathObject2 =200;
 
-vector<int> objectsALives;
 float lastXObject,lastYObject;
 
 int fase = 0;
@@ -1125,32 +1122,6 @@ void drawExits(){
  glPopMatrix();
 
 }
-
-
-
-void killObject(int id){
-    if(id == 0){
-    objectsALives[0] = 0;
-    timerDeathObject1 = 200;
-    }
-    if(id ==1){
-    objectsALives[1] = 0;
-    timerDeathObject2 = 200;
-
-    }
-}
-
-
- void handleColisionsWithObjects(){
-   ///colisao com objeto 1
-   if(chekColisionwithBall(positionXObject1,positionYObject1)){
-     killObject(0);
-   }
-   if(chekColisionwithBall(positionXObject2,positionYObject2)){
-     killObject(1);
-
-   }
- }
 
 void drawObjects(){
 

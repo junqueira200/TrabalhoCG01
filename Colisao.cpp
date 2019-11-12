@@ -82,3 +82,30 @@ bool chekColisionwithBall(float xP, float yP)
     return false;
 
 }
+
+void killObject(int id)
+{
+    if(id == 0){
+        objectsALives[0] = 0;
+        timerDeathObject1 = 200;
+    }
+    if(id ==1){
+        objectsALives[1] = 0;
+        timerDeathObject2 = 200;
+
+    }
+}
+
+
+void handleColisionsWithObjects()
+{
+    ///colisao com objeto 1
+    if(chekColisionwithBall(positionXObject1,positionYObject1)){
+        killObject(0);
+    }
+    if(chekColisionwithBall(positionXObject2,positionYObject2)){
+        killObject(1);
+
+    }
+}
+
