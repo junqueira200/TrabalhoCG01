@@ -14,6 +14,7 @@
 #include "Retangulo.h"
 #include "cor.h"
 #include "Normal.h"
+#include "Posicao.h"
 #define NUM_OBJECTS 2
 #define MAXLINHA 10
 
@@ -22,7 +23,6 @@ using namespace std;
 
 // Definitions
 float fixRange(float value, float min, float max, bool circular = false);
-bool colisaoRebatedor(float movement, const float maxRange[]);
 
 /// Globals
 vertex normalFaces;
@@ -72,16 +72,13 @@ public:
 
 
 const float RAIORETANGULO = 0.215058132;
-const float RAIO_REBATEDOR = 0.71;
+
 bool pause = false;
 // prismas iniciais
-float prismaPositions[4][3];
 char texto[100];
-
 float velocity = 1.5 * 0.5;
 float initialDirection = 0;
 float direction[2] = {0.5, 0.5};
-float position[2] = {0,-1.01};
 triangle prismas[4];
 retangulo retangulos[29];
 Rebatedor rebatedor = Rebatedor();
@@ -110,13 +107,6 @@ bool drawboundingbox = false;
 int selected = 0;
 int selectedShading = SMOOTH_SHADING;
 int selectedRender = USE_MATERIAL;
-float positionXObject1 = -1.5, positionYObject1 = 1.7;
-float positionXObject2 = 1.5, positionYObject2 = 1.7;
-
-float deltaXobject1 = 0.01;
-float deltaYobject1 = 0.01;
-float deltaXobject2 = 0.01;
-float deltaYobject2 = 0.01;
 
 float randomStart[9] ={0.01,-0.02,0.03,-0.04,-0.05,0.06,0.-07,0.08,-0.09};
 triangle auxColisionObjects;
@@ -1230,50 +1220,6 @@ void drawExits(){
 
 }
 
-void updateObjects1Position(){
-
-if(positionYObject1+0.2 > 2 || positionYObject1- 0.2< -2)
-    deltaYobject1 = -deltaYobject1;
-if(positionXObject1-0.2 < -2 || positionXObject1+ 0.2 >  2)
-    deltaXobject1 = -deltaXobject1;
-
- if(positionYObject2+0.2 > 2 || positionYObject2- 0.2< -2)
-    deltaYobject2 = -deltaYobject2;
-
-if(positionXObject2 -0.2 < -2 || positionXObject2+ 0.2 >  2)
-    deltaXobject2 = -deltaXobject2;
-
- positionXObject2 +=deltaXobject2;
- positionYObject2 += deltaYobject2;
-
- positionXObject1 +=deltaXobject1;
- positionYObject1 +=deltaYobject1;
-}
-
-int detecColisionObjectRight(triangle t, float xP, float yP)
-{
-
-    if(gameStarted == 1){
-
-    if(position[1]+BALL_RADIUS < t.v[2].y)
-        return false;
-    if(position[1] - BALL_RADIUS > t.v[1].y)
-        return false;
-    if(position[0] + BALL_RADIUS < t.v[2].x)
-        return false;
-    if(position[0] - BALL_RADIUS > t.v[1].x)
-        return false;
-
-    return true;
-   }
-   else{
-    return false;
-   }
-
-}
-
-
-
 
 bool chekColisionwithBall(float xP, float yP){
 
@@ -1307,26 +1253,6 @@ bool chekColisionwithBall(float xP, float yP){
     return true;
 
  return false;
-
-}
-bool chechColisionwithHitter(){
-
-  auxColisionObjects.v[0].x = centroRebatedor.x-0.3;
-   auxColisionObjects.v[0].y = centroRebatedor.y+0.3;
-   auxColisionObjects.v[0].z = 0.2;
-
-    auxColisionObjects.v[1].x = centroRebatedor.x+0.3;
-   auxColisionObjects.v[1].y = centroRebatedor.y-0.3;
-   auxColisionObjects.v[1].z = 0.2;
-
-   auxColisionObjects.v[2].x = centroRebatedor.x+0.3;
-   auxColisionObjects.v[2].y = centroRebatedor.y+0.3;
-   auxColisionObjects.v[2].z = 0.2;
-
-   if(detecColisionLadoDireito(auxColisionObjects)|| detecColisionLadoEsquerdo(auxColisionObjects))
-     return true;
-   else
-    return false;
 
 }
 
@@ -1571,10 +1497,6 @@ void display(void) {
 
 }
 
-float vectorAngle(float ax, float ay) {
-    return acos(ax * 1 + ay * 0) * (180.0 / M_PI);
-
-}
 
 // update all states
 void updateState() {
@@ -2295,107 +2217,6 @@ void generatePrisms()
 
 }
 
-bool colisaoRebatedor(float movement, const float maxRange[])
-{
-
-/*    float raio = calcDistance(rebatedor.pontosExtremos[0].x, rebatedor.pontosExtremos[0].y, rebatedor.pontosExtremos[0].x, rebatedor.pontosExtremos[0].y-0.06);
-    cout<<"Distancia: "<<raio<<endl;
-    exit(-1);*/
-
-    int i;
-    int pontoDistante = 0;
-    // se a distancia e maior do que o raio da bola + raio do retangulo
-    float distance = calcDistance(rebatedor.centro.x, rebatedor.centro.y, position[0], position[1]);//
-    if ( (distance - (BALL_RADIUS + RAIO_REBATEDOR) > 0.001)) return false;
-
-    for (i = 0; i < 4; ++i)
-    {
-        // verifica ponto mais perto
-        if (calcDistance(position[0], position[1], rebatedor.pontosExtremos[i].x, rebatedor.pontosExtremos[i].y) <
-            calcDistance(position[0], position[1], rebatedor.pontosExtremos[pontoDistante].x, rebatedor.pontosExtremos[pontoDistante].y))
-        {
-            pontoDistante = i;
-            //cout<<"Dist: "<<calcDistance(position[0], position[1], rebatedor.pontosExtremos[pontoDistante].x, rebatedor.pontosExtremos[pontoDistante].y)<<endl<<endl;
-        }
-    }
-
-
-    // Obtem equação ax + by + c = 0
-    // coeficiente angular.
-    float a;
-    float b;
-    float c;
-
-    if((pontoDistante == 0) || (pontoDistante == 2))// Eq y = constante
-    {
-
-        a = 0;
-        b = 1;
-        c = -rebatedor.pontosExtremos[(pontoDistante)].y;
-    }
-    else if((pontoDistante == 1)|| (pontoDistante == 3))//Eq x = constante
-    {
-
-
-        a = 1;
-        b = 0;
-        c = -rebatedor.pontosExtremos[(pontoDistante)].x;
-    }
-
-    // distancia entre centro da esfera e reta
-    float d = fabs(a * position[0] + b*position[1] + c) /
-              sqrt(pow(a, 2) + pow(b,2));
-
-    //cout<<"d = "<<fabs(d - BALL_RADIUS)<<", lado da colisao: "<< ((pontoDistante))<<endl;
-
-    if (fabs(d - BALL_RADIUS) <= 0.05   )
-    {
-        //cout<<"colision happened\n";
-
-        cout<<"Lado "<<pontoDistante<<endl;
-
-        // rollback animation (or else, it will get stuck)
-        position[0] = fixRange(position[0] - movement * direction[0], maxRange[0], maxRange[1]);
-        position[1] = fixRange(position[1] - movement * direction[1], maxRange[0], maxRange[1]);
-
-        float directionAngle = ((position[1] + direction[1]) - position[1]) /
-                               ((position[0] + direction[0]) - position[0]);
-
-        //cout<<"directionAngle "<<directionAngle<<endl;
-
-        if (fabs(directionAngle) == INFINITY)
-        {
-            cout<<"************INF***********\n";
-            directionAngle = directionAngle >= 0 ? FLT_MIN : FLT_MAX;
-        }
-
-        // get the colision angle
-        float angle = atan((
-                                   (a - directionAngle) /
-                                   (1 + a * directionAngle)
-                           )) * (180.0 / M_PI);
-
-
-
-        // rotate the direction
-        float r = fabs(angle * 2) * (angle / fabs(angle));
-        r = r * M_PI / 180;
-
-        // rotação
-        float x = direction[0] * cos(r) - direction[1] * sin(r);
-        direction[1] = direction[0] * sin(r) + direction[1] * cos(r);
-        direction[0] = x;
-
-        // Re-run the movement of the ball
-        position[0] = fixRange(position[0] + movement * direction[0], maxRange[0], maxRange[1]);
-        position[1] = fixRange(position[1] + movement * direction[1], maxRange[0], maxRange[1]);
-
-        return true;
-
-    }
-
-    return false;
-}
 
 void passiveMotion(int x, int y)
 {
