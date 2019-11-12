@@ -16,6 +16,7 @@
 #include "Normal.h"
 #include "Posicao.h"
 #include "OpenGL_CallBack.h"
+#include "Colisao.h"
 #define NUM_OBJECTS 2
 
 using namespace std;
@@ -28,7 +29,6 @@ vertex normalFaces;
 vertex centroRebatedor;
 int angulo = 0;
 vertex normalBorder;
-const float BALL_RADIUS = 0.10;
 const float FPS = 60;
 const float BHF = 2; // Board Half Width
 const int MaxRetanHorizontal = 10;//10
@@ -90,7 +90,6 @@ int selectedShading = SMOOTH_SHADING;
 int selectedRender = USE_MATERIAL;
 
 float randomStart[9] ={0.01,-0.02,0.03,-0.04,-0.05,0.06,0.-07,0.08,-0.09};
-triangle auxColisionObjects;
 float deltaScaleObject1 = 0.08;
 float deltaScaleObject2 = 0.08;
 int timerDeathObject1 =200;
@@ -805,49 +804,6 @@ void drawBorderss1()
     verticeAdded =1;
 }
 
-
-int detecColisionLadoDireito(triangle t)
-{
-   if(gameStarted == 1){
-
-    if(position[1]+BALL_RADIUS < t.v[2].y)
-        return false;
-    if(position[1] - BALL_RADIUS > t.v[1].y)
-        return false;
-    if(position[0] + BALL_RADIUS < t.v[2].x)
-        return false;
-    if(position[0] - BALL_RADIUS > t.v[1].x)
-        return false;
-
-    return true;
-   }
-   else{
-    return false;
-   }
-}
-
-
-
-int detecColisionLadoEsquerdo(triangle t)
-{
-  if(gameStarted ==1){
-
-    if(position[1]+BALL_RADIUS < t.v[1].y)
-        return false;
-    if(position[1] - BALL_RADIUS > t.v[2].y)
-        return false;
-    if(position[0] + BALL_RADIUS < t.v[1].x)
-        return false;
-    if(position[0] - BALL_RADIUS > t.v[2].x)
-        return false;
-
-    return true;
-  }else{
-  return false;
-  }
-}
-
-
 void drawFaces()
 {
 
@@ -896,6 +852,7 @@ void drawFaces()
 
 
 glPopMatrix();
+
 }
 
 
@@ -1170,40 +1127,6 @@ void drawExits(){
 }
 
 
-bool chekColisionwithBall(float xP, float yP){
-
-   auxColisionObjects.v[0].x = xP-0.5;
-   auxColisionObjects.v[0].y = yP+0.5;
-   auxColisionObjects.v[0].z = 0.2;
-
-    auxColisionObjects.v[1].x = xP+0.5;
-   auxColisionObjects.v[1].y = yP-0.5;
-   auxColisionObjects.v[1].z = 0.2;
-
-   auxColisionObjects.v[2].x = xP+0.5;
-   auxColisionObjects.v[2].y = yP+0.5;
-   auxColisionObjects.v[2].z = 0.2;
-
-   if(detecColisionLadoEsquerdo(auxColisionObjects))
-     return true;
-
-   auxColisionObjects.v[0].x = xP-0.5;
-   auxColisionObjects.v[0].y = yP+0.5;
-   auxColisionObjects.v[0].z = 0.2;
-
-    auxColisionObjects.v[1].x = xP+0.5;
-   auxColisionObjects.v[1].y = yP-0.5;
-   auxColisionObjects.v[1].z = 0.2;
-
-   auxColisionObjects.v[2].x = xP-0.5;
-   auxColisionObjects.v[2].y = yP-0.5;
-   auxColisionObjects.v[2].z = 0.2;
-   if(detecColisionLadoDireito(auxColisionObjects))
-    return true;
-
- return false;
-
-}
 
 void killObject(int id){
     if(id == 0){
