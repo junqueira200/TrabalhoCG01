@@ -11,6 +11,7 @@
 #include <vector>
 #include <list>
 #include "glcWavefrontObject.h"
+#include "Retangulo.h"
 #define NUM_OBJECTS 2
 #define MAXLINHA 10
 
@@ -33,7 +34,6 @@ int width, height;
 int angulo = 0;
 vertex normalBorder;
 const float BALL_RADIUS = 0.10;
-const float TRIANGLE_RADIUS = 0.3;
 const float FPS = 60;
 const float BHF = 2; // Board Half Width
 bool fullScreen = false;
@@ -277,9 +277,6 @@ float fixRange(float value, float min, float max, bool circular) {
     return value;
 }
 
-float rad(float angle) {
-    return angle * M_PI / 180;
-}
 
 float calcDistance(float aX, float aY, float bX, float bY) {
     return sqrt(pow(aX - bX, 2) + pow(aY - bY, 2));
@@ -483,70 +480,7 @@ void reiniciaJogo()
 
 }
 
-void makeRetangulo(float x, float y, retangulo &r)
-{
 
-    r.centro.x = x;
-    r.centro.y = y;
-
-    r.largura = 0.35;
-    r.altura = 0.25;
-
-    //Pontos superiores infEsq, infDir, supDir, supEsq;
-
-    r.vetorPontos[2].x = x + r.largura/2.0;
-    r.vetorPontos[2].y = y + r.altura/2.0;
-
-    r.vetorPontos[3].x = x - r.largura/2.0;
-    r.vetorPontos[3].y = y + r.altura/2.0;
-
-    //Pontos inferiores
-
-    r.vetorPontos[1].x = x + r.largura/2.0;
-    r.vetorPontos[1].y = y - r.altura/2.0;
-
-    r.vetorPontos[0].x = x - r.largura/2.0;
-    r.vetorPontos[0].y = y - r.altura/2.0;
-
-/*    r.pontosExtremos[0] = {0, float(-0.125 + y), 0};
-    r.pontosExtremos[1] ={float(0.175 + x), 0, 0};
-    r.pontosExtremos[2] = {0, float(0.125 + y), 0};
-    r.pontosExtremos[3] = {float(-0.175 + x), 0, 0};*/
-
-    r.pontosExtremos[0] = {float(x - r.largura/2.0), float(y - r.altura/2.0), 0};
-    r.pontosExtremos[1] ={float(x + r.largura/2.0), float(y - r.altura/2.0), 0};
-    r.pontosExtremos[2] = {float(x + r.largura/2.0), float(y + r.altura/2.0), 0};
-    r.pontosExtremos[3] = {float( x - r.largura/2.0), float(y + r.altura/2.0), 0};
-
-
-}
-
-triangle makeTriangle(float x = 0, float y = 0, float rotation = 0) {
-    int i;
-    triangle t;
-
-    //generate the base triangle
-    for (i = 0; i < 3; ++i) {
-        t.v[i].x = TRIANGLE_RADIUS * sin(rad(90 + ((2 - i) * 120)));
-        t.v[i].y = TRIANGLE_RADIUS * cos(rad(90 + ((2 - i) * 120)));
-    }
-
-    // rotate the triangle
-    float r = -rotation * M_PI / 180;
-    for (i = 0; i < 3; ++i) {
-        float x = t.v[i].x * cos(r) - t.v[i].y * sin(r);
-        t.v[i].y = t.v[i].x * sin(r) + t.v[i].y * cos(r);
-        t.v[i].x = x;
-    }
-
-    // translate
-    for (i = 0; i < 3; ++i) {
-        t.v[i].x += x;
-        t.v[i].y += y;
-    };
-
-    return t;
-}
 
 
 void CalculaNormal2(vertex v0p, vertex v1p, vertex v2p,vertex *vn)/// função modificada para fazer o calculo da normal dos
