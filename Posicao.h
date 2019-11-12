@@ -12,6 +12,7 @@ float deltaXobject1 = 0.01;
 float deltaYobject1 = 0.01;
 float deltaXobject2 = 0.01;
 float deltaYobject2 = 0.01;
+float direction[2] = {0.5, 0.5};
 
 void updateObjects1Position();
 #endif //TRABALHOCG01_POSICAO_H

@@ -15,39 +15,27 @@
 #include "cor.h"
 #include "Normal.h"
 #include "Posicao.h"
+#include "OpenGL_CallBack.h"
 #define NUM_OBJECTS 2
-#define MAXLINHA 10
 
 using namespace std;
-
 
 // Definitions
 float fixRange(float value, float min, float max, bool circular = false);
 
 /// Globals
 vertex normalFaces;
-float zdist = 4.0;
-float rotationX = 0, rotationY = 0;
-int last_x, last_y;
-float xCamera = 0;
-float yCamera = -2;
 vertex centroRebatedor;
-int width, height;
 int angulo = 0;
 vertex normalBorder;
 const float BALL_RADIUS = 0.10;
 const float FPS = 60;
 const float BHF = 2; // Board Half Width
-bool fullScreen = false;
-bool perspective = true;
 const int MaxRetanHorizontal = 10;//10
 int timerInicialColision = 30;
 const int MaxRetanVertical = 1;//4
-const int NUMRETAN = 29; //40
 vertex v1,v2,v3,v4,v5,v6,v0;
 vector<vertex> normais;
-int gameStarted =0;
-bool perdeu = false;
 int timerColision = 100;
 ///triangulo utilizado como modelo para organizar vertices para calcular normais das faces da parte oval
 vector<triangle> vertices;
@@ -73,20 +61,13 @@ public:
 
 const float RAIORETANGULO = 0.215058132;
 
-bool pause = false;
 // prismas iniciais
 char texto[100];
 float velocity = 1.5 * 0.5;
-float initialDirection = 0;
-float direction[2] = {0.5, 0.5};
 triangle prismas[4];
-retangulo retangulos[29];
-Rebatedor rebatedor = Rebatedor();
 vertex auxCalcNormal;
 int xAntigo;
 
-bool animate = false;
-bool venceu = false;
 
 ///object managing
 char objectFiles[NUM_OBJECTS][50] =
@@ -170,13 +151,6 @@ void init(void) {
  * Fix an value range
  * @param circular if true, when the values overflow the min value, it's reset to the max value and vice-versa
  */
-float fixRange(float value, float min, float max, bool circular) {
-    if (value > max)
-        return circular ? min : max;
-    else if (value < min)
-        return circular ? max : min;
-    return value;
-}
 
 
 float calcDistance(float aX, float aY, float bX, float bY) {
@@ -355,31 +329,6 @@ void drawArrow() {
 
 }
 
-void reiniciaJogo()
-{
-    for(int i = 0; i < NUMRETAN;++i)
-    {
-        retangulos[i].colisao = false;
-        retangulos[i].reduzir = false;
-        retangulos[i].escala = 1.0;
-    }
-
-    pause = false;
-    venceu = false;
-    animate = false;
-    perdeu = false;
-
-    rebatedor.atualizaPosicao();
-    initialDirection = 0;
-    initialDirection = fixRange(initialDirection, -180, 180, true);
-
-    position[0] = 0;
-    position[1] = -1.01;
-
-    direction[0] = cos((initialDirection + 90) * M_PI / 180);
-    direction[1] = sin((initialDirection + 90) * M_PI / 180);
-
-}
 
 void drawBorderss1()
 {
@@ -1774,6 +1723,157 @@ void updateState() {
     }
 }
 
+
+
+void generatePrisms()
+{
+
+    float y = 0.5;
+    float x = -1.7 + 0.35/2.0;
+    //float x = 0.5;
+
+    //Desenha linha de retangulos
+
+
+        for (int i = 0; i < 9; ++i)
+        {  //4
+
+            makeRetangulo(x, y, retangulos[i]);
+            x += 0.39;
+
+            //cout<<"x = "<<x<<" ";
+        }
+
+        //  cout<<endl;
+
+        y += 0.4;
+        x = -1.9 + 0.35/2.0;
+
+
+        for (int i = 0; i < 10; ++i)
+        {  //4
+
+            makeRetangulo(x, y, retangulos[9+i]);
+            x += 0.39;
+
+            //cout<<"x = "<<x<<" ";
+        }
+
+        //  cout<<endl;
+
+    x = -2 + 0.35/2.0;
+    y += 0.4;
+
+        for (int i = 0; i < 10; ++i)
+        {  //4
+
+        makeRetangulo(x, y, retangulos[19+i]);
+        x += 0.39;
+
+        //cout<<"x = "<<x<<" ";
+         }
+
+/*    x = -2 + 0.35/2.0;
+    y += 0.3;
+
+    for (int i = 0; i < 10; ++i)
+    {  //4
+
+        makeRetangulo(x, y, retangulos[i]);
+        x += 0.39;
+
+        //cout<<"x = "<<x<<" ";
+    }*/
+
+
+
+
+
+}
+
+
+void passiveMotion(int x, int y)
+{
+    if(pause)
+    {
+        //x = glutGet(GLUT_WINDOW_WIDTH) / 2;
+        y = glutGet(GLUT_WINDOW_HEIGHT)/2;
+        glutWarpPointer(xAntigo, y);
+
+        return;
+    }
+
+    bool mudanca = 0;
+
+    //cout<<"PassiveMotion\n";
+
+
+    if ((x - xAntigo) > 0) //movimento para direita
+    {
+        if ((rebatedor.centro.x + rebatedor.largura / 2 + 0.1) < 2)
+        {
+
+            rebatedor.atualizaPosicao(rebatedor.centro.x + 0.1);
+            centroRebatedor.x = rebatedor.centro.x +0.1;
+        }
+
+    } else if ((x - xAntigo) < 0)
+    {
+        if (fabs(rebatedor.centro.x - rebatedor.largura / 2 - 0.1) < 2)
+        {
+
+            rebatedor.atualizaPosicao(rebatedor.centro.x - 0.1);
+            centroRebatedor.x = centroRebatedor.x -0.1;
+        }
+    }
+
+    if(!fullScreen)
+    {
+
+        //cout << "X " << x << endl;
+        if (x >= 700 || x <= 200)
+        {
+
+
+            x = glutGet(GLUT_WINDOW_WIDTH) / 2;
+            y = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+            glutWarpPointer(x, y);
+
+        }
+        //cout << "Y " << y;
+        if (y >= 400 || y <= 200 || y <= 20)
+        {
+
+
+            x = glutGet(GLUT_WINDOW_WIDTH) / 2;
+            y = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+            glutWarpPointer(x, y);
+
+        }
+    }
+    else
+    {
+        //cout << "X " << x << endl;
+        if (x < 300 || x > 1000)
+        {
+            x = glutGet(GLUT_WINDOW_WIDTH) / 2;
+            y = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+            glutWarpPointer(x, y);
+
+        }
+    }
+
+
+
+    if(!animate && !pause)
+    {
+        position[0] = rebatedor.centro.x;
+    }
+    xAntigo = x;
+
+    return;
+}
+
 void idle()
 {
 
@@ -1797,38 +1897,6 @@ void idle()
 
         glutPostRedisplay();
     }
-
-}
-
-void reshape(int w, int h) {
-    width = w;
-    height = h;
-
-    glViewport(0, 0, (GLsizei) w, (GLsizei) h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(60.0, (GLfloat) w / (GLfloat) h, 0.01, 200.0);
-}
-
-void Spekeyboard(int key, int x, int y)
-{
-    switch (key)
-    {
-
-        case GLUT_KEY_F12:
-            fullScreen = !fullScreen;
-            if (fullScreen)
-            {
-                glutFullScreen();
-            }
-            else
-            {
-                glutReshapeWindow(1000, 600);
-            }
-
-            break;
-    }
-
 
 }
 
@@ -2092,8 +2160,8 @@ void keyboard(unsigned char key, int x, int y) {
                 break;
 
 
-             case '32':
-                 if(pause)
+            case '32':
+                if(pause)
                     pause=0;
                 else
                     pause = 1;
@@ -2104,200 +2172,6 @@ void keyboard(unsigned char key, int x, int y) {
     }
 
 
-}
-
-// Motion callback
-void motion(int x, int y) {
-
- if(pause ==1){/// Se o game está pausado, então eu posso girar a câmera livremente
-     printf("CAMERA %f",yCamera);
-    rotationX += (float) (y - last_y);
-    last_y = y;
-
-    rotationY += (float) (x - last_x);
-    last_x = x;
-    }
-
-}
-
-// Mouse callback
-void mouse(int button, int state, int x, int y)
-{
-
-    if(!animate && !pause)
-    {
-        if ((button == GLUT_LEFT_BUTTON ) && (state == GLUT_DOWN))
-        {
-            animate = !animate;
-            gameStarted =1;
-
-        }
-
-        else if(button == 3)
-        {
-            initialDirection += 3;
-
-        }
-        else
-        {
-            initialDirection -= 3;
-        }
-
-        initialDirection = fixRange(initialDirection, -180, 180, true);
-        direction[0] = cos((initialDirection + 90) * M_PI / 180);
-        direction[1] = sin((initialDirection + 90) * M_PI / 180);
-
-    }
-
-}
-
-void generatePrisms()
-{
-
-    float y = 0.5;
-    float x = -1.7 + 0.35/2.0;
-    //float x = 0.5;
-
-    //Desenha linha de retangulos
-
-
-        for (int i = 0; i < 9; ++i)
-        {  //4
-
-            makeRetangulo(x, y, retangulos[i]);
-            x += 0.39;
-
-            //cout<<"x = "<<x<<" ";
-        }
-
-        //  cout<<endl;
-
-        y += 0.4;
-        x = -1.9 + 0.35/2.0;
-
-
-        for (int i = 0; i < 10; ++i)
-        {  //4
-
-            makeRetangulo(x, y, retangulos[9+i]);
-            x += 0.39;
-
-            //cout<<"x = "<<x<<" ";
-        }
-
-        //  cout<<endl;
-
-    x = -2 + 0.35/2.0;
-    y += 0.4;
-
-        for (int i = 0; i < 10; ++i)
-        {  //4
-
-        makeRetangulo(x, y, retangulos[19+i]);
-        x += 0.39;
-
-        //cout<<"x = "<<x<<" ";
-         }
-
-/*    x = -2 + 0.35/2.0;
-    y += 0.3;
-
-    for (int i = 0; i < 10; ++i)
-    {  //4
-
-        makeRetangulo(x, y, retangulos[i]);
-        x += 0.39;
-
-        //cout<<"x = "<<x<<" ";
-    }*/
-
-
-
-
-
-}
-
-
-void passiveMotion(int x, int y)
-{
-    if(pause)
-    {
-        //x = glutGet(GLUT_WINDOW_WIDTH) / 2;
-        y = glutGet(GLUT_WINDOW_HEIGHT)/2;
-        glutWarpPointer(xAntigo, y);
-
-        return;
-    }
-
-    bool mudanca = 0;
-
-    //cout<<"PassiveMotion\n";
-
-
-    if ((x - xAntigo) > 0) //movimento para direita
-    {
-        if ((rebatedor.centro.x + rebatedor.largura / 2 + 0.1) < 2)
-        {
-
-            rebatedor.atualizaPosicao(rebatedor.centro.x + 0.1);
-            centroRebatedor.x = rebatedor.centro.x +0.1;
-        }
-
-    } else if ((x - xAntigo) < 0)
-    {
-        if (fabs(rebatedor.centro.x - rebatedor.largura / 2 - 0.1) < 2)
-        {
-
-            rebatedor.atualizaPosicao(rebatedor.centro.x - 0.1);
-            centroRebatedor.x = centroRebatedor.x -0.1;
-        }
-    }
-
-    if(!fullScreen)
-    {
-
-        //cout << "X " << x << endl;
-        if (x >= 700 || x <= 200)
-        {
-
-
-            x = glutGet(GLUT_WINDOW_WIDTH) / 2;
-            y = glutGet(GLUT_WINDOW_HEIGHT) / 2;
-            glutWarpPointer(x, y);
-
-        }
-        //cout << "Y " << y;
-        if (y >= 400 || y <= 200 || y <= 20)
-        {
-
-
-            x = glutGet(GLUT_WINDOW_WIDTH) / 2;
-            y = glutGet(GLUT_WINDOW_HEIGHT) / 2;
-            glutWarpPointer(x, y);
-
-        }
-    }
-    else
-    {
-        //cout << "X " << x << endl;
-        if (x < 300 || x > 1000)
-        {
-            x = glutGet(GLUT_WINDOW_WIDTH) / 2;
-            y = glutGet(GLUT_WINDOW_HEIGHT) / 2;
-            glutWarpPointer(x, y);
-
-        }
-    }
-
-
-
-    if(!animate && !pause)
-    {
-        position[0] = rebatedor.centro.x;
-    }
-    xAntigo = x;
-
-    return;
 }
 
 /// Main

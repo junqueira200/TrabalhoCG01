@@ -37,6 +37,9 @@ public:
 
 };
 
+retangulo retangulos[29];
+const int NUMRETAN = 29; //40
+
 class Rebatedor : public retangulo
 {
 
@@ -47,6 +50,8 @@ public:
 
 };
 
+Rebatedor rebatedor = Rebatedor();
+
 triangle makeTriangle(float x = 0, float y = 0, float rotation = 0);
 void makeRetangulo(float x, float y, retangulo &r);
 
@@ -55,5 +60,14 @@ float rad(float angle) {
 }
 
 void desenhaRetangulo(retangulo &r);
+
+float fixRange(float value, float min, float max, bool circular)
+{
+    if (value > max)
+        return circular ? min : max;
+    else if (value < min)
+        return circular ? max : min;
+    return value;
+}
 
 #endif //TRABALHOCG01_RETANGULO_H
