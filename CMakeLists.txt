@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 add_executable(TrabalhoCG01 main.cpp
         glcWavefrontObject.h
-        glcWavefrontObject.cpp Retangulo.cpp Retangulo.h)
+        glcWavefrontObject.cpp Retangulo.cpp Retangulo.h cor.h)
 
 target_link_libraries(TrabalhoCG01 -lglut -lGL -lGLU )
 

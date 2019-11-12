@@ -2,6 +2,8 @@
 // Created by igor on 12/11/19.
 //
 #include "math.h"
+#include <GL/glut.h>
+#include "cor.h"
 const float TRIANGLE_RADIUS = 0.3;
 #ifndef TRABALHOCG01_RETANGULO_H
 #define TRABALHOCG01_RETANGULO_H
@@ -51,4 +53,7 @@ void makeRetangulo(float x, float y, retangulo &r);
 float rad(float angle) {
     return angle * M_PI / 180;
 }
+
+void desenhaRetangulo(retangulo &r);
+
 #endif //TRABALHOCG01_RETANGULO_H

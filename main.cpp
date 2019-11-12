@@ -12,6 +12,7 @@
 #include <list>
 #include "glcWavefrontObject.h"
 #include "Retangulo.h"
+#include "cor.h"
 #define NUM_OBJECTS 2
 #define MAXLINHA 10
 
@@ -128,25 +129,6 @@ float lastXObject,lastYObject;
 
 int fase = 0;
 int vidas = 5;
-
-typedef struct
-{
-    GLfloat objeto_ambient[4];
-    GLfloat objeto_difusa[4];
-}Cor;
-
-Cor corBlocos[3] = {{{ 0.0, 0.0, 0.0, 0.1 }, { 1, 0, 0, 1.0 }},
-                    {{ 0.0, 0.0, 1.0, 0.1 }, { 0.0, 1.0, 0.0, 1.0 }},
-                    {{ 0.0, 1.0, 0.0, 0.1 }, { 0.0, 0.0, 1.0, 1.0 }}};
-
-
-Cor corParede[3] = {{{ 0.6, 0.6, 0.0, 0.1 }, { 0.6, 0.6, 0.0, 1.0 }},
-                    {{ 0,1.0,1.0, 0.1 }, { 0,1.0,1.0, 1.0 }},
-                    {{ 139/255.0,69/255.0,19/255.0, 0.1 }, { 139/255.0,69/255.0,19/255.0, 1.0 }}};
-
-Cor corRebatedorLaterais[3] = {{{ 0.0, 0.0, 0.0, 0.1 },{ 0.0, 1.0, 0.0, 1.0 }},
-                               {{ 0.0, 0.0, 0.0, 0.1 },{ 0.0, 0.0, 1.0, 1.0 }},
-                               {{ 0.0, 0.0, 0.0, 0.1 },{ 1.0, 0.0, 0.0, 1.0 }}};
 
 /// Functions
 void init(void) {
@@ -513,126 +495,6 @@ void CalculaNormal2(vertex v0p, vertex v1p, vertex v2p,vertex *vn)/// função m
     vn->y /= len;
     vn->z /= len;
 }
-
-
-void desenhaRetangulo(retangulo &r)
-{
-    int i;
-
-    glPushMatrix();
-
-
-
-    GLfloat objeto_especular[] = { 1.0, 1.0, 1.0, 0.4 };
-    GLfloat objeto_brilho[]    = { 50.0f };
-    GLfloat objeto_ambient[]   = { 0, 0.0, 0.0, 0.001 };
-    GLfloat objeto_difusa[]    = { 1, 0, 0, 1.0 };
-
-    glMaterialfv(GL_FRONT, GL_AMBIENT, objeto_ambient);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, corBlocos[fase].objeto_difusa);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, objeto_especular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, objeto_brilho);
-
-    if(r.reduzir)
-        r.escala -= 0.02;
-
-    if(r.escala <= 0.0)
-    {
-        r.colisao = true;
-        r.reduzir = false;
-    }
-
-    //glNormal3f(0, 0, 1);
-    glBegin(GL_QUADS);
-    for (i = 0; i < 4; ++i)
-    {
-        glNormal3f(0, 0, 1);
-        glVertex3f(r.vetorPontos[i].x * r.escala, r.vetorPontos[i].y*r.escala, r.altura*r.escala); //Face superior
-
-    }
-
-    glEnd();
-
-    //glNormal3f(0,0,1);
-
-    //Face que aponta para (0, -1, 0)
-    glBegin(GL_QUADS);
-
-    glNormal3f(0,-1,0);
-    glVertex3f(r.vetorPontos[0].x*r.escala, r.vetorPontos[0].y*r.escala, 0);
-
-    glNormal3f(0,-1,0);
-    glVertex3f(r.vetorPontos[1].x*r.escala, r.vetorPontos[1].y*r.escala, 0);
-
-    glNormal3f(0,-1,0);
-    glVertex3f(r.vetorPontos[1].x*r.escala, r.vetorPontos[1].y*r.escala, r.altura*r.escala);
-
-    glNormal3f(0,-1,0);
-    glVertex3f(r.vetorPontos[0].x*r.escala, r.vetorPontos[0].y*r.escala, r.altura*r.escala);
-
-
-    glEnd();
-
-    //Face que aponta para (0, 1, 0)
-    glBegin(GL_QUADS);
-
-    glNormal3f(0,1,0);
-    glVertex3f(r.vetorPontos[0].x*r.escala, (r.vetorPontos[1].y+r.altura)*r.escala, r.altura*r.escala);
-
-    glNormal3f(0,1,0);
-    glVertex3f(r.vetorPontos[1].x*r.escala, (r.vetorPontos[1].y+r.altura)*r.escala, r.altura*r.escala);
-
-    glNormal3f(0,1,0);
-    glVertex3f(r.vetorPontos[1].x*r.escala,(r.vetorPontos[1].y+r.altura)*r.escala, 0);
-
-    glNormal3f(0,1,0);
-    glVertex3f(r.vetorPontos[0].x*r.escala, (r.vetorPontos[1].y+r.altura)*r.escala, 0);
-
-
-    glEnd();
-
-    //glNormal3f(0,-1,0);
-
-    //Face que aponta para (1, 0, 0)
-    glBegin(GL_QUADS);
-
-    glNormal3f(1, 0,0);
-    glVertex3f(r.vetorPontos[1].x*r.escala, r.vetorPontos[1].y*r.escala, 0);
-
-    glNormal3f(1, 0,0);
-    glVertex3f(r.vetorPontos[1].x*r.escala, (r.vetorPontos[1].y + r.altura)*r.escala, 0);
-
-    glNormal3f(1, 0,0);
-    glVertex3f(r.vetorPontos[1].x*r.escala , (r.vetorPontos[1].y + r.altura)*r.escala, r.altura*r.escala);
-
-    glNormal3f(1, 0,0);
-    glVertex3f(r.vetorPontos[1].x*r.escala, r.vetorPontos[1].y*r.escala, r.altura*r.escala);
-
-
-    glEnd();
-
-    //glNormal3f(-1, 0, 0);
-
-    glBegin(GL_QUADS);
-
-    glNormal3f(-1, 0, 0);
-    glVertex3f(r.vetorPontos[0].x*r.escala, r.vetorPontos[0].y*r.escala, 0);
-
-    glNormal3f(-1, 0, 0);
-    glVertex3f(r.vetorPontos[0].x*r.escala, r.vetorPontos[0].y*r.escala, r.altura*r.escala);
-
-    glNormal3f(-1, 0, 0);
-    glVertex3f(r.vetorPontos[3].x*r.escala, r.vetorPontos[3].y*r.escala, r.altura*r.escala);
-
-    glNormal3f(-1, 0, 0);
-    glVertex3f(r.vetorPontos[3].x*r.escala, r.vetorPontos[3].y*r.escala, 0);
-
-
-    glEnd();
-    glPopMatrix();
-
-}
-
 
 void drawPrism(triangle t) {
     int i;
