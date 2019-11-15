@@ -4,7 +4,7 @@
 #include "math.h"
 #include <GL/glut.h>
 #include "cor.h"
-const float TRIANGLE_RADIUS = 0.3;
+//const float TRIANGLE_RADIUS = 0.3;
 #ifndef TRABALHOCG01_RETANGULO_H
 #define TRABALHOCG01_RETANGULO_H
 

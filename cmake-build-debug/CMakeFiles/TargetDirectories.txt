@@ -1,0 +1,3 @@
+/home/ark/Faculdade/TrabalhoCG01/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/ark/Faculdade/TrabalhoCG01/cmake-build-debug/CMakeFiles/TrabalhoCG01.dir
+/home/ark/Faculdade/TrabalhoCG01/cmake-build-debug/CMakeFiles/edit_cache.dir

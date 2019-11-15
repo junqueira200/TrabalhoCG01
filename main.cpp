@@ -9,15 +9,12 @@
 #include <iostream>
 #include <cstring>
 #include <vector>
-#include <list>
-#include "glcWavefrontObject.h"
 #include "Retangulo.h"
 #include "cor.h"
 #include "Normal.h"
 #include "Posicao.h"
 #include "OpenGL_CallBack.h"
 #include "Colisao.h"
-#define NUM_OBJECTS 2
 
 using namespace std;
 
@@ -25,6 +22,8 @@ using namespace std;
 float fixRange(float value, float min, float max, bool circular = false);
 
 /// Globals
+
+int fase =0;
 vertex normalFaces;
 vertex centroRebatedor;
 int angulo = 0;
@@ -45,18 +44,9 @@ triangle tn11,tn12,tn13,tn14,tn15,tn16,tn17,tn18,tn19,tn20;
 ///flag paar controlar a inserçaõ de vertices no vetor de vertices
 int verticeAdded =0;
 
-///vertices auxiliares
-vertex naux1,naux2,naux3,naux4,naux5,naux6,naux7,naux8,naux9,naux10;
-vertex naux11,naux12,naux13,naux14,naux15,naux16,naux17,naux18,naux19,naux20;
-vertex naux21,naux22,naux23,naux24,naux25,naux26,naux27,naux28,naux29,naux30;
-vertex naux31,naux32,naux33,naux34,naux35,naux36,naux37,naux38,naux39,naux40;
-vertex naux41,naux42,naux43,naux44,naux45,naux46,naux47,naux48,naux49;
-vertex naux50,naux51,naux52,naux53,naux54,nau55,naux56,naux57;
 
-class quad{
-public:
-    vertex v[4];
-};
+
+
 
 
 const float RAIORETANGULO = 0.215058132;
@@ -70,50 +60,27 @@ int xAntigo;
 
 
 ///object managing
-char objectFiles[NUM_OBJECTS][50] =
-{
-   "data/obj/soccerball.obj",
-    "data/obj/dolphins.obj"
-};
 
-typedef struct
-{
-    //GLMmodel* pmodel = NULL
-glcWavefrontObject *pmodel = NULL;
-} object;
 
-object *objectList;
-glcWavefrontObject *objectManager = NULL;
-bool drawboundingbox = false;
-int selected = 0;
-int selectedShading = SMOOTH_SHADING;
-int selectedRender = USE_MATERIAL;
+///vertices auxiliares
+vertex naux1,naux2,naux3,naux4,naux5,naux6,naux7,naux8,naux9,naux10;
+vertex naux11,naux12,naux13,naux14,naux15,naux16,naux17,naux18,naux19,naux20;
+vertex naux21,naux22,naux23,naux24,naux25,naux26,naux27,naux28,naux29,naux30;
+vertex naux31,naux32,naux33,naux34,naux35,naux36,naux37,naux38,naux39,naux40;
+vertex naux41,naux42,naux43,naux44,naux45,naux46,naux47,naux48,naux49;
+vertex naux50;
 
-float randomStart[9] ={0.01,-0.02,0.03,-0.04,-0.05,0.06,0.-07,0.08,-0.09};
-float deltaScaleObject1 = 0.08;
-float deltaScaleObject2 = 0.08;
 
-float lastXObject,lastYObject;
 
-int fase = 0;
 int vidas = 5;
+
 
 /// Functions
 void init(void) {
     //initLight(width, height); // Função extra para tratar iluminação.
-      objectsALives.push_back(0);
-      objectsALives.push_back(0);
+
     // LOAD OBJECTS
-     objectManager =  new glcWavefrontObject();
-    objectManager->SetNumberOfObjects(NUM_OBJECTS);
-    for(int i = 0; i < NUM_OBJECTS; i++)
-    {
-        objectManager->SelectObject(i);
-        objectManager->ReadObject(objectFiles[i]);
-        objectManager->Unitize();
-        objectManager->FacetNormal();
-        objectManager->VertexNormals(90.0);
-    }
+
 
 
     glEnable(GL_LIGHTING);                 // Habilita luz
@@ -168,12 +135,6 @@ void drawBoard() {
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, corParede[fase].objeto_difusa);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
-
-/*    glMaterialfv(GL_BACK, GL_AMBIENT, objeto_ambient);
-    glMaterialfv(GL_BACK, GL_DIFFUSE, objeto_difusa);
-    glMaterialfv(GL_BACK, GL_SPECULAR, objeto_especular);
-    glMaterialfv(GL_BACK, GL_SHININESS, objeto_brilho);*/
-
 
 
     // base
@@ -1123,72 +1084,7 @@ void drawExits(){
 
 }
 
-void drawObjects(){
 
-    glPushMatrix();
-    drawExits();
-    updateObjects1Position();
-    if(objectsALives[0]==0 && timerDeathObject1 ==0){
-     positionXObject1 = -1.5;
-     positionYObject1 = 1.8;
-     int i = rand() % 8;
-     deltaXobject1 = randomStart[i];
-     objectsALives[0] =1;
-     i = NULL;
-    }
-    objectManager->SelectObject(0);
-    objectManager->SetShadingMode(selectedShading); // Possible values: FLAT_SHADING e SMOOTH_SHADING
-    objectManager->SetRenderMode(selectedRender);     // Possible values: USE_COLOR, USE_MATERIAL, USE_TEXTURE (not available in this example)
-    objectManager->Unitize();
-    glPushMatrix();
-    glTranslatef(positionXObject1,positionYObject1,0.2);
-    if(timerDeathObject1>0){
-    objectManager->Scale(0.5-deltaScaleObject1);
-    deltaScaleObject1 = deltaScaleObject1+0.005;
-    timerDeathObject1--;
-    if(0.5-deltaScaleObject1<0){
-        timerDeathObject1 = 0;
-        objectsALives[0]=0;
-        deltaScaleObject1 = 0.08;
-    }
-    }else{
-        objectManager->Scale(0.5);
-    }
-    objectManager->Draw();
-    glPopMatrix();
-
-
-     ///desenho o segundo objeto
-    if(objectsALives[1]==0 && timerDeathObject2 ==0){
-     positionXObject2 = 1.5;
-     positionYObject2 = 1.8;
-     int i = rand() % 7;
-     deltaXobject1 = randomStart[i];
-     objectsALives[1] =1;
-     i = NULL;
-    }
-    objectManager->SelectObject(1);
-    objectManager->SetShadingMode(selectedShading); // Possible values: FLAT_SHADING e SMOOTH_SHADING
-    objectManager->SetRenderMode(selectedRender);     // Possible values: USE_COLOR, USE_MATERIAL, USE_TEXTURE (not available in this example)
-    objectManager->Unitize();
-    glPushMatrix();
-    glTranslatef(positionXObject2,positionYObject2,0.2);
-    if(timerDeathObject2>0){
-    objectManager->Scale(0.5-deltaScaleObject2);
-    deltaScaleObject2 = deltaScaleObject2+0.005;
-    timerDeathObject2--;
-    if(0.5-deltaScaleObject2<0){
-        timerDeathObject2 = 0;
-        objectsALives[1]=0;
-        deltaScaleObject2 = 0.08;
-    }
-    }else{
-        objectManager->Scale(0.5);
-    }
-    objectManager->Draw();
-    glPopMatrix();
-glPopMatrix();
-}
 
 
 void display(void) {
@@ -1234,7 +1130,7 @@ void display(void) {
         gameStarted =1;
     }
 
-    drawObjects();
+
 
 
      if(animate == true && timerInicialColision > 0)
@@ -1320,8 +1216,6 @@ void display(void) {
             strcpy(texto, "Voce Venceu");
             glTranslatef(0.05, -0.5, rebatedor.centro.z + 0.5);
         }
-
-
 
         glScalef(0.001, 0.001, 0.001);
 
@@ -1508,7 +1402,6 @@ void updateState() {
 
                 {
                     printf("Lado direito\n");
-
 
                     side = 3;
                 }

@@ -2,6 +2,8 @@
 // Created by igor on 12/11/19.
 //
 
+const float TRIANGLE_RADIUS = 0.3;
+int fase=0;
 #include "Retangulo.h"
 
 void Rebatedor::atualizaPosicao(float x , float y )
@@ -89,7 +91,7 @@ void makeRetangulo(float x, float y, retangulo &r)
 
 }
 
-triangle makeTriangle(float x , float y = 0, float rotation)
+triangle makeTriangle(float x , float y, float rotation)
 {
     int i;
     triangle t;

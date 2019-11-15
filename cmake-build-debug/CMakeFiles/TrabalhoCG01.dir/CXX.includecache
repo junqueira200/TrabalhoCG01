@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ark/Faculdade/TrabalhoCG01/Retangulo.cpp
+Retangulo.h
+/home/ark/Faculdade/TrabalhoCG01/Retangulo.h
+
+/home/ark/Faculdade/TrabalhoCG01/Retangulo.h
+math.h
+/home/ark/Faculdade/TrabalhoCG01/math.h
+GL/glut.h
+-
+cor.h
+/home/ark/Faculdade/TrabalhoCG01/cor.h
+
+/home/ark/Faculdade/TrabalhoCG01/cor.h
+

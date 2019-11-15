@@ -13,7 +13,6 @@ using namespace std;
 
 const float BALL_RADIUS = 0.10;
 triangle auxColisionObjects;
-vector<int> objectsALives;
 int timerDeathObject1 =200;
 int timerDeathObject2 =200;
 
