@@ -8,6 +8,7 @@
 #ifndef TRABALHOCG01_RETANGULO_H
 #define TRABALHOCG01_RETANGULO_H
 
+
 class vertex {
 public:
     float x = 0, y = 0, z = 0;
@@ -37,9 +38,6 @@ public:
 
 };
 
-retangulo retangulos[29];
-const int NUMRETAN = 29; //40
-
 class Rebatedor : public retangulo
 {
 
@@ -50,24 +48,16 @@ public:
 
 };
 
-Rebatedor rebatedor = Rebatedor();
+extern retangulo retangulos[29];
+extern const int NUMRETAN; //40
+extern Rebatedor rebatedor;
+extern const float TRIANGLE_RADIUS;
+extern int fase;
 
 triangle makeTriangle(float x = 0, float y = 0, float rotation = 0);
 void makeRetangulo(float x, float y, retangulo &r);
-
-float rad(float angle) {
-    return angle * M_PI / 180;
-}
-
+float rad(float angle);
 void desenhaRetangulo(retangulo &r);
-
-float fixRange(float value, float min, float max, bool circular)
-{
-    if (value > max)
-        return circular ? min : max;
-    else if (value < min)
-        return circular ? max : min;
-    return value;
-}
+float fixRange(float value, float min, float max, bool circular = false);
 
 #endif //TRABALHOCG01_RETANGULO_H

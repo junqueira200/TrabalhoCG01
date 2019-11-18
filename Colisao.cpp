@@ -4,6 +4,10 @@
 
 #include "Colisao.h"
 
+const float BALL_RADIUS = 0.10;
+triangle auxColisionObjects;
+int timerDeathObject1 =200;
+int timerDeathObject2 =200;
 
 int detecColisionLadoDireito(triangle t)
 {

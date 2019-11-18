@@ -6,6 +6,7 @@
 #include "glcWavefrontObject.h"
 #include "Posicao.h"
 #include "Colisao.h"
+
 float deltaScaleObject1 = 0.08;
 float deltaScaleObject2 = 0.08;
 vector<int> objectsALives;

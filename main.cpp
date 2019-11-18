@@ -18,12 +18,9 @@
 
 using namespace std;
 
-// Definitions
-float fixRange(float value, float min, float max, bool circular = false);
 
 /// Globals
 
-int fase =0;
 vertex normalFaces;
 vertex centroRebatedor;
 int angulo = 0;

@@ -4,7 +4,24 @@
 
 #include "OpenGL_CallBack.h"
 
-
+//Definição de variáveis
+int width;
+int height;
+bool fullScreen = false;
+bool animate = false;
+bool pause = false;
+float xCamera = 0;
+float yCamera = -2;
+bool perspective = true;
+float zdist = 4.0;
+float rotationX = 0;
+float rotationY = 0;
+int last_x;
+int last_y;
+int gameStarted =0;
+float initialDirection = 0;
+bool venceu = false;
+bool perdeu = false;
 
 void reshape(int w, int h)
 {

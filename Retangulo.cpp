@@ -2,9 +2,29 @@
 // Created by igor on 12/11/19.
 //
 
+
+#include "Retangulo.h"
+
+//Definição de variáveis
 const float TRIANGLE_RADIUS = 0.3;
 int fase=0;
-#include "Retangulo.h"
+retangulo retangulos[29];
+const int NUMRETAN = 29; //40
+Rebatedor rebatedor = Rebatedor();
+
+float rad(float angle) {
+    return angle * M_PI / 180;
+}
+
+
+float fixRange(float value, float min, float max, bool circular)
+{
+    if (value > max)
+        return circular ? min : max;
+    else if (value < min)
+        return circular ? max : min;
+    return value;
+}
 
 void Rebatedor::atualizaPosicao(float x , float y )
 {

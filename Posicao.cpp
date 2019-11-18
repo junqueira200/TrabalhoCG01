@@ -3,6 +3,19 @@
 //
 #include "Posicao.h"
 
+//Definição de variáveis
+
+float position[2] = {0,-1.01};
+float positionXObject1 = -1.5;
+float positionYObject1 = 1.7;
+float positionXObject2 = 1.5;
+float positionYObject2 = 1.7;
+float deltaXobject1 = 0.01;
+float deltaYobject1 = 0.01;
+float deltaXobject2 = 0.01;
+float deltaYobject2 = 0.01;
+float direction[2] = {0.5, 0.5};
+
 void updateObjects1Position(){
 
     if(positionYObject1+0.2 > 2 || positionYObject1- 0.2< -2)

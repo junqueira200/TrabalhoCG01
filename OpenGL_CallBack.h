@@ -7,20 +7,24 @@
 #ifndef TRABALHOCG01_OPENGL_CALLBACK_H
 #define TRABALHOCG01_OPENGL_CALLBACK_H
 
-int width, height;
-bool fullScreen = false;
-bool animate = false;
-bool pause = false;
-float xCamera = 0;
-float yCamera = -2;
-bool perspective = true;
-float zdist = 4.0;
-float rotationX = 0, rotationY = 0;
-int last_x, last_y;
-int gameStarted =0;
-float initialDirection = 0;
-bool venceu = false;
-bool perdeu = false;
+//Declaração de variáveis
+extern int width;
+extern int height;
+extern bool fullScreen;
+extern bool animate;
+extern bool pause ;
+extern float xCamera;
+extern float yCamera ;
+extern bool perspective;
+extern float zdist;
+extern float rotationX;
+extern float rotationY;
+extern int last_x;
+extern int last_y;
+extern int gameStarted;
+extern float initialDirection;
+extern bool venceu;
+extern bool perdeu;
 
 void mouse(int button, int state, int x, int y);
 void motion(int x, int y);

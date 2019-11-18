@@ -4,15 +4,19 @@
 
 #ifndef TRABALHOCG01_POSICAO_H
 #define TRABALHOCG01_POSICAO_H
-float position[2] = {0,-1.01};
 
-float positionXObject1 = -1.5, positionYObject1 = 1.7;
-float positionXObject2 = 1.5, positionYObject2 = 1.7;
-float deltaXobject1 = 0.01;
-float deltaYobject1 = 0.01;
-float deltaXobject2 = 0.01;
-float deltaYobject2 = 0.01;
-float direction[2] = {0.5, 0.5};
+//Declaração de variáveis
+
+extern float position[2];
+extern float positionXObject1;
+extern float positionYObject1;
+extern float positionXObject2;
+extern float positionYObject2;
+extern float deltaXobject1;
+extern float deltaYobject1;
+extern float deltaXobject2;
+extern float deltaYobject2;
+extern float direction[2];
 
 void updateObjects1Position();
 #endif //TRABALHOCG01_POSICAO_H

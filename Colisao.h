@@ -4,6 +4,7 @@
 #include "Retangulo.h"
 #include "Posicao.h"
 #include "OpenGL_CallBack.h"
+#include "objectsHandler.h"
 #include <vector>
 
 using namespace std;
@@ -11,10 +12,10 @@ using namespace std;
 #ifndef TRABALHOCG01_COLISAO_H
 #define TRABALHOCG01_COLISAO_H
 
-const float BALL_RADIUS = 0.10;
-triangle auxColisionObjects;
-int timerDeathObject1 =200;
-int timerDeathObject2 =200;
+extern const float BALL_RADIUS;
+extern triangle auxColisionObjects;
+extern int timerDeathObject1;
+extern int timerDeathObject2;
 
 int detecColisionLadoDireito(triangle t);
 int detecColisionLadoEsquerdo(triangle t);
