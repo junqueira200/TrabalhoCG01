@@ -258,6 +258,33 @@ Retangulo.cpp.s:
 	$(MAKE) -f CMakeFiles/TrabalhoCG01.dir/build.make CMakeFiles/TrabalhoCG01.dir/Retangulo.cpp.s
 .PHONY : Retangulo.cpp.s
 
+TexturaPlano.o: TexturaPlano.cpp.o
+
+.PHONY : TexturaPlano.o
+
+# target to build an object file
+TexturaPlano.cpp.o:
+	$(MAKE) -f CMakeFiles/TrabalhoCG01.dir/build.make CMakeFiles/TrabalhoCG01.dir/TexturaPlano.cpp.o
+.PHONY : TexturaPlano.cpp.o
+
+TexturaPlano.i: TexturaPlano.cpp.i
+
+.PHONY : TexturaPlano.i
+
+# target to preprocess a source file
+TexturaPlano.cpp.i:
+	$(MAKE) -f CMakeFiles/TrabalhoCG01.dir/build.make CMakeFiles/TrabalhoCG01.dir/TexturaPlano.cpp.i
+.PHONY : TexturaPlano.cpp.i
+
+TexturaPlano.s: TexturaPlano.cpp.s
+
+.PHONY : TexturaPlano.s
+
+# target to generate assembly for a file
+TexturaPlano.cpp.s:
+	$(MAKE) -f CMakeFiles/TrabalhoCG01.dir/build.make CMakeFiles/TrabalhoCG01.dir/TexturaPlano.cpp.s
+.PHONY : TexturaPlano.cpp.s
+
 cor.o: cor.cpp.o
 
 .PHONY : cor.o
@@ -390,6 +417,9 @@ help:
 	@echo "... Retangulo.o"
 	@echo "... Retangulo.i"
 	@echo "... Retangulo.s"
+	@echo "... TexturaPlano.o"
+	@echo "... TexturaPlano.i"
+	@echo "... TexturaPlano.s"
 	@echo "... cor.o"
 	@echo "... cor.i"
 	@echo "... cor.s"

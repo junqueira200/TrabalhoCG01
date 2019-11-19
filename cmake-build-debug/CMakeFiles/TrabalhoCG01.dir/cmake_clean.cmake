@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/TrabalhoCG01.dir/main.cpp.o"
+  "CMakeFiles/TrabalhoCG01.dir/TexturaPlano.cpp.o"
   "CMakeFiles/TrabalhoCG01.dir/glcWavefrontObject.cpp.o"
   "CMakeFiles/TrabalhoCG01.dir/Retangulo.cpp.o"
   "CMakeFiles/TrabalhoCG01.dir/Normal.cpp.o"

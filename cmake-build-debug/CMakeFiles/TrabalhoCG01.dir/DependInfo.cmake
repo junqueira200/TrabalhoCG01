@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/igor/Documentos/TrabalhoCG1/OpenGL_CallBack.cpp" "/home/igor/Documentos/TrabalhoCG1/cmake-build-debug/CMakeFiles/TrabalhoCG01.dir/OpenGL_CallBack.cpp.o"
   "/home/igor/Documentos/TrabalhoCG1/Posicao.cpp" "/home/igor/Documentos/TrabalhoCG1/cmake-build-debug/CMakeFiles/TrabalhoCG01.dir/Posicao.cpp.o"
   "/home/igor/Documentos/TrabalhoCG1/Retangulo.cpp" "/home/igor/Documentos/TrabalhoCG1/cmake-build-debug/CMakeFiles/TrabalhoCG01.dir/Retangulo.cpp.o"
+  "/home/igor/Documentos/TrabalhoCG1/TexturaPlano.cpp" "/home/igor/Documentos/TrabalhoCG1/cmake-build-debug/CMakeFiles/TrabalhoCG01.dir/TexturaPlano.cpp.o"
   "/home/igor/Documentos/TrabalhoCG1/cor.cpp" "/home/igor/Documentos/TrabalhoCG1/cmake-build-debug/CMakeFiles/TrabalhoCG01.dir/cor.cpp.o"
   "/home/igor/Documentos/TrabalhoCG1/glcWavefrontObject.cpp" "/home/igor/Documentos/TrabalhoCG1/cmake-build-debug/CMakeFiles/TrabalhoCG01.dir/glcWavefrontObject.cpp.o"
   "/home/igor/Documentos/TrabalhoCG1/main.cpp" "/home/igor/Documentos/TrabalhoCG1/cmake-build-debug/CMakeFiles/TrabalhoCG01.dir/main.cpp.o"

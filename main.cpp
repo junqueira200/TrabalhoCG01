@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include <math.h>
 #include <float.h>
-//#include "extras.h"
+#include "TexturaPlano.h"
 #include "etc.h" //TODO: reorganize modules
 #include <iostream>
 #include <cstring>
@@ -62,7 +62,8 @@ int vidas = 5;
 
 /// Functions
 void init(void) {
-    //initLight(width, height); // Função extra para tratar iluminação.
+
+
 
     // LOAD OBJECTS
 

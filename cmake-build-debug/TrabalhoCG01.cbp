@@ -114,6 +114,12 @@
 		<Unit filename="/home/igor/Documentos/TrabalhoCG1/Retangulo.h">
 			<Option target="TrabalhoCG01"/>
 		</Unit>
+		<Unit filename="/home/igor/Documentos/TrabalhoCG1/TexturaPlano.cpp">
+			<Option target="TrabalhoCG01"/>
+		</Unit>
+		<Unit filename="/home/igor/Documentos/TrabalhoCG1/TexturaPlano.h">
+			<Option target="TrabalhoCG01"/>
+		</Unit>
 		<Unit filename="/home/igor/Documentos/TrabalhoCG1/cor.cpp">
 			<Option target="TrabalhoCG01"/>
 		</Unit>
