@@ -41,7 +41,7 @@ triangle tn11,tn12,tn13,tn14,tn15,tn16,tn17,tn18,tn19,tn20;
 ///flag paar controlar a inserçaõ de vertices no vetor de vertices
 int verticeAdded =0;
 
-vertex trianglesNormals[60];
+
 
 
 
@@ -57,6 +57,16 @@ int xAntigo;
 
 
 ///object managing
+
+
+///vertices auxiliares
+vertex naux1,naux2,naux3,naux4,naux5,naux6,naux7,naux8,naux9,naux10;
+vertex naux11,naux12,naux13,naux14,naux15,naux16,naux17,naux18,naux19,naux20;
+vertex naux21,naux22,naux23,naux24,naux25,naux26,naux27,naux28,naux29,naux30;
+vertex naux31,naux32,naux33,naux34,naux35,naux36,naux37,naux38,naux39,naux40;
+vertex naux41,naux42,naux43,naux44,naux45,naux46,naux47,naux48,naux49;
+vertex naux50;
+
 
 
 int vidas = 5;
@@ -307,11 +317,9 @@ void drawBorderss1()
 
     v6.x = 1.71;
     v6.y = 0;
-
-    trianglesNormals[0].x = v0.x;
-    trianglesNormals[0].y = v0.y;
-    trianglesNormals[0].z = 0;
-
+    naux41.x = v0.x;
+    naux41.y = v0.y;
+    naux41.z = 0;
     CalculaNormal2(v0,v1,v2,&normalBorder);
     glPushMatrix();
     glNormal3f(normalBorder.x,normalBorder.y,normalBorder.z);
@@ -321,12 +329,11 @@ void drawBorderss1()
     glVertex3f(v1.x,v1.y,v1.z);
     glVertex3f(v2.x,v2.y,v2.z);
     glEnd();
-
    // printf("NORMAL %f: %f: %f \n",n1.x,v2.y,v2.z);
     if(verticeAdded ==0);
     {
 
-    tn1.v[0]=trianglesNormals[0];
+    tn1.v[0]=naux41;
     tn1.v[1]=v1;
     tn1.v[2]=v2;
     vertices.push_back(tn1);
@@ -337,12 +344,11 @@ void drawBorderss1()
     glVertex3f(v2.x,v2.y,v2.z);
     glVertex3f(v3.x,v3.y,v3.z);
     glEnd();
-
     if(verticeAdded ==0)
-    {   trianglesNormals[1].x = v0.x;
-        trianglesNormals[1].y = v0.y;
-        trianglesNormals[1].z = 0;
-        tn2.v[0]=trianglesNormals[1];
+    {   naux42.x = v0.x;
+        naux42.y = v0.y;
+        naux42.z = 0;
+        tn2.v[0]=naux42;
         tn2.v[1]=v2;
         tn2.v[2]=v3;
         vertices.push_back(tn2);
@@ -354,11 +360,12 @@ void drawBorderss1()
     glVertex3f(v4.x,v4.y,v4.z);
     glEnd();
     if(verticeAdded ==0)
-    {   trianglesNormals[2].x = v0.x;
-        trianglesNormals[2].x = v0.y;
-        trianglesNormals[2].x = 0;
+    {   naux43.x = v0.x;
+        naux43.x = v0.y;
+        naux43.x = 0;
 
-        tn3.v[0]=trianglesNormals[2];
+
+        tn3.v[0]=naux43;
         tn3.v[1]=v3;
         tn3.v[2]=v4;
         vertices.push_back(tn3);
@@ -370,11 +377,11 @@ void drawBorderss1()
     glVertex3f(v5.x,v5.y,v5.z);
     glEnd();
     if(verticeAdded ==0)
-    {   trianglesNormals[3].x = v0.x;
-        trianglesNormals[3].y= v0.y;
-        trianglesNormals[3].z= 0;
+    {   naux44.x = v0.x;
+        naux44.y= v0.y;
+        naux44.z= 0;
 
-        tn4.v[0] = trianglesNormals[3];
+        tn4.v[0] = naux44;
         tn4.v[1]=v4;
         tn4.v[2]=v5;
         vertices.push_back(tn4);
@@ -387,11 +394,11 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
-        trianglesNormals[4].x = v0.x;
-        trianglesNormals[4].y = v0.y;
-        trianglesNormals[4].z = 0;
+        naux45.x = v0.x;
+        naux45.y = v0.y;
+        naux45.z = 0;
 
-        tn5.v[0]=trianglesNormals[4];
+        tn5.v[0]=naux45;
         tn5.v[1]=v5;
         tn5.v[2]=v6;
         vertices.push_back(tn5);
@@ -405,18 +412,18 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded == 0)
     {
-        trianglesNormals[5].x = v0.x;
-        trianglesNormals[5].x =v0.y;
-        trianglesNormals[5].z =0;
-        trianglesNormals[6].x= v2.x;
-        trianglesNormals[6].y= -v2.y;
-        trianglesNormals[6].z= v2.z;
-        trianglesNormals[7].x= v1.x;
-        trianglesNormals[7].y = -v1.y;
-        trianglesNormals[7].z= v1.z;
-        tn6.v[0]=trianglesNormals[5];
-        tn6.v[1]=trianglesNormals[6];
-        tn6.v[2]=trianglesNormals[7];
+        naux46.x = v0.x;
+        naux46.x =v0.y;
+        naux46.z =0;
+        naux1.x= v2.x;
+        naux1.y= -v2.y;
+        naux1.z= v2.z;
+        naux2.x= v1.x;
+        naux2.y= -v1.y;
+        naux2.z= v1.z;
+        tn6.v[0]=naux46;
+        tn6.v[1]=naux1;
+        tn6.v[2]=naux2;
        vertices.push_back(tn6);
     }
 
@@ -428,20 +435,20 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
-        trianglesNormals[8].x = v0.x;
-        trianglesNormals[8].x =v0.y;
-        trianglesNormals[8].z =0;
+        naux47.x = v0.x;
+        naux47.x =v0.y;
+        naux47.z =0;
 
 
-        trianglesNormals[9].x= v3.x;
-        trianglesNormals[9].y= -v3.y;
-        trianglesNormals[9].z= v3.z;
-        trianglesNormals[10].x= v2.x;
-        trianglesNormals[10].y= -v2.y;
-        trianglesNormals[10].z= v2.z;
-        tn7.v[0]=trianglesNormals[8];
-        tn7.v[1]=trianglesNormals[9];
-        tn7.v[2]=trianglesNormals[10];
+        naux3.x= v3.x;
+        naux3.y= -v3.y;
+        naux3.z= v3.z;
+        naux4.x= v2.x;
+        naux4.y= -v2.y;
+        naux4.z= v2.z;
+        tn7.v[0]=naux47;
+        tn7.v[1]=naux3;
+        tn7.v[2]=naux4;
         vertices.push_back(tn7);
     }
 
@@ -453,20 +460,20 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
-        trianglesNormals[11].x = v0.x;
-        trianglesNormals[11].x =v0.y;
-        trianglesNormals[11].z = 0;
+        naux48.x = v0.x;
+        naux48.x =v0.y;
+        naux48.z =0;
 
-        trianglesNormals[12].x= v4.x;
-        trianglesNormals[12].y= -v4.y;
-        trianglesNormals[12].z= v4.z;
-        trianglesNormals[13].x= v3.x;
-        trianglesNormals[13].y= -v3.y;
-        trianglesNormals[13].z= v3.z;
+        naux5.x= v4.x;
+        naux5.y= -v4.y;
+        naux5.z= v4.z;
+        naux6.x= v3.x;
+        naux6.y= -v3.y;
+        naux6.z= v3.z;
 
-        tn8.v[0]=trianglesNormals[11];
-        tn8.v[1]= trianglesNormals[12];
-        tn8.v[2]=trianglesNormals[13];
+        tn8.v[0]=naux48;
+        tn8.v[1]= naux5;
+        tn8.v[2]=naux6;
         vertices.push_back(tn8);
     }
 
@@ -478,18 +485,18 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
-        trianglesNormals[11].x = v0.x;
-        trianglesNormals[11].x =-v0.y;
-        trianglesNormals[11].z = 0;
-        trianglesNormals[12].x= v5.x;
-        trianglesNormals[12].y= -v5.y;
-        trianglesNormals[12].z= v5.z;
-        trianglesNormals[5].x= v4.x;
-        trianglesNormals[5].y= -v4.y;
-        trianglesNormals[5].z= v4.z;
-        tn9.v[0]=trianglesNormals[11];
-        tn9.v[1]=trianglesNormals[12];
-        tn9.v[2]=trianglesNormals[13];
+        naux49.x = v0.x;
+        naux49.x =-v0.y;
+        naux49.z = 0;
+        naux7.x= v5.x;
+        naux7.y= -v5.y;
+        naux7.z= v5.z;
+        naux8.x= v4.x;
+        naux8.y= -v4.y;
+        naux8.z= v4.z;
+        tn9.v[0]=naux49;
+        tn9.v[1]=naux7;
+        tn9.v[2]=naux8;
         vertices.push_back(tn9);
     }
 
@@ -500,18 +507,18 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
-        trianglesNormals[14].x= v0.x;
-        trianglesNormals[14].y =-v0.y;
-        trianglesNormals[14].z = 0;
-        trianglesNormals[15].x= v6.x;
-        trianglesNormals[15].y= -v6.y;
-        trianglesNormals[15].z= v6.z;
-        trianglesNormals[16].x= v5.x;
-        trianglesNormals[16].y= -v5.y;
-        trianglesNormals[16].z= v5.z;
-        tn10.v[0]=trianglesNormals[14];
-        tn10.v[1]=trianglesNormals[15];
-        tn10.v[2]= trianglesNormals[16];
+        naux50.x= v0.x;
+        naux50.y =-v0.y;
+        naux50.z = 0;
+        naux9.x= v6.x;
+        naux9.y= -v6.y;
+        naux9.z= v6.z;
+        naux10.x= v5.x;
+        naux10.y= -v5.y;
+        naux10.z= v5.z;
+        tn10.v[0]=naux50;
+        tn10.v[1]=naux9;
+        tn10.v[2]= naux10;
         vertices.push_back(tn10);
     }
 
@@ -525,18 +532,18 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
-        trianglesNormals[17].x= -v0.x;
-        trianglesNormals[17].y= v0.y;
-        trianglesNormals[17].z= 0;
-        trianglesNormals[18].x= -v2.x;
-        trianglesNormals[18].y= v2.y;
-        trianglesNormals[18].z= v2.z;
-        trianglesNormals[19].x= -v1.x;
-        trianglesNormals[19].y= v1.y;
-        trianglesNormals[19].z= v1.z;
-        tn11.v[0]=trianglesNormals[17];
-        tn11.v[1]=trianglesNormals[18];
-        tn11.v[2]=trianglesNormals[19];
+        naux11.x= -v0.x;
+        naux11.y= v0.y;
+        naux11.z= 0;
+        naux12.x= -v2.x;
+        naux12.y= v2.y;
+        naux12.z= v2.z;
+        naux13.x= -v1.x;
+        naux13.y= v1.y;
+        naux13.z= v1.z;
+        tn11.v[0]=naux11;
+        tn11.v[1]=naux12;
+        tn11.v[2]=naux13;
         vertices.push_back(tn11);
     }
 
@@ -547,21 +554,21 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
-        trianglesNormals[20].x= -v0.x;
-        trianglesNormals[20].y= v0.y;
-        trianglesNormals[20].z= 0;
+        naux14.x= -v0.x;
+        naux14.y= v0.y;
+        naux14.z= 0;
 
-        trianglesNormals[21].x= -v3.x;
-        trianglesNormals[21].y= v3.y;
-        trianglesNormals[21].z= v3.z;
+        naux15.x= -v3.x;
+        naux15.y= v3.y;
+        naux15.z= v3.z;
 
-        trianglesNormals[22].x= -v2.x;
-        trianglesNormals[22].y= v2.y;
-        trianglesNormals[22].z= v2.z;
+        naux16.x= -v2.x;
+        naux16.y= v2.y;
+        naux16.z= v2.z;
 
-        tn12.v[0]=trianglesNormals[20];
-        tn12.v[1]=trianglesNormals[21];
-        tn12.v[2]=trianglesNormals[22];
+        tn12.v[0]=naux14;
+        tn12.v[1]=naux15;
+        tn12.v[2]=naux16;
         vertices.push_back(tn12);
     }
 
@@ -573,18 +580,18 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
-        trianglesNormals[23].x= -v0.x;
-        trianglesNormals[23].y= v0.y;
-        trianglesNormals[23].z= 0;
-        trianglesNormals[24].x= -v4.x;
-        trianglesNormals[24].y= v4.y;
-        trianglesNormals[24].z= v4.z;
-        trianglesNormals[25].x= -v3.x;
-        trianglesNormals[25].y= v3.y;
-        trianglesNormals[25].z= v3.z;
-        tn13.v[0]=trianglesNormals[23];
-        tn13.v[1]=trianglesNormals[24];
-        tn13.v[2]=trianglesNormals[25];
+        naux17.x= -v0.x;
+        naux17.y= v0.y;
+        naux17.z= 0;
+        naux18.x= -v4.x;
+        naux18.y= v4.y;
+        naux18.z= v4.z;
+        naux19.x= -v3.x;
+        naux19.y= v3.y;
+        naux19.z= v3.z;
+        tn13.v[0]=naux17;
+        tn13.v[1]=naux18;
+        tn13.v[2]=naux19;
         vertices.push_back(tn13);
     }
 
@@ -596,18 +603,18 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
-        trianglesNormals[26].x= -v0.x;
-        trianglesNormals[26].y= v0.y;
-        trianglesNormals[26].z= 0;
-        trianglesNormals[27].x= -v5.x;
-        trianglesNormals[27].y= v5.y;
-        trianglesNormals[27].z= v5.z;
-        trianglesNormals[28].x= -v4.x;
-        trianglesNormals[28].y= v4.y;
-        trianglesNormals[28].z= v4.z;
-        tn14.v[0]=trianglesNormals[26];
-        tn14.v[1]=trianglesNormals[27];
-        tn14.v[2]=trianglesNormals[28];
+        naux20.x= -v0.x;
+        naux20.y= v0.y;
+        naux20.z= 0;
+        naux21.x= -v5.x;
+        naux21.y= v5.y;
+        naux21.z= v5.z;
+        naux22.x= -v4.x;
+        naux22.y= v4.y;
+        naux22.z= v4.z;
+        tn14.v[0]=naux20;
+        tn14.v[1]=naux21;
+        tn14.v[2]=naux22;
         vertices.push_back(tn14);
     }
 
@@ -619,18 +626,18 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
-        trianglesNormals[27].x= -v0.x;
-        trianglesNormals[27].y= v0.y;
-        trianglesNormals[27].z= 0;
-        trianglesNormals[28].x= -v6.x;
-        trianglesNormals[28].y= v6.y;
-        trianglesNormals[28].z= v6.z;
-        trianglesNormals[29].x= -v5.x;
-        trianglesNormals[29].y= v5.y;
-        trianglesNormals[29].z= v5.z;
-        tn15.v[0]=trianglesNormals[27];
-        tn15.v[1]=trianglesNormals[28];
-        tn15.v[2]=trianglesNormals[29];
+        naux23.x= -v0.x;
+        naux23.y= v0.y;
+        naux23.z= 0;
+        naux24.x= -v6.x;
+        naux24.y= v6.y;
+        naux24.z= v6.z;
+        naux25.x= -v5.x;
+        naux25.y= v5.y;
+        naux25.z= v5.z;
+        tn15.v[0]=naux23;
+        tn15.v[1]=naux24;
+        tn15.v[2]=naux25;
         vertices.push_back(tn15);
     }
 
@@ -644,18 +651,18 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
-        trianglesNormals[30].x= -v0.x;
-        trianglesNormals[30].y= -v0.y;
-        trianglesNormals[30].z= 0;
-        trianglesNormals[31].x= -v1.x;
-        trianglesNormals[31].y= -v1.y;
-        trianglesNormals[31].z= v1.z;
-        trianglesNormals[32].x= -v2.x;
-        trianglesNormals[32].y= -v2.y;
-        trianglesNormals[32].z= v2.z;
-        tn16.v[0]=trianglesNormals[30];
-        tn16.v[1]=trianglesNormals[31];
-        tn16.v[2]=trianglesNormals[32];
+        naux26.x= -v0.x;
+        naux26.y= -v0.y;
+        naux26.z= 0;
+        naux27.x= -v1.x;
+        naux27.y= -v1.y;
+        naux27.z= v1.z;
+        naux28.x= -v2.x;
+        naux28.y= -v2.y;
+        naux28.z= v2.z;
+        tn16.v[0]=naux26;
+        tn16.v[1]=naux27;
+        tn16.v[2]=naux28;
         vertices.push_back(tn16);
     }
 
@@ -666,18 +673,18 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
-        trianglesNormals[33].x= -v0.x;
-        trianglesNormals[33].y= -v0.y;
-        trianglesNormals[33].z= 0;
-        trianglesNormals[34].x= -v2.x;
-        trianglesNormals[34].y= -v2.y;
-        trianglesNormals[34].z= v2.z;
-        trianglesNormals[35].x= -v3.x;
-        trianglesNormals[35].y= -v3.y;
-        trianglesNormals[35].z= v3.z;
-        tn17.v[0]=trianglesNormals[33];
-        tn17.v[1]=trianglesNormals[34];
-        tn17.v[2]=trianglesNormals[35];
+        naux29.x= -v0.x;
+        naux29.y= -v0.y;
+        naux29.z= 0;
+        naux30.x= -v2.x;
+        naux30.y= -v2.y;
+        naux30.z= v2.z;
+        naux31.x= -v3.x;
+        naux31.y= -v3.y;
+        naux31.z= v3.z;
+        tn17.v[0]=naux29;
+        tn17.v[1]=naux30;
+        tn17.v[2]=naux31;
         vertices.push_back(tn17);
     }
 
@@ -688,18 +695,18 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
-        trianglesNormals[36].x= -v0.x;
-        trianglesNormals[36].y= -v0.y;
-        trianglesNormals[36].z= 0;
-        trianglesNormals[37].x= -v3.x;
-        trianglesNormals[37].y= -v3.y;
-        trianglesNormals[37].z=  v3.z;
-        trianglesNormals[38].x= -v4.x;
-        trianglesNormals[38].y= -v4.y;
-        trianglesNormals[38].z= v4.z;
-        tn18.v[0]=trianglesNormals[36];
-        tn18.v[1]=trianglesNormals[37];
-        tn18.v[2]=trianglesNormals[38];
+        naux32.x= -v0.x;
+        naux32.y= -v0.y;
+        naux32.z= 0;
+        naux33.x= -v3.x;
+        naux33.y= -v3.y;
+        naux33.z=  v3.z;
+        naux34.x= -v4.x;
+        naux34.y= -v4.y;
+        naux34.z= v4.z;
+        tn18.v[0]=naux32;
+        tn18.v[1]=naux33;
+        tn18.v[2]=naux34;
         vertices.push_back(tn18);
     }
 
@@ -711,18 +718,18 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
-        trianglesNormals[39].x= -v0.x;
-        trianglesNormals[39].y= -v0.y;
-        trianglesNormals[39].z= 0;
-        trianglesNormals[40].x= -v4.x;
-        trianglesNormals[40].y= -v4.y;
-        trianglesNormals[40].z= v4.z;
-        trianglesNormals[41].x= -v5.x;
-        trianglesNormals[41].y= -v5.y;
-        trianglesNormals[41].z= v5.z;
-        tn19.v[0]=trianglesNormals[39];
-        tn19.v[1]=trianglesNormals[40];
-        tn19.v[2]=trianglesNormals[41];
+        naux35.x= -v0.x;
+        naux35.y= -v0.y;
+        naux35.z= 0;
+        naux36.x= -v4.x;
+        naux36.y= -v4.y;
+        naux36.z= v4.z;
+        naux37.x= -v5.x;
+        naux37.y= -v5.y;
+        naux37.z= v5.z;
+        tn19.v[0]=naux35;
+        tn19.v[1]=naux36;
+        tn19.v[2]=naux37;
         vertices.push_back(tn19);
     }
 
@@ -733,18 +740,18 @@ void drawBorderss1()
     glEnd();
     if(verticeAdded ==0)
     {
-        trianglesNormals[42].x= -v0.x;
-        trianglesNormals[42].y= v0.y;
-        trianglesNormals[42].z= 0;
-        trianglesNormals[43].x= -v5.x;
-        trianglesNormals[43].y= -v5.y;
-        trianglesNormals[43].z= v5.z;
-        trianglesNormals[44].x= -v6.x;
-        trianglesNormals[44].y= -v6.y;
-        trianglesNormals[44].z= v6.z;
-        tn20.v[0]=trianglesNormals[42];
-        tn20.v[1]=trianglesNormals[43];
-        tn20.v[2]=trianglesNormals[44];
+        naux38.x= -v0.x;
+        naux38.y= v0.y;
+        naux38.z= 0;
+        naux39.x= -v5.x;
+        naux39.y= -v5.y;
+        naux39.z= v5.z;
+        naux40.x= -v6.x;
+        naux40.y= -v6.y;
+        naux40.z= v6.z;
+        tn20.v[0]=naux38;
+        tn20.v[1]=naux39;
+        tn20.v[2]=naux40;
         vertices.push_back(tn20);
     }
 
@@ -1112,6 +1119,7 @@ void display(void) {
     glRotatef(rotationY, 0, 1, 1);
     glRotatef(rotationX, 1, 0, 1);
     glRotatef(angulo, 1, 0, 0);
+    handleColisionsWithObjects();
     if(gameStarted ==0){
         centroRebatedor.x=0;
         centroRebatedor.y =-1.3;

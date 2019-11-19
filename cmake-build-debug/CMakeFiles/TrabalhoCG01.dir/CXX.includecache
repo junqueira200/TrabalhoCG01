@@ -6,45 +6,57 @@
 
 #IncludeRegexTransform: 
 
-/home/ark/Faculdade/TrabalhoCG01/Colisao.h
+/home/igor/Documentos/TrabalhoCG1/Colisao.cpp
+Colisao.h
+/home/igor/Documentos/TrabalhoCG1/Colisao.h
+
+/home/igor/Documentos/TrabalhoCG1/Colisao.h
 Retangulo.h
-/home/ark/Faculdade/TrabalhoCG01/Retangulo.h
+/home/igor/Documentos/TrabalhoCG1/Retangulo.h
 Posicao.h
-/home/ark/Faculdade/TrabalhoCG01/Posicao.h
+/home/igor/Documentos/TrabalhoCG1/Posicao.h
 OpenGL_CallBack.h
-/home/ark/Faculdade/TrabalhoCG01/OpenGL_CallBack.h
+/home/igor/Documentos/TrabalhoCG1/OpenGL_CallBack.h
 objectsHandler.h
-/home/ark/Faculdade/TrabalhoCG01/objectsHandler.h
+/home/igor/Documentos/TrabalhoCG1/objectsHandler.h
 vector
 -
 
-/home/ark/Faculdade/TrabalhoCG01/Normal.h
+/home/igor/Documentos/TrabalhoCG1/Normal.h
 Retangulo.h
-/home/ark/Faculdade/TrabalhoCG01/Retangulo.h
+/home/igor/Documentos/TrabalhoCG1/Retangulo.h
 
-/home/ark/Faculdade/TrabalhoCG01/OpenGL_CallBack.h
+/home/igor/Documentos/TrabalhoCG1/OpenGL_CallBack.h
 Retangulo.h
-/home/ark/Faculdade/TrabalhoCG01/Retangulo.h
+/home/igor/Documentos/TrabalhoCG1/Retangulo.h
 Posicao.h
-/home/ark/Faculdade/TrabalhoCG01/Posicao.h
+/home/igor/Documentos/TrabalhoCG1/Posicao.h
 
-/home/ark/Faculdade/TrabalhoCG01/Posicao.h
+/home/igor/Documentos/TrabalhoCG1/Posicao.h
 
-/home/ark/Faculdade/TrabalhoCG01/Retangulo.h
+/home/igor/Documentos/TrabalhoCG1/Retangulo.h
 math.h
-/home/ark/Faculdade/TrabalhoCG01/math.h
+/home/igor/Documentos/TrabalhoCG1/math.h
 GL/glut.h
 -
 cor.h
-/home/ark/Faculdade/TrabalhoCG01/cor.h
+/home/igor/Documentos/TrabalhoCG1/cor.h
 
-/home/ark/Faculdade/TrabalhoCG01/cor.h
+/home/igor/Documentos/TrabalhoCG1/cor.h
 GL/gl.h
 -
 
-/home/ark/Faculdade/TrabalhoCG01/etc.h
+/home/igor/Documentos/TrabalhoCG1/etc.h
 
-/home/ark/Faculdade/TrabalhoCG01/main.cpp
+/home/igor/Documentos/TrabalhoCG1/glcWavefrontObject.h
+math.h
+-
+stdio.h
+-
+GL/gl.h
+-
+
+/home/igor/Documentos/TrabalhoCG1/main.cpp
 GL/glut.h
 -
 stdlib.h
@@ -58,7 +70,7 @@ math.h
 float.h
 -
 etc.h
-/home/ark/Faculdade/TrabalhoCG01/etc.h
+/home/igor/Documentos/TrabalhoCG1/etc.h
 iostream
 -
 cstring
@@ -66,21 +78,31 @@ cstring
 vector
 -
 Retangulo.h
-/home/ark/Faculdade/TrabalhoCG01/Retangulo.h
+/home/igor/Documentos/TrabalhoCG1/Retangulo.h
 cor.h
-/home/ark/Faculdade/TrabalhoCG01/cor.h
+/home/igor/Documentos/TrabalhoCG1/cor.h
 Normal.h
-/home/ark/Faculdade/TrabalhoCG01/Normal.h
+/home/igor/Documentos/TrabalhoCG1/Normal.h
 Posicao.h
-/home/ark/Faculdade/TrabalhoCG01/Posicao.h
+/home/igor/Documentos/TrabalhoCG1/Posicao.h
 OpenGL_CallBack.h
-/home/ark/Faculdade/TrabalhoCG01/OpenGL_CallBack.h
+/home/igor/Documentos/TrabalhoCG1/OpenGL_CallBack.h
 Colisao.h
-/home/ark/Faculdade/TrabalhoCG01/Colisao.h
+/home/igor/Documentos/TrabalhoCG1/Colisao.h
 
-/home/ark/Faculdade/TrabalhoCG01/objectsHandler.h
+/home/igor/Documentos/TrabalhoCG1/objectsHandler.cpp
+objectsHandler.h
+/home/igor/Documentos/TrabalhoCG1/objectsHandler.h
+glcWavefrontObject.h
+/home/igor/Documentos/TrabalhoCG1/glcWavefrontObject.h
+Posicao.h
+/home/igor/Documentos/TrabalhoCG1/Posicao.h
+Colisao.h
+/home/igor/Documentos/TrabalhoCG1/Colisao.h
+
+/home/igor/Documentos/TrabalhoCG1/objectsHandler.h
 vector
 -
 Retangulo.h
-/home/ark/Faculdade/TrabalhoCG01/Retangulo.h
+/home/igor/Documentos/TrabalhoCG1/Retangulo.h
 
