@@ -63,7 +63,8 @@ int vidas = 5;
 /// Functions
 void init(void) {
 
-
+    textureManager->SetNumberOfTextures(4);       // Estabelece o número de texturas que será utilizado
+    textureManager->CreateTexture("texturas/texturaPlano.png", 0);
 
     // LOAD OBJECTS
 
