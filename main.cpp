@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include <math.h>
 #include <float.h>
-#include "TexturaPlano.h"
+#include "glcTexture.h"
 #include "etc.h" //TODO: reorganize modules
 #include <iostream>
 #include <cstring>
@@ -59,12 +59,15 @@ vertex trianglesNormals[60];
 
 int vidas = 5;
 
+glcTexture *textureManager;
 
 /// Functions
 void init(void) {
 
+
+    textureManager = new glcTexture;
     textureManager->SetNumberOfTextures(4);       // Estabelece o número de texturas que será utilizado
-    textureManager->CreateTexture("texturas/texturaPlano.png", 0);
+    textureManager->CreateTexture("/home/igor/Documentos/TrabalhoCG1/cmake-build-debug/texturas/texturaPlano.png", 0);
 
     // LOAD OBJECTS
 
@@ -108,10 +111,13 @@ float calcDistance(float aX, float aY, float bX, float bY) {
 }
 
 void drawBoard() {
+
+
+
     glPushMatrix();
 
 
-    GLfloat objeto_especular[] = { 0.6, 0.6, 0.6, 1.0 };
+/*    GLfloat objeto_especular[] = { 0.6, 0.6, 0.6, 1.0 };
     GLfloat objeto_brilho[]    = { 40.0f };
     GLfloat objeto_ambient[]   = { 0.6, 0.6, 0.0, 0.1 };
 
@@ -121,40 +127,68 @@ void drawBoard() {
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, corParede[fase].objeto_ambient);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, corParede[fase].objeto_difusa);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);*/
 
+    GLfloat objeto_ambient[]   = { 0.2, 0.2, 0.2, 1.0 };
+    GLfloat objeto_difusa[]    = { 0.8, 0.8, 0.8, 1.0 };
+    GLfloat objeto_especular[] = { 0.0, 0.0, 0.0, 1.0 };
+    GLfloat objeto_brilho[]    = { 70.0f };
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT, objeto_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, objeto_difusa);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, objeto_especular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, objeto_brilho);
+
+    textureManager->Bind(0);
+    float aspectRatio = textureManager->GetAspectRatio(0);
+
+    // Calculo abaixo funciona apenas se textura estiver centralizada na origem
+    float h = 1.0f;
+    float w = 1.0f;
 
     // base
 
     glBegin(GL_TRIANGLE_FAN);
 
     glNormal3f(0, 0, 1);
+    glTexCoord2f(0.0, 0.0);
     glVertex3f(-BHF, -BHF, 0);
 
     glNormal3f(0, 0, 1);
+    glTexCoord2f(1.0, 0.0);
     glVertex3f(BHF, -BHF, 0);
 
+
     glNormal3f(0, 0, 1);
+    glTexCoord2f(1.0, 1.0);
     glVertex3f(BHF, BHF, 0);
 
     glNormal3f(0, 0, 1);
+    glTexCoord2f(0.0, 1.0);
     glVertex3f(-BHF, BHF, 0);
     glEnd();
 
     // bottom
 
+    float largura = 2.0*BHF;
+
+
     glBegin(GL_TRIANGLE_FAN);
 
     glNormal3f(0, 1, 0);
+    glTexCoord2f(0.0, 0.0); //ok
     glVertex3f(-BHF, -BHF, 0.5);
 
     glNormal3f(0, 1, 0);
+    glTexCoord2f(1.0, 0.0);
     glVertex3f(BHF, -BHF, 0.5);
 
-    glNormal3f(0, 1, 0);
+    glNormal3f(0.0,1.0,0.0 );
+    glTexCoord2f(1.0, 0.005);
     glVertex3f(BHF, -BHF, 0);
 
     glNormal3f(0, 1, 0);
+    glTexCoord2f(0.005, 1.0);
     glVertex3f(-BHF, -BHF, 0);
     glEnd();
 
@@ -209,6 +243,9 @@ void drawBoard() {
     glVertex3f(-BHF, BHF, 0);
 
     glEnd();
+
+    textureManager->Disable();
+
     glPopMatrix();
 }
 

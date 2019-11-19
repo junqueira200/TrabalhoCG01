@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/igor/Documentos/TrabalhoCG1/Colisao.cpp
-Colisao.h
-/home/igor/Documentos/TrabalhoCG1/Colisao.h
-
 /home/igor/Documentos/TrabalhoCG1/Colisao.h
 Retangulo.h
 /home/igor/Documentos/TrabalhoCG1/Retangulo.h
@@ -48,13 +44,11 @@ GL/gl.h
 
 /home/igor/Documentos/TrabalhoCG1/etc.h
 
-/home/igor/Documentos/TrabalhoCG1/glcWavefrontObject.h
-math.h
+/home/igor/Documentos/TrabalhoCG1/glcTexture.h
+string
 -
-stdio.h
--
-GL/gl.h
--
+GL/glut.h
+/home/igor/Documentos/TrabalhoCG1/GL/glut.h
 
 /home/igor/Documentos/TrabalhoCG1/main.cpp
 GL/glut.h
@@ -69,6 +63,8 @@ math.h
 -
 float.h
 -
+glcTexture.h
+/home/igor/Documentos/TrabalhoCG1/glcTexture.h
 etc.h
 /home/igor/Documentos/TrabalhoCG1/etc.h
 iostream
@@ -87,16 +83,6 @@ Posicao.h
 /home/igor/Documentos/TrabalhoCG1/Posicao.h
 OpenGL_CallBack.h
 /home/igor/Documentos/TrabalhoCG1/OpenGL_CallBack.h
-Colisao.h
-/home/igor/Documentos/TrabalhoCG1/Colisao.h
-
-/home/igor/Documentos/TrabalhoCG1/objectsHandler.cpp
-objectsHandler.h
-/home/igor/Documentos/TrabalhoCG1/objectsHandler.h
-glcWavefrontObject.h
-/home/igor/Documentos/TrabalhoCG1/glcWavefrontObject.h
-Posicao.h
-/home/igor/Documentos/TrabalhoCG1/Posicao.h
 Colisao.h
 /home/igor/Documentos/TrabalhoCG1/Colisao.h
 

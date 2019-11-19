@@ -6,6 +6,6 @@
 #ifndef TRABALHOCG01_TEXTURAPLANO_H
 #define TRABALHOCG01_TEXTURAPLANO_H
 
-extern glcTexture *textureManager;
+//extern glcTexture *textureManager;
 
 #endif //TRABALHOCG01_TEXTURAPLANO_H

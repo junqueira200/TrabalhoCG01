@@ -27,6 +27,10 @@ CMakeFiles/TrabalhoCG01.dir/Retangulo.cpp.o: ../Retangulo.cpp
 CMakeFiles/TrabalhoCG01.dir/Retangulo.cpp.o: ../Retangulo.h
 CMakeFiles/TrabalhoCG01.dir/Retangulo.cpp.o: ../cor.h
 
+CMakeFiles/TrabalhoCG01.dir/TexturaPlano.cpp.o: ../TexturaPlano.cpp
+CMakeFiles/TrabalhoCG01.dir/TexturaPlano.cpp.o: ../TexturaPlano.h
+CMakeFiles/TrabalhoCG01.dir/TexturaPlano.cpp.o: ../glcTexture.h
+
 CMakeFiles/TrabalhoCG01.dir/cor.cpp.o: ../cor.cpp
 CMakeFiles/TrabalhoCG01.dir/cor.cpp.o: ../cor.h
 
@@ -40,6 +44,7 @@ CMakeFiles/TrabalhoCG01.dir/main.cpp.o: ../Posicao.h
 CMakeFiles/TrabalhoCG01.dir/main.cpp.o: ../Retangulo.h
 CMakeFiles/TrabalhoCG01.dir/main.cpp.o: ../cor.h
 CMakeFiles/TrabalhoCG01.dir/main.cpp.o: ../etc.h
+CMakeFiles/TrabalhoCG01.dir/main.cpp.o: ../glcTexture.h
 CMakeFiles/TrabalhoCG01.dir/main.cpp.o: ../main.cpp
 CMakeFiles/TrabalhoCG01.dir/main.cpp.o: ../objectsHandler.h
 

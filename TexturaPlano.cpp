@@ -4,4 +4,3 @@
 
 #include "TexturaPlano.h"
 
-glcTexture *textureManager = new glcTexture();
