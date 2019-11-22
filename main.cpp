@@ -40,12 +40,6 @@ triangle tn1,tn2,tn3,tn4,tn5,tn6,tn7,tn8,tn9,tn10;
 triangle tn11,tn12,tn13,tn14,tn15,tn16,tn17,tn18,tn19,tn20;
 ///flag paar controlar a inserçaõ de vertices no vetor de vertices
 int verticeAdded =0;
-
-
-
-
-
-
 const float RAIORETANGULO = 0.215058132;
 
 // prismas iniciais
@@ -61,22 +55,20 @@ int vidas = 5;
 
 glcTexture *textureManager;
 
+
+
 /// Functions
 void init(void) {
 
 
-    textureManager = new glcTexture;
+    textureManager =  new glcTexture;
     textureManager->SetNumberOfTextures(4);       // Estabelece o número de texturas que será utilizado
-    textureManager->CreateTexture("/home/igor/Documentos/TrabalhoCG1/cmake-build-debug/texturas/texturaPlano.png", 0);
+    textureManager->CreateTexture("/home/ark/Faculdade/TrabalhoCG1/cmake-build-debug/texture.png", 0);
 
     // LOAD OBJECTS
-
-
-
     glEnable(GL_LIGHTING);                 // Habilita luz
     glEnable(GL_LIGHT0);                   // habilita luz 0
     glEnable(GL_DEPTH_TEST);
-
 
     GLfloat cor_luz[]  = { 1.0, 1.0, 1.0, 1.0};
     // Posicao da fonte de luz. Ultimo parametro define se a luz sera direcional (0.0) ou tera uma posicional (1.0)

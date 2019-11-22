@@ -1,4 +1,4 @@
-/home/igor/Documentos/Programas/clion-2018.3.3/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/g++ -G "CodeBlocks - Unix Makefiles" /home/igor/Documentos/TrabalhoCG1
+/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/ark/Faculdade/TrabalhoCG01
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/igor/Documentos/TrabalhoCG1/cmake-build-debug
+-- Build files have been written to: /home/ark/Faculdade/TrabalhoCG01/cmake-build-debug
