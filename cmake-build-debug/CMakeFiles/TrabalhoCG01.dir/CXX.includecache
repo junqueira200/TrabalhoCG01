@@ -44,20 +44,6 @@ GL/gl.h
 
 /home/ark/Faculdade/TrabalhoCG01/etc.h
 
-/home/ark/Faculdade/TrabalhoCG01/glcTexture.cpp
-string
--
-stdio.h
--
-malloc.h
--
-GL/glut.h
-/home/ark/Faculdade/TrabalhoCG01/GL/glut.h
-png.h
-/home/ark/Faculdade/TrabalhoCG01/png.h
-glcTexture.h
-/home/ark/Faculdade/TrabalhoCG01/glcTexture.h
-
 /home/ark/Faculdade/TrabalhoCG01/glcTexture.h
 string
 -

@@ -31,13 +31,12 @@ const int MaxRetanHorizontal = 10;//10
 int timerInicialColision = 30;
 const int MaxRetanVertical = 1;//4
 vertex v1,v2,v3,v4,v5,v6,v0;
-vector<vertex> normais;
-int timerColision = 100;
+
+int timerColision = 70;
 ///triangulo utilizado como modelo para organizar vertices para calcular normais das faces da parte oval
 vector<triangle> vertices;
 ///mesmo caso, utilizados para calculo de normais
-triangle tn1,tn2,tn3,tn4,tn5,tn6,tn7,tn8,tn9,tn10;
-triangle tn11,tn12,tn13,tn14,tn15,tn16,tn17,tn18,tn19,tn20;
+triangle normals[23];
 ///flag paar controlar a inserçaõ de vertices no vetor de vertices
 int verticeAdded =0;
 const float RAIORETANGULO = 0.215058132;
@@ -356,10 +355,10 @@ void drawBorderss1()
     if(verticeAdded ==0);
     {
 
-        tn1.v[0]=trianglesNormals[0];
-        tn1.v[1]=v1;
-        tn1.v[2]=v2;
-        vertices.push_back(tn1);
+        normals[0].v[0]=trianglesNormals[0];
+        normals[0].v[1]=v1;
+        normals[0].v[2]=v2;
+        vertices.push_back(normals[0]);
     }
 
     glBegin(GL_TRIANGLES);
@@ -375,10 +374,10 @@ void drawBorderss1()
     {   trianglesNormals[1].x = v0.x;
         trianglesNormals[1].y = v0.y;
         trianglesNormals[1].z = 0;
-        tn2.v[0]=trianglesNormals[1];
-        tn2.v[1]=v2;
-        tn2.v[2]=v3;
-        vertices.push_back(tn2);
+        normals[1].v[0]=trianglesNormals[1];
+        normals[1].v[1]=v2;
+        normals[1].v[2]=v3;
+        vertices.push_back(normals[1]);
     }
 
     glBegin(GL_TRIANGLES);
@@ -391,10 +390,10 @@ void drawBorderss1()
         trianglesNormals[2].x = v0.y;
         trianglesNormals[2].x = 0;
 
-        tn3.v[0]=trianglesNormals[2];
-        tn3.v[1]=v3;
-        tn3.v[2]=v4;
-        vertices.push_back(tn3);
+        normals[2].v[0]=trianglesNormals[2];
+        normals[2].v[1]=v3;
+        normals[2].v[2]=v4;
+        vertices.push_back(normals[2]);
     }
 
     glBegin(GL_TRIANGLES);
@@ -407,10 +406,10 @@ void drawBorderss1()
         trianglesNormals[3].y= v0.y;
         trianglesNormals[3].z= 0;
 
-        tn4.v[0] = trianglesNormals[3];
-        tn4.v[1]=v4;
-        tn4.v[2]=v5;
-        vertices.push_back(tn4);
+        normals[3].v[0] = trianglesNormals[3];
+        normals[3].v[1]=v4;
+        normals[3].v[2]=v5;
+        vertices.push_back(normals[3]);
     }
 
     glBegin(GL_TRIANGLES);
@@ -424,10 +423,10 @@ void drawBorderss1()
         trianglesNormals[4].y = v0.y;
         trianglesNormals[4].z = 0;
 
-        tn5.v[0]=trianglesNormals[4];
-        tn5.v[1]=v5;
-        tn5.v[2]=v6;
-        vertices.push_back(tn5);
+        normals[4].v[0]=trianglesNormals[4];
+        normals[4].v[1]=v5;
+        normals[4].v[2]=v6;
+        vertices.push_back(normals[4]);
     }
     // desenho a outra metade  direita da parede
 
@@ -447,10 +446,10 @@ void drawBorderss1()
         trianglesNormals[7].x= v1.x;
         trianglesNormals[7].y = -v1.y;
         trianglesNormals[7].z= v1.z;
-        tn6.v[0]=trianglesNormals[5];
-        tn6.v[1]=trianglesNormals[6];
-        tn6.v[2]=trianglesNormals[7];
-        vertices.push_back(tn6);
+        normals[5].v[0]=trianglesNormals[5];
+        normals[5].v[1]=trianglesNormals[6];
+        normals[5].v[2]=trianglesNormals[7];
+        vertices.push_back(normals[5]);
     }
 
 
@@ -472,10 +471,10 @@ void drawBorderss1()
         trianglesNormals[10].x= v2.x;
         trianglesNormals[10].y= -v2.y;
         trianglesNormals[10].z= v2.z;
-        tn7.v[0]=trianglesNormals[8];
-        tn7.v[1]=trianglesNormals[9];
-        tn7.v[2]=trianglesNormals[10];
-        vertices.push_back(tn7);
+        normals[6].v[0]=trianglesNormals[8];
+        normals[6].v[1]=trianglesNormals[9];
+        normals[6].v[2]=trianglesNormals[10];
+        vertices.push_back(normals[6]);
     }
 
 
@@ -497,10 +496,10 @@ void drawBorderss1()
         trianglesNormals[13].y= -v3.y;
         trianglesNormals[13].z= v3.z;
 
-        tn8.v[0]=trianglesNormals[11];
-        tn8.v[1]= trianglesNormals[12];
-        tn8.v[2]=trianglesNormals[13];
-        vertices.push_back(tn8);
+        normals[7].v[0]=trianglesNormals[11];
+        normals[7].v[1]= trianglesNormals[12];
+        normals[7].v[2]=trianglesNormals[13];
+        vertices.push_back(normals[7]);
     }
 
 
@@ -520,10 +519,10 @@ void drawBorderss1()
         trianglesNormals[5].x= v4.x;
         trianglesNormals[5].y= -v4.y;
         trianglesNormals[5].z= v4.z;
-        tn9.v[0]=trianglesNormals[11];
-        tn9.v[1]=trianglesNormals[12];
-        tn9.v[2]=trianglesNormals[13];
-        vertices.push_back(tn9);
+        normals[8].v[0]=trianglesNormals[11];
+        normals[8].v[1]=trianglesNormals[12];
+        normals[8].v[2]=trianglesNormals[13];
+        vertices.push_back(normals[8]);
     }
 
     glBegin(GL_TRIANGLES);
@@ -542,10 +541,10 @@ void drawBorderss1()
         trianglesNormals[16].x= v5.x;
         trianglesNormals[16].y= -v5.y;
         trianglesNormals[16].z= v5.z;
-        tn10.v[0]=trianglesNormals[14];
-        tn10.v[1]=trianglesNormals[15];
-        tn10.v[2]= trianglesNormals[16];
-        vertices.push_back(tn10);
+        normals[9].v[0]=trianglesNormals[14];
+        normals[9].v[1]=trianglesNormals[15];
+        normals[9].v[2]= trianglesNormals[16];
+        vertices.push_back(normals[9]);
     }
 
 
@@ -567,10 +566,10 @@ void drawBorderss1()
         trianglesNormals[19].x= -v1.x;
         trianglesNormals[19].y= v1.y;
         trianglesNormals[19].z= v1.z;
-        tn11.v[0]=trianglesNormals[17];
-        tn11.v[1]=trianglesNormals[18];
-        tn11.v[2]=trianglesNormals[19];
-        vertices.push_back(tn11);
+        normals[10].v[0]=trianglesNormals[17];
+        normals[10].v[1]=trianglesNormals[18];
+        normals[10].v[2]=trianglesNormals[19];
+        vertices.push_back(normals[10]);
     }
 
     glBegin(GL_TRIANGLES);
@@ -592,10 +591,10 @@ void drawBorderss1()
         trianglesNormals[22].y= v2.y;
         trianglesNormals[22].z= v2.z;
 
-        tn12.v[0]=trianglesNormals[20];
-        tn12.v[1]=trianglesNormals[21];
-        tn12.v[2]=trianglesNormals[22];
-        vertices.push_back(tn12);
+        normals[11].v[0]=trianglesNormals[20];
+        normals[11].v[1]=trianglesNormals[21];
+        normals[11].v[2]=trianglesNormals[22];
+        vertices.push_back(normals[11]);
     }
 
 
@@ -615,10 +614,10 @@ void drawBorderss1()
         trianglesNormals[25].x= -v3.x;
         trianglesNormals[25].y= v3.y;
         trianglesNormals[25].z= v3.z;
-        tn13.v[0]=trianglesNormals[23];
-        tn13.v[1]=trianglesNormals[24];
-        tn13.v[2]=trianglesNormals[25];
-        vertices.push_back(tn13);
+        normals[12].v[0]=trianglesNormals[23];
+        normals[12].v[1]=trianglesNormals[24];
+        normals[12].v[2]=trianglesNormals[25];
+        vertices.push_back(normals[12]);
     }
 
 
@@ -638,10 +637,10 @@ void drawBorderss1()
         trianglesNormals[28].x= -v4.x;
         trianglesNormals[28].y= v4.y;
         trianglesNormals[28].z= v4.z;
-        tn14.v[0]=trianglesNormals[26];
-        tn14.v[1]=trianglesNormals[27];
-        tn14.v[2]=trianglesNormals[28];
-        vertices.push_back(tn14);
+        normals[13].v[0]=trianglesNormals[26];
+        normals[13].v[1]=trianglesNormals[27];
+        normals[13].v[2]=trianglesNormals[28];
+        vertices.push_back(normals[13]);
     }
 
 
@@ -661,10 +660,10 @@ void drawBorderss1()
         trianglesNormals[29].x= -v5.x;
         trianglesNormals[29].y= v5.y;
         trianglesNormals[29].z= v5.z;
-        tn15.v[0]=trianglesNormals[27];
-        tn15.v[1]=trianglesNormals[28];
-        tn15.v[2]=trianglesNormals[29];
-        vertices.push_back(tn15);
+        normals[14].v[0]=trianglesNormals[27];
+        normals[14].v[1]=trianglesNormals[28];
+        normals[14].v[2]=trianglesNormals[29];
+        vertices.push_back(normals[14]);
     }
 
 
@@ -686,10 +685,10 @@ void drawBorderss1()
         trianglesNormals[32].x= -v2.x;
         trianglesNormals[32].y= -v2.y;
         trianglesNormals[32].z= v2.z;
-        tn16.v[0]=trianglesNormals[30];
-        tn16.v[1]=trianglesNormals[31];
-        tn16.v[2]=trianglesNormals[32];
-        vertices.push_back(tn16);
+        normals[15].v[0]=trianglesNormals[30];
+        normals[15].v[1]=trianglesNormals[31];
+        normals[15].v[2]=trianglesNormals[32];
+        vertices.push_back(normals[15]);
     }
 
     glBegin(GL_TRIANGLES);
@@ -708,10 +707,10 @@ void drawBorderss1()
         trianglesNormals[35].x= -v3.x;
         trianglesNormals[35].y= -v3.y;
         trianglesNormals[35].z= v3.z;
-        tn17.v[0]=trianglesNormals[33];
-        tn17.v[1]=trianglesNormals[34];
-        tn17.v[2]=trianglesNormals[35];
-        vertices.push_back(tn17);
+        normals[16].v[0]=trianglesNormals[33];
+        normals[16].v[1]=trianglesNormals[34];
+        normals[16].v[2]=trianglesNormals[35];
+        vertices.push_back(normals[16]);
     }
 
     glBegin(GL_TRIANGLES);
@@ -730,10 +729,10 @@ void drawBorderss1()
         trianglesNormals[38].x= -v4.x;
         trianglesNormals[38].y= -v4.y;
         trianglesNormals[38].z= v4.z;
-        tn18.v[0]=trianglesNormals[36];
-        tn18.v[1]=trianglesNormals[37];
-        tn18.v[2]=trianglesNormals[38];
-        vertices.push_back(tn18);
+        normals[17].v[0]=trianglesNormals[36];
+        normals[17].v[1]=trianglesNormals[37];
+        normals[17].v[2]=trianglesNormals[38];
+        vertices.push_back(normals[17]);
     }
 
 
@@ -753,10 +752,10 @@ void drawBorderss1()
         trianglesNormals[41].x= -v5.x;
         trianglesNormals[41].y= -v5.y;
         trianglesNormals[41].z= v5.z;
-        tn19.v[0]=trianglesNormals[39];
-        tn19.v[1]=trianglesNormals[40];
-        tn19.v[2]=trianglesNormals[41];
-        vertices.push_back(tn19);
+        normals[18].v[0]=trianglesNormals[39];
+        normals[18].v[1]=trianglesNormals[40];
+        normals[18].v[2]=trianglesNormals[41];
+        vertices.push_back(normals[18]);
     }
 
     glBegin(GL_TRIANGLES);
@@ -775,10 +774,10 @@ void drawBorderss1()
         trianglesNormals[44].x= -v6.x;
         trianglesNormals[44].y= -v6.y;
         trianglesNormals[44].z= v6.z;
-        tn20.v[0]=trianglesNormals[42];
-        tn20.v[1]=trianglesNormals[43];
-        tn20.v[2]=trianglesNormals[44];
-        vertices.push_back(tn20);
+        normals[19].v[0]=trianglesNormals[42];
+        normals[19].v[1]=trianglesNormals[43];
+        normals[19].v[2]=trianglesNormals[44];
+        vertices.push_back(normals[19]);
     }
 
     glPopMatrix();
@@ -787,18 +786,15 @@ void drawBorderss1()
 
 void drawFaces()
 {
-
     GLfloat objeto_especular[] = { 1.0, 1.0, 1.0, 1.0 };
     GLfloat objeto_brilho[]    = { 40.0f };
     GLfloat objeto_ambient[]   = { 0, 0.0, 0.0, 0.001 };
-    GLfloat objeto_difusa[]    = { 1.0, 0.0, 0.0, 1.0 };
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, objeto_ambient);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, corRebatedorLaterais[fase].objeto_difusa);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
 
-    bool flagColisao = false;
    timerColision--;
    glPushMatrix();
     for(int i=0; i<vertices.size(); i++)
@@ -811,15 +807,9 @@ void drawFaces()
         //normalFaces.z= 0.5;
         if( timerColision <20 && (detecColisionLadoDireito(vertices[i])||detecColisionLadoEsquerdo(vertices[i])))
         {
-            ///Fazer a soma vetorial aqui
-             printf("x directionAntes %f ",direction[0]);
-            printf("y directionAntes %f \n",direction[1]);
             direction[0] = direction[0]+normalFaces.x;
             direction[1] = direction[1]+normalFaces.y;
-            printf("x direction %f ",direction[0]);
-            printf("y direction %f \n",direction[1]);
-            timerColision =100;
-
+            timerColision =70;
         }
         glNormal3f(normalFaces.x,normalFaces.y,normalFaces.z);
         glBegin(GL_QUADS);
@@ -829,14 +819,8 @@ void drawFaces()
         glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,0);
         glEnd();
   }
-
-
-
 glPopMatrix();
-
 }
-
-
 
 
 void drawHitter(vertex center,float sizeHitter){
@@ -1145,7 +1129,6 @@ void display(void) {
     glRotatef(rotationY, 0, 1, 1);
     glRotatef(rotationX, 1, 0, 1);
     glRotatef(angulo, 1, 0, 0);
-    handleColisionsWithObjects();
     if(gameStarted ==0){
         centroRebatedor.x=0;
         centroRebatedor.y =-1.3;
