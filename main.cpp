@@ -62,7 +62,7 @@ void init(void) {
 
     textureManager =  new glcTexture;
     textureManager->SetNumberOfTextures(4);       // Estabelece o número de texturas que será utilizado
-    textureManager->CreateTexture("/home/ark/Faculdade/TrabalhoCG1/cmake-build-debug/texture.png", 0);
+    textureManager->CreateTexture("texturas/texturaPlano.png", 0);
 
     // LOAD OBJECTS
     glEnable(GL_LIGHTING);                 // Habilita luz
@@ -167,19 +167,15 @@ void drawBoard() {
     glBegin(GL_TRIANGLE_FAN);
 
     glNormal3f(0, 1, 0);
-    glTexCoord2f(0.0, 0.0); //ok
     glVertex3f(-BHF, -BHF, 0.5);
 
     glNormal3f(0, 1, 0);
-    glTexCoord2f(1.0, 0.0);
     glVertex3f(BHF, -BHF, 0.5);
 
     glNormal3f(0.0,1.0,0.0 );
-    glTexCoord2f(1.0, 0.005);
     glVertex3f(BHF, -BHF, 0);
 
     glNormal3f(0, 1, 0);
-    glTexCoord2f(0.005, 1.0);
     glVertex3f(-BHF, -BHF, 0);
     glEnd();
 
