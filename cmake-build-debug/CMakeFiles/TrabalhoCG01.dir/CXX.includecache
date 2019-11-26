@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ark/Faculdade/TrabalhoCG01/Posicao.cpp
+cstdlib
+-
+ctime
+-
+Posicao.h
+/home/ark/Faculdade/TrabalhoCG01/Posicao.h
+cstdlib
+-
+
+/home/ark/Faculdade/TrabalhoCG01/Posicao.h
+

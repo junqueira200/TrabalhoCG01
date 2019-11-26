@@ -8,6 +8,7 @@
 //#pragma GCC diagnostic push
 //#pragma GCC diagnostic ignored "-Wunused-result"
 
+
 glcWavefrontObject::glcWavefrontObject()
 {
     this->model = NULL;

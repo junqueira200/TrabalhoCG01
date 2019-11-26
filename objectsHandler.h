@@ -7,6 +7,9 @@
 
 #include <vector>
 #include "Retangulo.h"
+#include "glcWavefrontObject.h"
+#include "glcTexture.h"
+
 #define NUM_OBJECTS 2
 using  namespace std;
 
@@ -16,10 +19,8 @@ extern vector<int> objectsALives;
 
 class objectsHandler {
 public:
-    void initObjects();
-    void drawObjects();
-
-
+    glcWavefrontObject*  initObjects();
+    void drawObjects(glcWavefrontObject*objectManager,glcTexture *textureManager,int timer);
 };
 
 

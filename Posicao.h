@@ -18,5 +18,5 @@ extern float deltaXobject2;
 extern float deltaYobject2;
 extern float direction[2];
 
-void updateObjects1Position();
+void updateObjects1Position(int timer);
 #endif //TRABALHOCG01_POSICAO_H

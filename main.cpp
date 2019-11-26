@@ -21,6 +21,9 @@ using namespace std;
 
 /// Globals
 
+int timerPosition = 120;
+glcWavefrontObject *objecstManager;
+objectsHandler objectsHandler;
 vertex normalFaces;
 vertex centroRebatedor;
 int angulo = 0;
@@ -59,10 +62,12 @@ glcTexture *textureManager;
 /// Functions
 void init(void) {
 
-
+    objecstManager = objectsHandler.initObjects();
     textureManager =  new glcTexture;
     textureManager->SetNumberOfTextures(4);       // Estabelece o número de texturas que será utilizado
-    textureManager->CreateTexture("texturas/texturaPlano.png", 0);
+    textureManager->SetWrappingMode(GL_REPEAT);
+    textureManager->CreateTexture("./texturas/texturaPlano.png", 0);
+    textureManager->CreateTexture("./objects/Ladybug/BlueDragon.png", 1);
 
     // LOAD OBJECTS
     glEnable(GL_LIGHTING);                 // Habilita luz
@@ -1082,23 +1087,19 @@ void drawExits(){
     glVertex3f(-1.2,1.8,0.0);
     glEnd();
 
-
  glPopMatrix();
 
 }
 
 
-
-
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
-
     float yVision= 0;
     glLoadIdentity();
-
+    // Use selected texture
+    //objectsHandler.drawObjects(objecstManager,textureManager);
     int ortho = 2;
-
     if(perspective){
         gluPerspective(60, (GLfloat) width / (GLfloat) height, 0.01, 200.0);
         }
@@ -1132,16 +1133,17 @@ void display(void) {
         gameStarted =1;
     }
 
-
-
-
      if(animate == true && timerInicialColision > 0)
             timerInicialColision= timerInicialColision-1;
     glPushMatrix();
     if (!animate)
         drawArrow();
+    timerPosition--;
+    objectsHandler.drawObjects(objecstManager,textureManager,timerPosition);
+     if(timerPosition<=0)
+         timerPosition = 120;
 
-        drawSphere();
+    drawSphere();
     drawBorderss1();
     drawFaces();
     drawHitter(centroRebatedor,0.6);
@@ -1183,8 +1185,6 @@ void display(void) {
         strcpy(texto, "Voce Perdeu");
         glScalef(0.001, 0.001, 0.001);
 
-
-
         for (int i = 0; texto[i] != '\0'; i++)
         {
             glutStrokeCharacter(GLUT_STROKE_MONO_ROMAN, texto[i]);
@@ -1192,7 +1192,6 @@ void display(void) {
 
         glEnable(GL_LIGHTING);
     }
-
     else
     if(pause)
     {
@@ -1268,7 +1267,6 @@ void updateState() {
             perdeu = true;
             pause = true;
         }
-
         return;
     }
 
@@ -1370,8 +1368,6 @@ void updateState() {
 
                 }
             }
-
-
 
             printf("!!!!!Colision happened!!!!!!\n");
 
@@ -1608,7 +1604,7 @@ void passiveMotion(int x, int y)
 
     } else if ((x - xAntigo) < 0)
     {
-        if (fabs(rebatedor.centro.x - rebatedor.largura / 2 - 0.1) < 2)
+        if (fabs(rebatedor.centro.x - rebatedor.largura / 2 - 0.1) < 2.3)
         {
 
             rebatedor.atualizaPosicao(rebatedor.centro.x - 0.1);

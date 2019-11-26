@@ -1,4 +1,6 @@
 
+#include <GL/gl.h>
+
 void initLight(int width, int height)
 {
     glEnable(GL_LIGHTING);                 // Habilita luz

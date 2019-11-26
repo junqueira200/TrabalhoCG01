@@ -10,6 +10,7 @@ add_executable(TrabalhoCG01 main.cpp
         glcWavefrontObject.cpp
         Retangulo.cpp
         glcTexture.h
+        extras.h
         glcTexture.cpp
         Retangulo.h
         cor.h

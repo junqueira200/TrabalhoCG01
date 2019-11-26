@@ -6,57 +6,64 @@
 #include "glcWavefrontObject.h"
 #include "Posicao.h"
 #include "Colisao.h"
+#include "glcTexture.h"
 
 float deltaScaleObject1 = 0.08;
 float deltaScaleObject2 = 0.08;
 vector<int> objectsALives;
-
 float lastXObject,lastYObject;
+glcTexture *textureManagerObjects = NULL;
 
 char objectFiles[NUM_OBJECTS][50] =
         {
-                "data/obj/soccerball.obj",
-                "data/obj/dolphins.obj"
+                "./objects/Ladybug/BlueDragon.obj",
+                "./objects/Ladybug/BlueDragon.obj"
         };
-
+char textureFiles[NUM_OBJECTS][50] =
+        {
+                "./objects/ladybug/BlueDragon.png",
+                "./objects/ladybug/BlueDragon.png"
+        };
 typedef struct
 {
     //GLMmodel* pmodel = NULL
     glcWavefrontObject *pmodel = NULL;
 } object;
 
-object *objectList;
-glcWavefrontObject *objectManager = NULL;
-bool drawboundingbox = false;
-int selected = 0;
 int selectedShading = SMOOTH_SHADING;
 int selectedRender = USE_MATERIAL;
 float randomStart[9] ={0.01,-0.02,0.03,-0.04,-0.05,0.06,0.-07,0.08,-0.09};
 
+glcWavefrontObject* objectsHandler::initObjects() {
 
-
-
-void objectsHandler::initObjects() {
     objectsALives.push_back(0);
     objectsALives.push_back(0);
 // LOAD OBJECTS
-    objectManager = new glcWavefrontObject();
-    objectManager->SetNumberOfObjects(NUM_OBJECTS);
-    for (int i = 0; i < NUM_OBJECTS; i++) {
-        objectManager->SelectObject(i);
-        objectManager->ReadObject(objectFiles[i]);
-        objectManager->Unitize();
-        objectManager->FacetNormal();
-        objectManager->VertexNormals(90.0);
+    // LOAD TEXTURES
+    textureManagerObjects = new glcTexture();
+    textureManagerObjects->SetNumberOfTextures(NUM_OBJECTS);
+    textureManagerObjects->SetWrappingMode(GL_REPEAT);
+    for(int i = 0; i < NUM_OBJECTS; i++)
+        textureManagerObjects->CreateTexture( textureFiles[i], i);
+
+    // LOAD OBJECTS
+    glcWavefrontObject* objecstManager = new glcWavefrontObject();
+    objecstManager->SetNumberOfObjects(NUM_OBJECTS);
+    for(int i = 0; i < NUM_OBJECTS; i++)
+    {
+        objecstManager->SelectObject(i);
+        objecstManager->ReadObject(objectFiles[i]);
+        objecstManager->Unitize();
+        objecstManager->FacetNormal();
+        objecstManager->VertexNormals(90.0);
+        objecstManager->Scale(5);
     }
+    return  objecstManager;
 }
 
-
-
-void objectsHandler::drawObjects(){
-
+void objectsHandler::drawObjects(glcWavefrontObject*objectManagerParam,glcTexture *textureManagerParam, int timerPosition){
     glPushMatrix();
-    updateObjects1Position();
+    updateObjects1Position(timerPosition);
     if(objectsALives[0]==0 && timerDeathObject1 ==0){
         positionXObject1 = -1.5;
         positionYObject1 = 1.8;
@@ -65,14 +72,16 @@ void objectsHandler::drawObjects(){
         objectsALives[0] =1;
         i = NULL;
     }
-    objectManager->SelectObject(0);
-    objectManager->SetShadingMode(selectedShading); // Possible values: FLAT_SHADING e SMOOTH_SHADING
-    objectManager->SetRenderMode(selectedRender);     // Possible values: USE_COLOR, USE_MATERIAL, USE_TEXTURE (not available in this example)
-    objectManager->Unitize();
+
+    textureManagerParam->Bind(1);
+    objectManagerParam->SelectObject(0);
+    objectManagerParam->SetShadingMode(SMOOTH_SHADING);
+    objectManagerParam->SetRenderMode(USE_TEXTURE_AND_MATERIAL);
+    objectManagerParam->Unitize();
     glPushMatrix();
     glTranslatef(positionXObject1,positionYObject1,0.2);
     if(timerDeathObject1>0){
-        objectManager->Scale(0.5-deltaScaleObject1);
+        objectManagerParam->Scale(0.5-deltaScaleObject1);
         deltaScaleObject1 = deltaScaleObject1+0.005;
         timerDeathObject1--;
         if(0.5-deltaScaleObject1<0){
@@ -81,9 +90,9 @@ void objectsHandler::drawObjects(){
             deltaScaleObject1 = 0.08;
         }
     }else{
-        objectManager->Scale(0.5);
+        objectManagerParam->Scale(0.5);
     }
-    objectManager->Draw();
+    objectManagerParam->Draw();
     glPopMatrix();
 
 
@@ -96,14 +105,15 @@ void objectsHandler::drawObjects(){
         objectsALives[1] =1;
         i = NULL;
     }
-    objectManager->SelectObject(1);
-    objectManager->SetShadingMode(selectedShading); // Possible values: FLAT_SHADING e SMOOTH_SHADING
-    objectManager->SetRenderMode(selectedRender);     // Possible values: USE_COLOR, USE_MATERIAL, USE_TEXTURE (not available in this example)
-    objectManager->Unitize();
+    textureManagerParam->Bind(1);
+    objectManagerParam->SelectObject(1);
+    objectManagerParam->SetShadingMode(SMOOTH_SHADING); // Possible values: FLAT_SHADING e SMOOTH_SHADING
+    objectManagerParam->SetRenderMode(USE_TEXTURE_AND_MATERIAL);     // Possible values: USE_COLOR, USE_MATERIAL, USE_TEXTURE (not available in this example)
+    objectManagerParam->Unitize();
     glPushMatrix();
     glTranslatef(positionXObject2,positionYObject2,0.2);
     if(timerDeathObject2>0){
-        objectManager->Scale(0.5-deltaScaleObject2);
+        objectManagerParam->Scale(0.5-deltaScaleObject2);
         deltaScaleObject2 = deltaScaleObject2+0.005;
         timerDeathObject2--;
         if(0.5-deltaScaleObject2<0){
@@ -112,9 +122,9 @@ void objectsHandler::drawObjects(){
             deltaScaleObject2 = 0.08;
         }
     }else{
-        objectManager->Scale(0.5);
+        objectManagerParam->Scale(0.5);
     }
-    objectManager->Draw();
+    objectManagerParam->Draw();
     glPopMatrix();
     glPopMatrix();
 }
