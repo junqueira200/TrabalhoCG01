@@ -94,11 +94,9 @@ void mouse(int button, int state, int x, int y)
         {
             initialDirection -= 3;
         }
-
         initialDirection = fixRange(initialDirection, -180, 180, true);
         direction[0] = cos((initialDirection + 90) * M_PI / 180);
         direction[1] = sin((initialDirection + 90) * M_PI / 180);
-
     }
 
 }

@@ -18,10 +18,9 @@
 
 using namespace std;
 
-
 /// Globals
 
-int timerPosition = 120;
+int timerPosition = 60;
 glcWavefrontObject *objecstManager;
 objectsHandler objectsHandler;
 vertex normalFaces;
@@ -56,8 +55,6 @@ vertex trianglesNormals[60];
 int vidas = 5;
 
 glcTexture *textureManager;
-
-
 
 /// Functions
 void init(void) {
@@ -107,8 +104,6 @@ float calcDistance(float aX, float aY, float bX, float bY) {
 }
 
 void drawBoard() {
-
-
 
     glPushMatrix();
 
@@ -853,7 +848,7 @@ void drawHitter(vertex center,float sizeHitter){
   v2.x = v1.x -deltaX;
   v2.y = v1.y +deltaY;
 
-   vertex aux1,normalVector,aux2,aux3;
+  vertex aux1,normalVector,aux2,aux3;
 
    int cont =0;
    //desenho a primeira metade do rebatedor
@@ -970,7 +965,7 @@ void drawHitter(vertex center,float sizeHitter){
     /// desenho a outra metade do rebatedor
 
 
-     triangle t2;
+    triangle t2;
 
     vertex normalVector2, aux11,aux12,aux13;
     aux12.x = v2.x-2*(v2.x-center.x);

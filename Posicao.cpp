@@ -25,6 +25,7 @@ int randIndexaux4 =0;
 int randIndexaux5 =0;
 
 int numbers[30] ={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30};
+
 double  randIncrement[30] = {0.01,-0.01,0.02,-0.02,0.03,-0.03,0.018,-0.018,0.012,-0.012,0.03,-0.03,0.07,-0.07,
                              -0.08,0.08,0.09,-0.09,0.010,-0.010,0.011,-0.011,
                              0.012,-0.012,-0.013,0.013,-0.014,0.014,0.015,-0.015};
@@ -36,6 +37,7 @@ void changeDirections(){
     randIndexaux3  = rand() % 30;
     randIndexaux4  = rand() % 30;
     randIndexaux5  = rand() % 30;
+
 
     deltaXobject2 = randIncrement[randIndexaux2];
     deltaYobject2 = randIncrement[randIndexaux3];
