@@ -22,6 +22,7 @@ extern float rotationY;
 extern int last_x;
 extern int last_y;
 extern int gameStarted;
+extern int onStartScreen;
 extern float initialDirection;
 extern bool venceu;
 extern bool perdeu;

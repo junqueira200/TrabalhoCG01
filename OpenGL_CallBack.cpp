@@ -18,6 +18,7 @@ float rotationX = 0;
 float rotationY = 0;
 int last_x;
 int last_y;
+int onStartScreen;
 int gameStarted =0;
 float initialDirection = 0;
 bool venceu = false;
@@ -80,15 +81,16 @@ void mouse(int button, int state, int x, int y)
     {
         if ((button == GLUT_LEFT_BUTTON ) && (state == GLUT_DOWN))
         {
-            animate = !animate;
-            gameStarted =1;
-
+            if(onStartScreen){
+                onStartScreen =0;
+            } else {
+                animate = !animate;
+                gameStarted = 1;
+            }
         }
-
         else if(button == 3)
         {
             initialDirection += 3;
-
         }
         else
         {

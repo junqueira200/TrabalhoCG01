@@ -20,6 +20,8 @@ using namespace std;
 
 /// Globals
 
+float textureIncrement = 0.1;
+float textureIndexs[10] =  {0,0,0,0,0,0,0,0,0,0};
 int timerPosition = 60;
 glcWavefrontObject *objecstManager;
 objectsHandler objectsHandler;
@@ -33,6 +35,7 @@ const int MaxRetanHorizontal = 10;//10
 int timerInicialColision = 30;
 const int MaxRetanVertical = 1;//4
 vertex v1,v2,v3,v4,v5,v6,v0;
+
 
 int timerColision = 70;
 ///triangulo utilizado como modelo para organizar vertices para calcular normais das faces da parte oval
@@ -57,14 +60,26 @@ int vidas = 5;
 glcTexture *textureManager;
 
 /// Functions
+
+float transformCoordenate(float v){
+    float r;
+    r = v*10/29;
+    return  r;
+}
+
 void init(void) {
 
+
+    onStartScreen =1;
     objecstManager = objectsHandler.initObjects();
     textureManager =  new glcTexture;
-    textureManager->SetNumberOfTextures(4);       // Estabelece o número de texturas que será utilizado
+    textureManager->SetNumberOfTextures(5);       // Estabelece o número de texturas que será utilizado
     textureManager->SetWrappingMode(GL_REPEAT);
     textureManager->CreateTexture("./texturas/texturaPlano.png", 0);
-    textureManager->CreateTexture("./objects/Ladybug/BlueDragon.png", 1);
+    textureManager->CreateTexture("./objects/Ladybug/BlueDragon.png", 2);
+    textureManager->CreateTexture("./texturas/menu.png", 3);
+
+
 
     // LOAD OBJECTS
     glEnable(GL_LIGHTING);                 // Habilita luz
@@ -84,12 +99,13 @@ void init(void) {
     // Quando a opção "two_side lighting" está ativada, o opengl inverte a orientação das normais
     // permitindo que tanto as faces externas quanto internas sejam iluminadas.
     // Essa opção é mais lenta se comparada a renderização de apenas um dos lados
-    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
 
     glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH)/2, glutGet(GLUT_WINDOW_HEIGHT)/2);
     xAntigo = glutGet(GLUT_WINDOW_WIDTH)/2;
 
     glutSetCursor(GLUT_CURSOR_NONE);
+
 
 }
 
@@ -148,7 +164,6 @@ void drawBoard() {
     glNormal3f(0, 0, 1);
     glTexCoord2f(1.0, 0.0);
     glVertex3f(BHF, -BHF, 0);
-
 
     glNormal3f(0, 0, 1);
     glTexCoord2f(1.0, 1.0);
@@ -256,19 +271,24 @@ void drawSphere() {
     glutSolidSphere(BALL_RADIUS, 100, 100);
     glPopMatrix();
 
-    for(int i = 0; i < vidas; ++i)
-    {
-
-        glPushMatrix();
-        glTranslatef(-5 + i*0.5, 2.5, BALL_RADIUS);
-        glutSolidSphere(BALL_RADIUS, 20, 20);
-
-        glPopMatrix();
-
-
-    }
 
 }
+
+  void drawLifes(){
+      for(int i = 0; i < vidas; ++i)
+      {
+
+          glPushMatrix();
+          glTranslatef(-5 + i*0.5, 2.5, BALL_RADIUS);
+          glutSolidSphere(BALL_RADIUS, 20, 20);
+          glPopMatrix();
+
+      }
+
+
+}
+
+
 
 
 void drawArrow() {
@@ -302,7 +322,7 @@ void drawBorderss1()
 {
     GLfloat objeto_especular[] = { 1.0, 1.0, 1.0, 1.0 };
     GLfloat objeto_brilho[]    = { 90.0f };
-    GLfloat objeto_ambient[]   = { 0, 0.0, 0.0, 0.001 };
+    GLfloat objeto_ambient[]   = { 0, 0.4, 0.0, 0.3 };
 
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, objeto_ambient);
@@ -338,31 +358,26 @@ void drawBorderss1()
     CalculaNormal2(v0,v1,v2,&normalBorder);
     glPushMatrix();
     //glNormal3f(0,0,1);
-    glBegin(GL_TRIANGLES);
-    glNormal3f(normalBorder.x,normalBorder.y,normalBorder.z);
-    glVertex3f(v0.x,v0.y,v0.z);
-    glNormal3f(normalBorder.x,normalBorder.y,normalBorder.z);
-    glVertex3f(v1.x,v1.y,v1.z);
-    glNormal3f(normalBorder.x,normalBorder.y,normalBorder.z);
-    glVertex3f(v2.x,v2.y,v2.z);
-    glEnd();
+
 
     // printf("NORMAL %f: %f: %f \n",n1.x,v2.y,v2.z);
     if(verticeAdded ==0);
     {
-
         normals[0].v[0]=trianglesNormals[0];
         normals[0].v[1]=v1;
         normals[0].v[2]=v2;
         vertices.push_back(normals[0]);
     }
-
+     textureManager->Bind(0);
     glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glNormal3f(normalBorder.x,normalBorder.y,normalBorder.z);
     glVertex3f(v0.x,v0.y,v0.z);
     glNormal3f(normalBorder.x,normalBorder.y,normalBorder.z);
+    glTexCoord2f(1,0);
     glVertex3f(v2.x,v2.y,v2.z);
     glNormal3f(normalBorder.x,normalBorder.y,normalBorder.z);
+    glTexCoord2f(0.9,0.2);
     glVertex3f(v3.x,v3.y,v3.z);
     glEnd();
 
@@ -377,8 +392,11 @@ void drawBorderss1()
     }
 
     glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glVertex3f(v0.x,v0.y,v0.z);
+    glTexCoord2f(0.9,0.2);
     glVertex3f(v3.x,v3.y,v3.z);
+    glTexCoord2f(0.8,0.4);
     glVertex3f(v4.x,v4.y,v4.z);
     glEnd();
     if(verticeAdded ==0)
@@ -393,8 +411,11 @@ void drawBorderss1()
     }
 
     glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glVertex3f(v0.x,v0.y,v0.z);
+    glTexCoord2f(0.8,0.4);
     glVertex3f(v4.x,v4.y,v4.z);
+    glTexCoord2f(0.7,0.6);
     glVertex3f(v5.x,v5.y,v5.z);
     glEnd();
     if(verticeAdded ==0)
@@ -409,8 +430,11 @@ void drawBorderss1()
     }
 
     glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glVertex3f(v0.x,v0.y,v0.z);
+    glTexCoord2f(0.7,0.7);
     glVertex3f(v5.x,v5.y,v5.z);
+    glTexCoord2f(0.5,0.6); ///testar aqui
     glVertex3f(v6.x,v6.y,v6.z);
     glEnd();
     if(verticeAdded ==0)
@@ -424,13 +448,16 @@ void drawBorderss1()
         normals[4].v[2]=v6;
         vertices.push_back(normals[4]);
     }
-    // desenho a outra metade  direita da parede
 
-    glBegin(GL_TRIANGLES);
+   /* glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glVertex3f(v0.x,v0.y,v0.z);
+    glTexCoord2f(0.6,1);
     glVertex3f(v2.x,-v2.y,v2.z);
+    glTexCoord2f(0.5,1);
     glVertex3f(v1.x,-v1.y,v1.z);
     glEnd();
+    */
     if(verticeAdded == 0)
     {
         trianglesNormals[5].x = v0.x;
@@ -450,8 +477,11 @@ void drawBorderss1()
 
 
     glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glVertex3f(v0.x,v0.y,v0.z);
+    glTexCoord2f(0.1,0.2);
     glVertex3f(v3.x,-v3.y,v3.z);
+    glTexCoord2f(0,0);
     glVertex3f(v2.x,-v2.y,v2.z);
     glEnd();
     if(verticeAdded ==0)
@@ -475,8 +505,11 @@ void drawBorderss1()
 
 
     glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glVertex3f(v0.x,v0.y,v0.z);
+    glTexCoord2f(0.2,0.4);
     glVertex3f(v4.x,-v4.y,v4.z);
+    glTexCoord2f(0.1,0.2);
     glVertex3f(v3.x,-v3.y,v3.z);
     glEnd();
     if(verticeAdded ==0)
@@ -500,8 +533,11 @@ void drawBorderss1()
 
 
     glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glVertex3f(v0.x,v0.y,v0.z);
+    glTexCoord2f(0.3,0.6);
     glVertex3f(v5.x,-v5.y,v5.z);
+    glTexCoord2f(0.2,0.4);
     glVertex3f(v4.x,-v4.y,v4.z);
     glEnd();
     if(verticeAdded ==0)
@@ -522,8 +558,11 @@ void drawBorderss1()
     }
 
     glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glVertex3f(v0.x,v0.y,v0.z);
+    glTexCoord2f(0.4,0.8);
     glVertex3f(v6.x,-v6.y,v6.z);
+    glTexCoord2f(0.3,0.6);
     glVertex3f(v5.x,-v5.y,v5.z);
     glEnd();
     if(verticeAdded ==0)
@@ -544,11 +583,14 @@ void drawBorderss1()
     }
 
 
-    ///aksnkansdkanjkandjknjsndjdsd
+    ///Lado esquerdo
 
     glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glVertex3f(-v0.x,v0.y,v0.z);
+    glTexCoord2f(1,0);
     glVertex3f(-v2.x,v2.y,v2.z);
+    glTexCoord2f(0.9,0.2);
     glVertex3f(-v1.x,v1.y,v1.z);
     glEnd();
     if(verticeAdded ==0)
@@ -569,10 +611,14 @@ void drawBorderss1()
     }
 
     glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glVertex3f(-v0.x,v0.y,v0.z);
+    glTexCoord2f(0.1,0.2);
     glVertex3f(-v3.x,v3.y,v3.z);
+    glTexCoord2f(0.0,0.0);
     glVertex3f(-v2.x,v2.y,v2.z);
     glEnd();
+
     if(verticeAdded ==0)
     {
         trianglesNormals[20].x= -v0.x;
@@ -593,10 +639,12 @@ void drawBorderss1()
         vertices.push_back(normals[11]);
     }
 
-
     glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glVertex3f(-v0.x,v0.y,v0.z);
+    glTexCoord2f(0.2,0.4);
     glVertex3f(-v4.x,v4.y,v4.z);
+    glTexCoord2f(0.1,0.2);
     glVertex3f(-v3.x,v3.y,v3.z);
     glEnd();
     if(verticeAdded ==0)
@@ -618,8 +666,11 @@ void drawBorderss1()
 
 
     glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glVertex3f(-v0.x,v0.y,v0.z);
+    glTexCoord2f(0.3,0.6);
     glVertex3f(-v5.x,v5.y,v5.z);
+    glTexCoord2f(0.2,0.4);
     glVertex3f(-v4.x,v4.y,v4.z);
     glEnd();
     if(verticeAdded ==0)
@@ -641,8 +692,11 @@ void drawBorderss1()
 
 
     glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glVertex3f(-v0.x,v0.y,v0.z);
+    glTexCoord2f(0.4,0.8);
     glVertex3f(-v6.x,v6.y,v6.z);
+    glTexCoord2f(0.3,0.6);
     glVertex3f(-v5.x,v5.y,v5.z);
     glEnd();
     if(verticeAdded ==0)
@@ -666,8 +720,11 @@ void drawBorderss1()
     // desenho a outra metade da parede
 
     glBegin(GL_TRIANGLES);
+     glTexCoord2f(0.5,0);
     glVertex3f(-v0.x,-v0.y,v0.z);
+    glTexCoord2f(1,0);
     glVertex3f(-v1.x,-v1.y,v1.z);
+    glTexCoord2f(0.9,0.2);
     glVertex3f(-v2.x,-v2.y,v2.z);
     glEnd();
     if(verticeAdded ==0)
@@ -688,8 +745,12 @@ void drawBorderss1()
     }
 
     glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glVertex3f(-v0.x,-v0.y,v0.z);
+
+    glTexCoord2f(0.9,0.2);
     glVertex3f(-v2.x,-v2.y,v2.z);
+    glTexCoord2f(0.8,0.4);
     glVertex3f(-v3.x,-v3.y,v3.z);
     glEnd();
     if(verticeAdded ==0)
@@ -710,8 +771,11 @@ void drawBorderss1()
     }
 
     glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glVertex3f(-v0.x,-v0.y,v0.z);
+    glTexCoord2f(0.8,0.4);
     glVertex3f(-v3.x,-v3.y,v3.z);
+    glTexCoord2f(0.7,0.6);
     glVertex3f(-v4.x,-v4.y,v4.z);
     glEnd();
     if(verticeAdded ==0)
@@ -733,8 +797,11 @@ void drawBorderss1()
 
 
     glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glVertex3f(-v0.x,-v0.y,v0.z);
+    glTexCoord2f(0.7,0.6);
     glVertex3f(-v4.x,-v4.y,v4.z);
+    glTexCoord2f(0.6,1);
     glVertex3f(-v5.x,-v5.y,v5.z);
     glEnd();
     if(verticeAdded ==0)
@@ -755,8 +822,11 @@ void drawBorderss1()
     }
 
     glBegin(GL_TRIANGLES);
+    glTexCoord2f(0.5,0);
     glVertex3f(-v0.x,v0.y,v0.z);
+    glTexCoord2f(0.6,1);
     glVertex3f(-v5.x,-v5.y,v5.z);
+    glTexCoord2f(0.5,1);
     glVertex3f(-v6.x,-v6.y,v6.z);
     glEnd();
     if(verticeAdded ==0)
@@ -775,53 +845,125 @@ void drawBorderss1()
         normals[19].v[2]=trianglesNormals[44];
         vertices.push_back(normals[19]);
     }
-
     glPopMatrix();
+    textureManager->Disable();
     verticeAdded =1;
 }
+
+
 
 void drawFaces()
 {
     GLfloat objeto_especular[] = { 1.0, 1.0, 1.0, 1.0 };
-    GLfloat objeto_brilho[]    = { 40.0f };
-    GLfloat objeto_ambient[]   = { 0, 0.0, 0.0, 0.001 };
+    GLfloat objeto_brilho[]    = { 80.0f };
+    GLfloat objeto_ambient[]   = { 0, 0.3, 0.0, 0.05 };
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, objeto_ambient);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, corRebatedorLaterais[fase].objeto_difusa);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
-
    timerColision--;
-   glPushMatrix();
+
+    textureIndexs[0]=0;
+    textureIndexs[1]=1;
+    textureIndexs[2]=0;
+    textureIndexs[3]=1;
+    glPushMatrix();
     for(int i=0; i<vertices.size(); i++)
     {
+
         auxCalcNormal.x = vertices[i].v[2].x;
         auxCalcNormal.y = vertices[i].v[2].y;
         auxCalcNormal.z = 0;
         CalculaNormal2(auxCalcNormal,vertices[i].v[2],vertices[i].v[1],&normalFaces);
         normalFaces.z =0;
         //normalFaces.z= 0.5;
-        if( timerColision <20 && (detecColisionLadoDireito(vertices[i])||detecColisionLadoEsquerdo(vertices[i])))
+        if( timerColision <40 && (detecColisionLadoDireito(vertices[i])||detecColisionLadoEsquerdo(vertices[i])))
         {
             direction[0] = direction[0]+normalFaces.x;
             direction[1] = direction[1]+normalFaces.y;
             timerColision =70;
         }
-        glNormal3f(normalFaces.x,normalFaces.y,normalFaces.z);
+
+        textureManager->Bind(0);
+        if(i>=0 && i< 5){
         glBegin(GL_QUADS);
+        glTexCoord2f(textureIndexs[0]+textureIncrement,1);
         glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,vertices[i].v[2].z);
+
+        glTexCoord2f(textureIndexs[0],1);
         glVertex3f(vertices[i].v[1].x,vertices[i].v[1].y,vertices[i].v[1].z);
+
+        glTexCoord2f(textureIndexs[0],0);
         glVertex3f(vertices[i].v[1].x,vertices[i].v[1].y,0);
+
+        glTexCoord2f(textureIndexs[0]+textureIncrement,0);
         glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,0);
         glEnd();
-  }
+        textureManager->Disable();
+        textureIndexs[0] += textureIncrement;
+        }
+        if(i>5 && i<10){
+
+            glBegin(GL_QUADS);
+            glTexCoord2f(textureIndexs[1],1);
+            glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,vertices[i].v[2].z);
+
+            glTexCoord2f(textureIndexs[1]-textureIncrement,1);
+            glVertex3f(vertices[i].v[1].x,vertices[i].v[1].y,vertices[i].v[1].z);
+
+            glTexCoord2f(textureIndexs[1]-textureIncrement,0);
+            glVertex3f(vertices[i].v[1].x,vertices[i].v[1].y,0);
+
+            glTexCoord2f(textureIndexs[1],0);
+            glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,0);
+            glEnd();
+            textureManager->Disable();
+            textureIndexs[1] -= textureIncrement;
+        }
+        if(i>=10 && i<15){
+            glBegin(GL_QUADS);
+            glTexCoord2f(textureIndexs[2],1);
+            glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,vertices[i].v[2].z);
+
+            glTexCoord2f(textureIndexs[2]+textureIncrement,1);
+            glVertex3f(vertices[i].v[1].x,vertices[i].v[1].y,vertices[i].v[1].z);
+
+            glTexCoord2f(textureIndexs[2]+textureIncrement,0);
+            glVertex3f(vertices[i].v[1].x,vertices[i].v[1].y,0);
+
+            glTexCoord2f(textureIndexs[2],0);
+            glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,0);
+            glEnd();
+            textureManager->Disable();
+            textureIndexs[2] += textureIncrement;
+        }
+        if(i>=15 && i<=20){
+            glBegin(GL_QUADS);
+            glTexCoord2f(textureIndexs[3],1);
+            glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,vertices[i].v[2].z);
+
+            glTexCoord2f(textureIndexs[3]-textureIncrement,1);
+            glVertex3f(vertices[i].v[1].x,vertices[i].v[1].y,vertices[i].v[1].z);
+
+            glTexCoord2f(textureIndexs[3]-textureIncrement,0);
+            glVertex3f(vertices[i].v[1].x,vertices[i].v[1].y,0);
+
+            glTexCoord2f(textureIndexs[3],0);
+            glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,0);
+            glEnd();
+
+            textureIndexs[3] += textureIncrement;
+        }
+        textureManager->Disable();
+    }
 glPopMatrix();
 }
 
 
 void drawHitter(vertex center,float sizeHitter){
 
-   glPushMatrix();
+    glPushMatrix();
     GLfloat objeto_especular[] = { 0.8, 0.8, 0.8, 1.0 };
     GLfloat objeto_brilho[]    = { 90.0f };
     GLfloat objeto_ambient[]   = { 0.1, 0.1, 0.1, 1.0};
@@ -837,24 +979,26 @@ void drawHitter(vertex center,float sizeHitter){
   float deltaX = 0.2;
   float deltaY = 0.13;
 
-  vertex v1,v2,v3,v4;
 
-  v1.z = v2.z =v3.z =v4.z =  0.3;
-  center.z= 0.3;
+   v1.z = v2.z =v3.z =v4.z =  0.3;
+   center.z= 0.3;
 
-  v1.x = center.x+sizeHitter;
-  v1.y =center.y;
+   v1.x = center.x+sizeHitter;
+   v1.y =center.y;
 
-  v2.x = v1.x -deltaX;
-  v2.y = v1.y +deltaY;
+   v2.x = v1.x -deltaX;
+   v2.y = v1.y +deltaY;
 
-  vertex aux1,normalVector,aux2,aux3;
+   vertex aux1,normalVector,aux2,aux3;
 
    int cont =0;
-   //desenho a primeira metade do rebatedor
+   textureIndexs[4] = 0;
+   textureIndexs[5] = 1;
 
+
+
+   ///desenho a primeira metade do rebatedor
    while(cont < 3){
-
     aux1.x = v1.x;
     aux1.y = v1.y;
     aux1.z = 0;
@@ -870,14 +1014,25 @@ void drawHitter(vertex center,float sizeHitter){
         direction[0] = direction[0]+normalVector.x;
         direction[1] = direction[1]+normalVector.y;
      }
-    glNormal3f(normalVector.x,normalVector.y,normalVector.z);
-    glBegin(GL_QUADS);
-    glVertex3f(v2.x,v2.y,v2.z);
-    glVertex3f(v1.x,v1.y,v1.z);
-    glVertex3f(v1.x,v1.y,0.0);
-    glVertex3f(v2.x,v2.y,0.0);
-    glEnd();
+       glNormal3f(normalVector.x,normalVector.y,normalVector.z);
+       textureManager->Bind(0);
 
+       glBegin(GL_QUADS);
+       glTexCoord2f(textureIndexs[4]+textureIncrement,1);
+       glVertex3f(v2.x,v2.y,v2.z);
+
+       glTexCoord2f(textureIndexs[4],1);
+       glVertex3f(v1.x,v1.y,v1.z);
+
+       glTexCoord2f(textureIndexs[4],0.0);
+       glVertex3f(v1.x,v1.y,0.0);
+
+       glTexCoord2f(textureIndexs[4]+textureIncrement,0);
+       glVertex3f(v2.x,v2.y,0.0);
+       glEnd();
+
+       textureIndexs[4] += textureIncrement;
+         textureManager->Disable();
 
     aux1.x = v1.x-2*(v1.x-center.x);
     aux1.y = v1.y;
@@ -891,27 +1046,34 @@ void drawHitter(vertex center,float sizeHitter){
     aux3.y = v2.y;
     aux2.z = 0;
 
-
     triangle r1;
 
     r1.v[0] = center;
     r1.v[1] = aux1;
     r1.v[2] = aux2;
-    normalVector = calcNormal(r1);
 
+    normalVector = calcNormal(r1);
         CalculaNormal2(center,aux2,aux1,&normalVector);
            if(detecColisionLadoEsquerdo(r1) && timerInicialColision ==0){
         direction[0] = -direction[0] + normalVector.x*0.7;
         direction[1] = -direction[1] + normalVector.y*0.7;     }
 
     glNormal3f(normalVector.x,normalVector.y,normalVector.z);
-    glBegin(GL_QUADS);
-    glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
-    glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
-    glVertex3f(v2.x-2*(v2.x-center.x),v2.y,0.0);
-    glVertex3f(v1.x-2*(v1.x-center.x),v1.y,0.0);
-    glEnd();
+       textureManager->Bind(0);
+       glBegin(GL_QUADS);
+       glTexCoord2f(textureIndexs[5],1);
+       glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
 
+       glTexCoord2f(textureIndexs[5]-textureIncrement,1);
+       glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
+
+       glTexCoord2f(textureIndexs[5]-textureIncrement,0);
+       glVertex3f(v2.x-2*(v2.x-center.x),v2.y,0.0);
+       glTexCoord2f(textureIndexs[5],0);
+       glVertex3f(v1.x-2*(v1.x-center.x),v1.y,0.0);
+       glEnd();
+       textureManager->Disable();
+       textureIndexs[5]  -= textureIncrement;
     //parte de baixo do rebatedor
      aux1.x = v1.x;
     aux1.y = v1.y;
@@ -939,31 +1101,111 @@ void drawHitter(vertex center,float sizeHitter){
     normalVector3 = calcNormal(r3);
     glNormal3f(normalVector3.x,normalVector3.y,normalVector3.z);
 
-    /// parte de baixo
-    glBegin(GL_QUADS);
+    /// parte de baixo( ou de trás)
 
-    glNormal3f(0,-1,0);
-    glVertex3f(center.x+sizeHitter,center.y,center.z);
-    glVertex3f(center.x-sizeHitter,center.y,center.z);
-    glVertex3f(center.x-sizeHitter,center.y,0.0);
-    glVertex3f(center.x+sizeHitter,center.y,0.0);
-    glEnd();
-
+       textureManager->Bind(0);
+       glBegin(GL_QUADS);
+       //glNormal3f(0,-1,0);
+        glTexCoord2f(1,1);
+       glVertex3f(center.x+sizeHitter,center.y,center.z);
+       glTexCoord2f(0,1);
+       glVertex3f(center.x-sizeHitter,center.y,center.z);
+       glTexCoord2f(0,0);
+       glVertex3f(center.x-sizeHitter,center.y,0.0);
+       glTexCoord2f(1,0);
+       glVertex3f(center.x+sizeHitter,center.y,0.0);
+       glEnd();
+     textureManager->Disable();
     triangle t4;
     vertex normalVector4;
     t4.v[0] = center;
     t4.v[1] = v1;
     t4.v[2] = v2;
     normalVector4 =calcNormal(t4);
-    glNormal3f(normalVector4.x,normalVector4.y,normalVector4.z);
-    glBegin(GL_TRIANGLES);
-    glVertex3f(center.x,center.y,center.z);
-    glVertex3f(v1.x,v1.y,v1.z);
-    glVertex3f(v2.x,v2.y,v2.z);
-    glEnd();
+    textureManager->Bind(0);
+    glNormal3f(0,0,1);
+       if(cont ==0){
+           glBegin(GL_TRIANGLES);
+           glTexCoord2f(0.5,0);
+           glVertex3f(center.x,center.y,center.z);
+           glTexCoord2f(1,0.0);
+           glVertex3f(v1.x,v1.y,v1.z);
+           glTexCoord2f(0.875,0.25);
+           glVertex3f(v2.x,v2.y,v2.z);
+           glEnd();
 
+           glBegin(GL_TRIANGLES);
+
+           glTexCoord2f(0.5,0);
+           glVertex3f(center.x,center.y,center.z);
+
+           glTexCoord2f(0.125,0.25);
+           glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
+
+           glTexCoord2f(0,0);
+           glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
+           glEnd();
+       }
+
+       if(cont ==1){
+           glBegin(GL_TRIANGLES);
+
+           glTexCoord2f(0.5,0.0);
+           glVertex3f(center.x,center.y,center.z);
+
+           glTexCoord2f(0.875,0.25);
+           glVertex3f(v1.x,v1.y,v1.z);
+
+           glTexCoord2f(0.75,0.5);
+           glVertex3f(v2.x,v2.y,v2.z);
+           glEnd();
+
+
+           glBegin(GL_TRIANGLES);
+
+           glTexCoord2f(0.5,0);
+           glVertex3f(center.x,center.y,center.z);
+
+           glTexCoord2f(0.25,0.5);
+           glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
+
+           glTexCoord2f(0.125,0.25);
+           glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
+           glEnd();
+       }
+       if(cont==2){
+           glBegin(GL_TRIANGLES);
+
+           glTexCoord2f(0.5,0.0);
+           glVertex3f(center.x,center.y,center.z);
+
+           glTexCoord2f(0.75,0.5);
+           glVertex3f(v1.x,v1.y,v1.z);
+
+           glTexCoord2f(0.5,0.6);
+           glVertex3f(v2.x,v2.y,v2.z);
+           glEnd();
+
+
+           glBegin(GL_TRIANGLES);
+
+           glTexCoord2f(0.5,0);
+           glVertex3f(center.x,center.y,center.z);
+
+           glTexCoord2f(0.5,0.6);
+           glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
+
+
+           glTexCoord2f(0.25,0.5);
+           glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
+           glEnd();
+
+       }
+
+
+
+    textureManager->Disable();
     /// desenho a outra metade do rebatedor
-
 
     triangle t2;
 
@@ -984,17 +1226,13 @@ void drawHitter(vertex center,float sizeHitter){
     t2.v[1] = aux11;
     t2.v[2] = aux12;
 
-    CalculaNormal2(aux11,aux13,aux12,&normalVector2);
+       CalculaNormal2(aux11,aux13,aux12,&normalVector2);
   if(detecColisionLadoEsquerdo(t2) && timerInicialColision==0){
-
         direction[0] = -direction[0] + normalVector2.x;
         direction[1] = -direction[1] + normalVector2.y;
         }
-    glBegin(GL_TRIANGLES);
-    glVertex3f(center.x,center.y,center.z);
-    glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
-    glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
-    glEnd();
+
+
 
      v1.x = v2.x;
      v1.y = v2.y;
@@ -1003,6 +1241,7 @@ void drawHitter(vertex center,float sizeHitter){
      cont++;
    }
  glPopMatrix();
+
 }
 
 void drawExits(){
@@ -1087,13 +1326,79 @@ void drawExits(){
 }
 
 
+void drawHalfSphere(int scaley, int scalex, GLfloat r) {
+    vertex vet;
+    int i, j;
+    GLfloat v[scalex * scaley][3];
+
+    for (i = 0; i < scalex; ++i) {
+        for (j = 0; j < scaley; ++j) {
+            v[i * scaley + j][0] = r * cos(j * 2 * M_PI / scaley) * cos(i * M_PI / (2 * scalex));
+            v[i * scaley + j][1] = r * sin(i * M_PI / (2 * scalex));
+            v[i * scaley + j][2] = r * sin(j * 2 * M_PI / scaley) * cos(i * M_PI / (2 * scalex));
+        }
+    }
+
+    glBegin(GL_QUADS);
+    for (i = 0; i < scalex - 1; ++i) {
+        for (j = 0; j < scaley; ++j) {
+            glVertex3fv(v[i * scaley + j]);
+            glVertex3fv(v[i * scaley + (j + 1) % scaley]);
+            glVertex3fv(v[(i + 1) * scaley + (j + 1) % scaley]);
+            glVertex3fv(v[(i + 1) * scaley + j]);
+        }
+    }
+
+}
+
+void drawStartScreen(){
+
+    GLfloat objeto_especular[] = { 0.5, 0.5, 0.5, 1.0 };
+    GLfloat objeto_brilho[]    = { 90.0f };
+    GLfloat objeto_ambient[]   = { 0.3, 0.3, 0.3, 1.0};
+    GLfloat objeto_difusa[]    = { 0.0, 0.6, 0.0, 1.0 };
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, objeto_ambient);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, objeto_difusa);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
+
+    textureManager->Bind(3);
+  glPushMatrix();
+  glNormal3f(0,0,1);
+  glBegin(GL_QUADS);
+
+    glTexCoord2f(0,0);
+    glVertex3f(-2,-2,0.9);
+
+   glTexCoord2f(1,0);
+   glVertex3f(2,-2,0.9);
+
+    glTexCoord2f(1,1);
+    glVertex3f(2,2,0.9);
+
+   glTexCoord2f(0,1);
+   glVertex3f(-2,2,0.9);
+
+ glEnd();
+ glPopMatrix();
+ textureManager->Disable();
+}
+
+
+
+
+
+
+
+
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
     float yVision= 0;
     glLoadIdentity();
+
     // Use selected texture
-    //objectsHandler.drawObjects(objecstManager,textureManager);
     int ortho = 2;
     if(perspective){
         gluPerspective(60, (GLfloat) width / (GLfloat) height, 0.01, 200.0);
@@ -1110,13 +1415,10 @@ void display(void) {
    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
    gluLookAt (xCamera, yCamera, zdist, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-
     if(pause ==0){
              rotationX = 0.0;
              rotationY=  0.0;
             }
-
-   cout<<xCamera<<" "<<yCamera<<" "<<zdist<<endl;
 
     glRotatef(rotationY, 0, 1, 1);
     glRotatef(rotationX, 1, 0, 1);
@@ -1128,9 +1430,17 @@ void display(void) {
         gameStarted =1;
     }
 
+     if(onStartScreen){
+         drawStartScreen();
+     } else{
+       drawLifes();
+     }
+
      if(animate == true && timerInicialColision > 0)
             timerInicialColision= timerInicialColision-1;
     glPushMatrix();
+
+
     if (!animate)
         drawArrow();
     timerPosition--;
@@ -1237,7 +1547,7 @@ void updateState() {
     // maximum board position
     const float maxRange[] = {-BHF + BALL_RADIUS, BHF - BALL_RADIUS};
 
-    float movement = velocity * 0.12;
+    float movement = velocity * 0.10;
 
     float tam = sqrt(pow(direction[0],2) + pow(direction[1],2));
 
@@ -1504,7 +1814,6 @@ void updateState() {
 }
 
 
-
 void generatePrisms()
 {
 
@@ -1685,9 +1994,6 @@ void keyboard(unsigned char key, int x, int y) {
 
     if (!animate && !pause) {
         switch (tolower(key)) {
-
-
-
             case 'r':
                 reiniciaJogo();
                 break;
@@ -1748,7 +2054,7 @@ void keyboard(unsigned char key, int x, int y) {
                 glEnable(GL_LIGHT0);                   // habilita luz 0
                 glEnable(GL_DEPTH_TEST);
 
-                glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+                glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
 
                 updateState();
 
@@ -1814,7 +2120,7 @@ void keyboard(unsigned char key, int x, int y) {
                 glEnable(GL_LIGHT0);                   // habilita luz 0
                 glEnable(GL_DEPTH_TEST);
 
-                glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+                glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
 
                 break;
 
@@ -1854,7 +2160,7 @@ void keyboard(unsigned char key, int x, int y) {
                 glEnable(GL_LIGHT0);                   // habilita luz 0
                 glEnable(GL_DEPTH_TEST);
 
-                glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+                glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
 
 
                 break;
@@ -1895,7 +2201,7 @@ void keyboard(unsigned char key, int x, int y) {
                 glEnable(GL_LIGHT0);                   // habilita luz 0
                 glEnable(GL_DEPTH_TEST);
 
-                glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+                glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
 
                 break;
 
@@ -1935,7 +2241,7 @@ void keyboard(unsigned char key, int x, int y) {
                 glEnable(GL_LIGHT0);                   // habilita luz 0
                 glEnable(GL_DEPTH_TEST);
 
-                glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+                glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
 
                 break;
 

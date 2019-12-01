@@ -62,6 +62,7 @@ glcWavefrontObject* objectsHandler::initObjects() {
 }
 
 void objectsHandler::drawObjects(glcWavefrontObject*objectManagerParam,glcTexture *textureManagerParam, int timerPosition){
+    textureManagerParam->Bind(2);
     glPushMatrix();
     updateObjects1Position(timerPosition);
     if(objectsALives[0]==0 && timerDeathObject1 ==0){
@@ -72,8 +73,7 @@ void objectsHandler::drawObjects(glcWavefrontObject*objectManagerParam,glcTextur
         objectsALives[0] =1;
         i = NULL;
     }
-
-    textureManagerParam->Bind(1);
+    
     objectManagerParam->SelectObject(0);
     objectManagerParam->SetShadingMode(SMOOTH_SHADING);
     objectManagerParam->SetRenderMode(USE_TEXTURE_AND_MATERIAL);
@@ -105,7 +105,7 @@ void objectsHandler::drawObjects(glcWavefrontObject*objectManagerParam,glcTextur
         objectsALives[1] =1;
         i = NULL;
     }
-    textureManagerParam->Bind(1);
+
     objectManagerParam->SelectObject(1);
     objectManagerParam->SetShadingMode(SMOOTH_SHADING); // Possible values: FLAT_SHADING e SMOOTH_SHADING
     objectManagerParam->SetRenderMode(USE_TEXTURE_AND_MATERIAL);     // Possible values: USE_COLOR, USE_MATERIAL, USE_TEXTURE (not available in this example)
@@ -127,4 +127,5 @@ void objectsHandler::drawObjects(glcWavefrontObject*objectManagerParam,glcTextur
     objectManagerParam->Draw();
     glPopMatrix();
     glPopMatrix();
+    textureManagerParam->Disable();
 }
