@@ -38,12 +38,6 @@ GL/glut.h
 cor.h
 /home/ark/Faculdade/TrabalhoCG01/cor.h
 
-/home/ark/Faculdade/TrabalhoCG01/SkyBox.cpp
-iostream
--
-SkyBox.h
-/home/ark/Faculdade/TrabalhoCG01/SkyBox.h
-
 /home/ark/Faculdade/TrabalhoCG01/SkyBox.h
 TexturaPlano.h
 /home/ark/Faculdade/TrabalhoCG01/TexturaPlano.h

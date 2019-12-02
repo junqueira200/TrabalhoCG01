@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "SkyBox.h"
-#define A 4
+#define A 8
 void renderSkyBox()
 {
 
@@ -33,33 +33,144 @@ void renderSkyBox()
     float h = 1.0f;
     float w = 1.0f;
 
-    // base
+    //  parte de tras
 
     glBegin(GL_TRIANGLE_FAN);
 
     glNormal3f(0, -1, 0);
     glTexCoord2f(0.25, 0.33);
-    glVertex3f(-A, A, -2);
+    glVertex3f(-A, A, -A);
 
 
     glNormal3f(0, -1, 0.0);
     glTexCoord2f(0.5, 0.33);
-    glVertex3f(A, A, -2.0);
+    glVertex3f(A, A, -A);
 
     glNormal3f(0, -1, 0.0);
     glTexCoord2f(0.5, 0.66);
-    glVertex3f(A, A, 2.0);
+    glVertex3f(A, A, A);
 
     glNormal3f(0, -1, 0.0);
     glTexCoord2f(0.25, 0.66);
-    glVertex3f(-A, A, 2.0);
+    glVertex3f(-A, A, A);
     glEnd();
 
 
-    // igor faz a esquerda
+   // esquerda
+    glBegin(GL_TRIANGLE_FAN);
+
+    glNormal3f(0, -1, 0);
+    glTexCoord2f(0.25, 0.33);
+    glVertex3f(-A, A, -A);
 
 
-     //eu faço a direita
+    glNormal3f(0, -1, 0.0);
+    glTexCoord2f(0.5, 0.33);
+    glVertex3f(-A, -A, -A);
 
+    glNormal3f(0, -1, 0.0);
+    glTexCoord2f(0.5, 0.66);
+    glVertex3f(-A, -A, A);
+
+    glNormal3f(0, -1, 0.0);
+    glTexCoord2f(0.25, 0.66);
+    glVertex3f(-A, A, A);
+    glEnd();
+
+
+
+    //direita
+
+    glBegin(GL_TRIANGLE_FAN);
+
+    glNormal3f(0, -1, 0);
+    glTexCoord2f(0.25, 0.33);
+    glVertex3f(A, A, -A);
+
+
+    glNormal3f(0, -1, 0.0);
+    glTexCoord2f(0.5, 0.33);
+    glVertex3f(A, -A, -A
+    );
+
+    glNormal3f(0, -1, 0.0);
+    glTexCoord2f(0.5, 0.66);
+    glVertex3f(A, -A, A);
+
+    glNormal3f(0, -1, 0.0);
+    glTexCoord2f(0.25, 0.66);
+    glVertex3f(A, A, A
+    );
+    glEnd();
+
+
+    // baixo
+    textureManager->Bind(7);
+    glBegin(GL_TRIANGLE_FAN);
+
+    glNormal3f(0, -1, 0);
+    glTexCoord2f(0.25, 0.33);
+    glVertex3f(-A, -A, -A
+    );
+
+
+    glNormal3f(0, -1, 0.0);
+    glTexCoord2f(0.5, 0.33);
+    glVertex3f(-A, A, -A);
+
+    glNormal3f(0, -1, 0.0);
+    glTexCoord2f(0.5, 0.66);
+    glVertex3f(A, A, -A);
+
+    glNormal3f(0, -1, 0.0);
+    glTexCoord2f(0.25, 0.66);
+    glVertex3f(A, -A, -A);
+    glEnd();
+
+   textureManager->Disable();
+
+    //frente
+    glBegin(GL_TRIANGLE_FAN);
+
+    glNormal3f(0, -1, 0);
+    glTexCoord2f(0.25, 0.33);
+    glVertex3f(A, -A, A);
+
+    glNormal3f(0, -1, 0.0);
+    glTexCoord2f(0.5, 0.33);
+    glVertex3f(A, -A, -A);
+
+    glNormal3f(0, -1, 0.0);
+    glTexCoord2f(0.5, 0.66);
+    glVertex3f(-A, -A, -A);
+
+    glNormal3f(0, -1, 0.0);
+    glTexCoord2f(0.25, 0.66);
+    glVertex3f(-A, -A, A);
+    glEnd();
+
+
+    //cima
+    textureManager->Bind(7);
+    glBegin(GL_TRIANGLE_FAN);
+
+    glNormal3f(0, -1, 0);
+    glTexCoord2f(0.25, 0.33);
+    glVertex3f(-A, -A, A);
+
+
+    glNormal3f(0, -1, 0.0);
+    glTexCoord2f(0.5, 0.33);
+    glVertex3f(-A, A, A);
+
+    glNormal3f(0, -1, 0.0);
+    glTexCoord2f(0.5, 0.66);
+    glVertex3f(A, A, A);
+
+    glNormal3f(0, -1, 0.0);
+    glTexCoord2f(0.25, 0.66);
+    glVertex3f(A, -A, A);
+    glEnd();
+      textureManager->Disable();
     textureManager->Disable();
 }

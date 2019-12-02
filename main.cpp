@@ -82,7 +82,8 @@ void init(void) {
     textureManager->CreateTexture("./texturas/menu.png", 3);
     textureManager->CreateTexture("./texturas/hitter.png", 4);
     textureManager->CreateTexture("./texturas/exits.png", 5);
-    textureManager->CreateTexture("./texturas/box.png", 6);
+    textureManager->CreateTexture("./texturas/cubo.png", 6);
+    textureManager->CreateTexture("./texturas/ceubox.png", 7);
 
 
     // LOAD OBJECTS
@@ -253,7 +254,6 @@ void drawBoard()
     glEnd();
 
     textureManager->Disable();
-
     glPopMatrix();
 
 }
