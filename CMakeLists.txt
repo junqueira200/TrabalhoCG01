@@ -24,7 +24,9 @@ add_executable(TrabalhoCG01 main.cpp
         Colisao.h
         objectsHandler.cpp
         objectsHandler.h
-        cor.cpp)
+        cor.cpp
+        SkyBox.h
+        SkyBox.cpp)
 
 target_link_libraries(TrabalhoCG01 -lglut -lGL -lGLU -lpng)
 

@@ -16,13 +16,13 @@ glcTexture *textureManagerObjects = NULL;
 
 char objectFiles[NUM_OBJECTS][50] =
         {
-                "./objects/ball/13517_Beach_Ball_v2_L3.obj",
-                "./objects/helmo/HelmetOBJ.obj"
+                "../objects/ball/13517_Beach_Ball_v2_L3.obj",
+                "../objects/helmo/HelmetOBJ.obj"
         };
 char textureFiles[NUM_OBJECTS][50] =
         {
-                "./objects/ball/Beach_Ball_diffuse.png",
-                "./objects/helmo/BaseColor.png"
+                "../objects/ball/Beach_Ball_diffuse.png",
+                "../objects/helmo/BaseColor.png"
         };
 typedef struct
 {

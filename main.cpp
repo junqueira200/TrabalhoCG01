@@ -15,6 +15,7 @@
 #include "Posicao.h"
 #include "OpenGL_CallBack.h"
 #include "Colisao.h"
+#include "SkyBox.h"
 
 using namespace std;
 
@@ -35,7 +36,7 @@ const int MaxRetanHorizontal = 10;//10
 int timerInicialColision = 30;
 const int MaxRetanVertical = 1;//4
 vertex v1,v2,v3,v4,v5,v6,v0;
-
+//int onStartScreen;
 
 int timerColision = 70;
 ///triangulo utilizado como modelo para organizar vertices para calcular normais das faces da parte oval
@@ -58,7 +59,7 @@ vertex trianglesNormals[60];
 int vidas = 5;
 
 glcTexture *textureManager;
-
+glcTexture *textureManager2;
 /// Functions
 
 float transformCoordenate(float v){
@@ -73,13 +74,21 @@ void init(void) {
     onStartScreen =1;
     objecstManager = objectsHandler.initObjects();
     textureManager =  new glcTexture;
-    textureManager->SetNumberOfTextures(6);       // Estabelece o número de texturas que será utilizado
+    textureManager2 = new glcTexture;
+
+    textureManager->SetNumberOfTextures(7);       // Estabelece o número de texturas que será utilizado
+    textureManager2->SetNumberOfTextures(1);
     textureManager->SetWrappingMode(GL_REPEAT);
+    textureManager2->SetWrappingMode(GL_REPEAT);
     textureManager->CreateTexture("./texturas/texturaPlano.png", 0);
+    textureManager->CreateTexture("./texturas/parede.png", 1);
     textureManager->CreateTexture("./texturas/texturaCima.png", 2);
     textureManager->CreateTexture("./texturas/menu.png", 3);
     textureManager->CreateTexture("./texturas/hitter.png", 4);
     textureManager->CreateTexture("./texturas/exits.png", 5);
+    textureManager->CreateTexture("./texturas/cubo.png", 6);
+
+    textureManager2->CreateTexture("./texturas/cuboFront.png", 0);
 
 
     // LOAD OBJECTS
@@ -119,32 +128,21 @@ float calcDistance(float aX, float aY, float bX, float bY) {
     return sqrt(pow(aX - bX, 2) + pow(aY - bY, 2));
 }
 
-void drawBoard() {
+void drawBoard()
+{
+
+
 
     glPushMatrix();
-
-
-/*    GLfloat objeto_especular[] = { 0.6, 0.6, 0.6, 1.0 };
-    GLfloat objeto_brilho[]    = { 40.0f };
-    GLfloat objeto_ambient[]   = { 0.6, 0.6, 0.0, 0.1 };
-
-
-    GLfloat objeto_difusa[]    = { 0.6, 0.6, 0.0, 1.0 };
-
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, corParede[fase].objeto_ambient);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, corParede[fase].objeto_difusa);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);*/
-
     GLfloat objeto_ambient[]   = { 0.2, 0.2, 0.2, 1.0 };
     GLfloat objeto_difusa[]    = { 0.8, 0.8, 0.8, 1.0 };
     GLfloat objeto_especular[] = { 0.0, 0.0, 0.0, 1.0 };
     GLfloat objeto_brilho[]    = { 70.0f };
 
-    glMaterialfv(GL_FRONT, GL_AMBIENT, objeto_ambient);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, objeto_difusa);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, objeto_especular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, objeto_brilho);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, objeto_ambient);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, objeto_difusa);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
 
     textureManager->Bind(0);
     float aspectRatio = textureManager->GetAspectRatio(0);
@@ -161,70 +159,40 @@ void drawBoard() {
     glTexCoord2f(0.0, 0.0);
     glVertex3f(-BHF, -BHF, 0);
 
+
     glNormal3f(0, 0, 1);
     glTexCoord2f(1.0, 0.0);
-    glVertex3f(BHF, -BHF, 0);
+    glVertex3f(BHF, -BHF, 0.0);
 
     glNormal3f(0, 0, 1);
     glTexCoord2f(1.0, 1.0);
-    glVertex3f(BHF, BHF, 0);
+    glVertex3f(BHF, BHF, 0.0);
 
     glNormal3f(0, 0, 1);
     glTexCoord2f(0.0, 1.0);
     glVertex3f(-BHF, BHF, 0);
     glEnd();
 
-    // bottom
-
-    float largura = 2.0*BHF;
-
-
-    glBegin(GL_TRIANGLE_FAN);
-
-    glNormal3f(0, 1, 0);
-    glVertex3f(-BHF, -BHF, 0.5);
-
-    glNormal3f(0, 1, 0);
-    glVertex3f(BHF, -BHF, 0.5);
-
-    glNormal3f(0.0,1.0,0.0 );
-    glVertex3f(BHF, -BHF, 0);
-
-    glNormal3f(0, 1, 0);
-    glVertex3f(-BHF, -BHF, 0);
-    glEnd();
-
-    // right
-
-    glBegin(GL_TRIANGLE_FAN);
-
-    glNormal3f(-1, 0, 0);
-    glVertex3f(BHF, -BHF, 0.5);
-
-    glNormal3f(-1, 0, 0);
-    glVertex3f(BHF, BHF, 0.5);
-
-    glNormal3f(-1, 0, 0);
-    glVertex3f(BHF, BHF, 0);
-
-    glNormal3f(-1, 0, 0);
-    glVertex3f(BHF, -BHF, 0);
-    glEnd();
-
     // top
 
+    textureManager->Bind(1);
+
     glBegin(GL_TRIANGLE_FAN);
 
     glNormal3f(0, -1, 0);
+    glTexCoord2f(0.0, 0.0);
     glVertex3f(BHF, BHF, 0.5);
 
     glNormal3f(0, -1, 0);
+    glTexCoord2f(1.0, 0.0);
     glVertex3f(-BHF, BHF, 0.5);
 
     glNormal3f(0, -1, 0);
+    glTexCoord2f(1.0, 1.0);
     glVertex3f(-BHF, BHF, 0);
 
     glNormal3f(0, -1, 0);
+    glTexCoord2f(0.0, 1.0);
     glVertex3f(BHF, BHF, 0);
     glEnd();
 
@@ -233,22 +201,67 @@ void drawBoard() {
     glBegin(GL_TRIANGLE_FAN);
 
     glNormal3f(1, 0, 0);
+    glTexCoord2f(0.0, 0.0);
     glVertex3f(-BHF, BHF, 0.5);
 
     glNormal3f(1, 0, 0);
+    glTexCoord2f(1.0, 0.0);
     glVertex3f(-BHF, -BHF, 0.5);
 
     glNormal3f(1, 0, 0);
+    glTexCoord2f(1.0, 1.0);
     glVertex3f(-BHF, -BHF, 0);
 
+
     glNormal3f(1, 0, 0);
+    glTexCoord2f(0.0, 1.0);
     glVertex3f(-BHF, BHF, 0);
 
+    glEnd();
+
+/* ***********************************************************************************************************/
+
+    glBegin(GL_TRIANGLE_FAN);
+
+    glNormal3f(0, 0, 1);
+    glTexCoord2f(0.0, 0.0);
+    glVertex3f(BHF, -BHF, 0);
+
+
+    glNormal3f(0, 0, 1);
+    glTexCoord2f(1.0, 0.0);
+    glVertex3f(BHF, BHF, 0);
+
+    glNormal3f(0, 0, 1);
+    glTexCoord2f(1.0, 1.0);
+    glVertex3f(BHF, BHF, 0.5);
+
+
+    glNormal3f(0, 1, 0);
+    glTexCoord2f(0.0, 1.0);
+    glVertex3f(BHF, -BHF, 0.5);
+
+    //glEnd();
+
+
+
+    glNormal3f(0, 1, 0);
+    glTexCoord2f(1.0, 0.0);
+    glVertex3f(BHF, -BHF, 0.5);
+
+    glNormal3f(0.0,1.0,0.0 );
+    glTexCoord2f(1.0, 1.0);
+    glVertex3f(BHF, -BHF, 0);
+
+    glNormal3f(0, 1, 0);
+    glTexCoord2f(0.0, 1.0);
+    glVertex3f(-BHF, -BHF, 0);
     glEnd();
 
     textureManager->Disable();
 
     glPopMatrix();
+
 }
 
 void drawSphere() {
@@ -1502,6 +1515,7 @@ void display(void) {
 
 
     drawBoard();
+    renderSkyBox();
 
     glPopMatrix();
 
@@ -1590,6 +1604,8 @@ void updateState() {
     // Move the ball and handle overflow
     position[0] = fixRange(position[0] + movement * direction[0], maxRange[0], maxRange[1]);
     position[1] = fixRange(position[1] + movement * direction[1], maxRange[0], maxRange[1]);
+
+    renderSkyBox();
 
     if(((position[1] - BALL_RADIUS) <= - BHF) && vidas > 0)
     {
@@ -2015,7 +2031,7 @@ void idle()
             return;
 
 
-        updateState();
+
 
         glutPostRedisplay();
     }
