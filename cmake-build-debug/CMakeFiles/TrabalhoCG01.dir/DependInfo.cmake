@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/ark/Faculdade/TrabalhoCG01/OpenGL_CallBack.cpp" "/home/ark/Faculdade/TrabalhoCG01/cmake-build-debug/CMakeFiles/TrabalhoCG01.dir/OpenGL_CallBack.cpp.o"
   "/home/ark/Faculdade/TrabalhoCG01/Posicao.cpp" "/home/ark/Faculdade/TrabalhoCG01/cmake-build-debug/CMakeFiles/TrabalhoCG01.dir/Posicao.cpp.o"
   "/home/ark/Faculdade/TrabalhoCG01/Retangulo.cpp" "/home/ark/Faculdade/TrabalhoCG01/cmake-build-debug/CMakeFiles/TrabalhoCG01.dir/Retangulo.cpp.o"
+  "/home/ark/Faculdade/TrabalhoCG01/SkyBox.cpp" "/home/ark/Faculdade/TrabalhoCG01/cmake-build-debug/CMakeFiles/TrabalhoCG01.dir/SkyBox.cpp.o"
   "/home/ark/Faculdade/TrabalhoCG01/TexturaPlano.cpp" "/home/ark/Faculdade/TrabalhoCG01/cmake-build-debug/CMakeFiles/TrabalhoCG01.dir/TexturaPlano.cpp.o"
   "/home/ark/Faculdade/TrabalhoCG01/cor.cpp" "/home/ark/Faculdade/TrabalhoCG01/cmake-build-debug/CMakeFiles/TrabalhoCG01.dir/cor.cpp.o"
   "/home/ark/Faculdade/TrabalhoCG01/glcTexture.cpp" "/home/ark/Faculdade/TrabalhoCG01/cmake-build-debug/CMakeFiles/TrabalhoCG01.dir/glcTexture.cpp.o"

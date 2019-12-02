@@ -258,6 +258,33 @@ Retangulo.cpp.s:
 	$(MAKE) -f CMakeFiles/TrabalhoCG01.dir/build.make CMakeFiles/TrabalhoCG01.dir/Retangulo.cpp.s
 .PHONY : Retangulo.cpp.s
 
+SkyBox.o: SkyBox.cpp.o
+
+.PHONY : SkyBox.o
+
+# target to build an object file
+SkyBox.cpp.o:
+	$(MAKE) -f CMakeFiles/TrabalhoCG01.dir/build.make CMakeFiles/TrabalhoCG01.dir/SkyBox.cpp.o
+.PHONY : SkyBox.cpp.o
+
+SkyBox.i: SkyBox.cpp.i
+
+.PHONY : SkyBox.i
+
+# target to preprocess a source file
+SkyBox.cpp.i:
+	$(MAKE) -f CMakeFiles/TrabalhoCG01.dir/build.make CMakeFiles/TrabalhoCG01.dir/SkyBox.cpp.i
+.PHONY : SkyBox.cpp.i
+
+SkyBox.s: SkyBox.cpp.s
+
+.PHONY : SkyBox.s
+
+# target to generate assembly for a file
+SkyBox.cpp.s:
+	$(MAKE) -f CMakeFiles/TrabalhoCG01.dir/build.make CMakeFiles/TrabalhoCG01.dir/SkyBox.cpp.s
+.PHONY : SkyBox.cpp.s
+
 TexturaPlano.o: TexturaPlano.cpp.o
 
 .PHONY : TexturaPlano.o
@@ -444,6 +471,9 @@ help:
 	@echo "... Retangulo.o"
 	@echo "... Retangulo.i"
 	@echo "... Retangulo.s"
+	@echo "... SkyBox.o"
+	@echo "... SkyBox.i"
+	@echo "... SkyBox.s"
 	@echo "... TexturaPlano.o"
 	@echo "... TexturaPlano.i"
 	@echo "... TexturaPlano.s"

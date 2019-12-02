@@ -29,6 +29,11 @@ CMakeFiles/TrabalhoCG01.dir/Retangulo.cpp.o
  /home/ark/Faculdade/TrabalhoCG01/Retangulo.cpp
  /home/ark/Faculdade/TrabalhoCG01/Retangulo.h
  /home/ark/Faculdade/TrabalhoCG01/cor.h
+CMakeFiles/TrabalhoCG01.dir/SkyBox.cpp.o
+ /home/ark/Faculdade/TrabalhoCG01/SkyBox.cpp
+ /home/ark/Faculdade/TrabalhoCG01/SkyBox.h
+ /home/ark/Faculdade/TrabalhoCG01/TexturaPlano.h
+ /home/ark/Faculdade/TrabalhoCG01/glcTexture.h
 CMakeFiles/TrabalhoCG01.dir/TexturaPlano.cpp.o
  /home/ark/Faculdade/TrabalhoCG01/TexturaPlano.cpp
  /home/ark/Faculdade/TrabalhoCG01/TexturaPlano.h
@@ -48,6 +53,8 @@ CMakeFiles/TrabalhoCG01.dir/main.cpp.o
  /home/ark/Faculdade/TrabalhoCG01/OpenGL_CallBack.h
  /home/ark/Faculdade/TrabalhoCG01/Posicao.h
  /home/ark/Faculdade/TrabalhoCG01/Retangulo.h
+ /home/ark/Faculdade/TrabalhoCG01/SkyBox.h
+ /home/ark/Faculdade/TrabalhoCG01/TexturaPlano.h
  /home/ark/Faculdade/TrabalhoCG01/cor.h
  /home/ark/Faculdade/TrabalhoCG01/etc.h
  /home/ark/Faculdade/TrabalhoCG01/glcTexture.h

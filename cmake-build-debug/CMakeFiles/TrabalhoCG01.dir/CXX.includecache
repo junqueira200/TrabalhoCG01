@@ -18,6 +18,12 @@ objectsHandler.h
 vector
 -
 
+/home/ark/Faculdade/TrabalhoCG01/OpenGL_CallBack.cpp
+iostream
+-
+OpenGL_CallBack.h
+/home/ark/Faculdade/TrabalhoCG01/OpenGL_CallBack.h
+
 /home/ark/Faculdade/TrabalhoCG01/OpenGL_CallBack.h
 Retangulo.h
 /home/ark/Faculdade/TrabalhoCG01/Retangulo.h
@@ -33,6 +39,20 @@ GL/glut.h
 -
 cor.h
 /home/ark/Faculdade/TrabalhoCG01/cor.h
+
+/home/ark/Faculdade/TrabalhoCG01/SkyBox.cpp
+iostream
+-
+SkyBox.h
+/home/ark/Faculdade/TrabalhoCG01/SkyBox.h
+
+/home/ark/Faculdade/TrabalhoCG01/SkyBox.h
+TexturaPlano.h
+/home/ark/Faculdade/TrabalhoCG01/TexturaPlano.h
+
+/home/ark/Faculdade/TrabalhoCG01/TexturaPlano.h
+glcTexture.h
+/home/ark/Faculdade/TrabalhoCG01/glcTexture.h
 
 /home/ark/Faculdade/TrabalhoCG01/cor.h
 GL/gl.h

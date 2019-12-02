@@ -4,6 +4,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/TrabalhoCG01.dir/OpenGL_CallBack.cpp.o"
   "CMakeFiles/TrabalhoCG01.dir/Posicao.cpp.o"
   "CMakeFiles/TrabalhoCG01.dir/Retangulo.cpp.o"
+  "CMakeFiles/TrabalhoCG01.dir/SkyBox.cpp.o"
   "CMakeFiles/TrabalhoCG01.dir/TexturaPlano.cpp.o"
   "CMakeFiles/TrabalhoCG01.dir/cor.cpp.o"
   "CMakeFiles/TrabalhoCG01.dir/glcTexture.cpp.o"

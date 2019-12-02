@@ -96,6 +96,12 @@
 		<Unit filename="/home/ark/Faculdade/TrabalhoCG01/Retangulo.h">
 			<Option target="TrabalhoCG01"/>
 		</Unit>
+		<Unit filename="/home/ark/Faculdade/TrabalhoCG01/SkyBox.cpp">
+			<Option target="TrabalhoCG01"/>
+		</Unit>
+		<Unit filename="/home/ark/Faculdade/TrabalhoCG01/SkyBox.h">
+			<Option target="TrabalhoCG01"/>
+		</Unit>
 		<Unit filename="/home/ark/Faculdade/TrabalhoCG01/TexturaPlano.cpp">
 			<Option target="TrabalhoCG01"/>
 		</Unit>
