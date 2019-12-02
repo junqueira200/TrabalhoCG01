@@ -15,6 +15,7 @@
 #include "Posicao.h"
 #include "OpenGL_CallBack.h"
 #include "Colisao.h"
+#include "SkyBox.h"
 
 using namespace std;
 
@@ -73,7 +74,7 @@ void init(void) {
     onStartScreen =1;
     objecstManager = objectsHandler.initObjects();
     textureManager =  new glcTexture;
-    textureManager->SetNumberOfTextures(6);       // Estabelece o número de texturas que será utilizado
+    textureManager->SetNumberOfTextures(10);       // Estabelece o número de texturas que será utilizado
     textureManager->SetWrappingMode(GL_REPEAT);
     textureManager->CreateTexture("./texturas/texturaPlano.png", 0);
     textureManager->CreateTexture("./texturas/parede.png", 1);
@@ -81,7 +82,7 @@ void init(void) {
     textureManager->CreateTexture("./texturas/menu.png", 3);
     textureManager->CreateTexture("./texturas/hitter.png", 4);
     textureManager->CreateTexture("./texturas/exits.png", 5);
-    textureManager->CreateTexture("./texturas/cubo.png", 5);
+    textureManager->CreateTexture("./texturas/space-skybox.png", 6);
 
 
     // LOAD OBJECTS
@@ -1491,6 +1492,7 @@ void display(void) {
     drawBorderss1();
     drawFaces();
     drawHitter(centroRebatedor,0.6);
+    renderSkyBox();
 
 
     for (int i = 0; i < NUMRETAN; ++i)
@@ -1584,6 +1586,9 @@ void display(void) {
 void updateState() {
     if (!animate) return;
     // maximum board position
+
+
+
     const float maxRange[] = {-BHF + BALL_RADIUS, BHF - BALL_RADIUS};
 
     float movement = velocity * 0.10;
