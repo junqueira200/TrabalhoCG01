@@ -12,16 +12,18 @@ float deltaScaleObject1 = 0.08;
 float deltaScaleObject2 = 0.08;
 vector<int> objectsALives;
 float lastXObject,lastYObject;
+
 glcTexture *textureManagerObjects = NULL;
+
 
 char objectFiles[NUM_OBJECTS][50] =
         {
-                "./objects/ball/13517_Beach_Ball_v2_L3.obj",
+                "./objects/ball/ball.obj",
                 "./objects/helmo/HelmetOBJ.obj"
         };
 char textureFiles[NUM_OBJECTS][50] =
         {
-                "../objects/ball/Beach_Ball_diffuse.png",
+                "../objects/ball/ball.png",
                 "../objects/helmo/BaseColor.png"
         };
 typedef struct
@@ -94,6 +96,7 @@ void objectsHandler::drawObjects(glcWavefrontObject*objectManagerParam,glcTextur
         objectManagerParam->Scale(0.5);
     }
     objectManagerParam->Draw();
+    textureManagerParam->Disable();
     glPopMatrix();
 
 
@@ -106,7 +109,7 @@ void objectsHandler::drawObjects(glcWavefrontObject*objectManagerParam,glcTextur
         objectsALives[1] =1;
         i = NULL;
     }
-
+    textureManagerParam->Bind(1);
     objectManagerParam->SelectObject(1);
     objectManagerParam->SetShadingMode(SMOOTH_SHADING); // Possible values: FLAT_SHADING e SMOOTH_SHADING
     objectManagerParam->SetRenderMode(USE_TEXTURE_AND_MATERIAL);     // Possible values: USE_COLOR, USE_MATERIAL, USE_TEXTURE (not available in this example)
