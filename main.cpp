@@ -73,12 +73,13 @@ void init(void) {
     onStartScreen =1;
     objecstManager = objectsHandler.initObjects();
     textureManager =  new glcTexture;
-    textureManager->SetNumberOfTextures(5);       // Estabelece o número de texturas que será utilizado
+    textureManager->SetNumberOfTextures(6);       // Estabelece o número de texturas que será utilizado
     textureManager->SetWrappingMode(GL_REPEAT);
     textureManager->CreateTexture("./texturas/texturaPlano.png", 0);
     textureManager->CreateTexture("./texturas/texturaCima.png", 2);
     textureManager->CreateTexture("./texturas/menu.png", 3);
     textureManager->CreateTexture("./texturas/hitter.png", 4);
+    textureManager->CreateTexture("./texturas/exits.png", 5);
 
 
     // LOAD OBJECTS
@@ -1247,80 +1248,113 @@ void drawExits(){
     GLfloat objeto_especular[] = { 0.5, 0.5, 0.5, 1.0 };
     GLfloat objeto_brilho[]    = { 90.0f };
     GLfloat objeto_ambient[]   = { 0.3, 0.3, 0.3, 1.0};
-    GLfloat objeto_difusa[]    = { 0.0, 1.0, 0.0, 1.0 };
+    GLfloat objeto_difusa[]    = { 1, 1.0, 1, 1.0 };
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, objeto_ambient);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, objeto_difusa);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
 
+    textureManager->Bind(5);
     glPushMatrix();
     glBegin(GL_QUADS);
     glNormal3f(0,0,1);
+    glTexCoord2f(0,0);
     glVertex3f(-1.8,2.0,0.5);
+    glTexCoord2f(1,0);
     glVertex3f(-1.8,1.8,0.5);
+    glTexCoord2f(1,1);
     glVertex3f(-1.2,1.8,0.5);
+    glTexCoord2f(0,1);
     glVertex3f(-1.2,2.0,0.5);
     glEnd();
 
     glBegin(GL_QUADS);
     glNormal3f(0,0,1);
+    glTexCoord2f(0,0);
     glVertex3f(1.8,2.0,0.5);
+    glTexCoord2f(1,0);
     glVertex3f(1.2,2.0,0.5);
+    glTexCoord2f(1,1);
     glVertex3f(1.2,1.8,0.5);
+    glTexCoord2f(0,1);
     glVertex3f(1.8,1.8,0.5);
     glEnd();
 
     glBegin(GL_QUADS);
     glNormal3f(1,0,0);
+    glTexCoord2f(0,0);
     glVertex3f(1.8,2.0,0.5);
+    glTexCoord2f(1,0);
     glVertex3f(1.8,1.8,0.5);
+    glTexCoord2f(1,1);
     glVertex3f(1.8,1.8,0);
+    glTexCoord2f(0,1);
     glVertex3f(1.8,2.0,0);
     glEnd();
 
      glBegin(GL_QUADS);
     glNormal3f(-1,0,0);
+    glTexCoord2f(0,0);
     glVertex3f(-1.8,2.0,0.5);
+    glTexCoord2f(1,0);
     glVertex3f(-1.8,1.8,0.5);
+    glTexCoord2f(1,1);
     glVertex3f(-1.8,1.8,0);
+    glTexCoord2f(0,1);
     glVertex3f(-1.8,2.0,0);
     glEnd();
 
     glBegin(GL_QUADS);
     glNormal3f(0,-1,0);
+    glTexCoord2f(0,0);
     glVertex3f(-1.8,1.8,0.5);
+    glTexCoord2f(1,0);
     glVertex3f(-1.8,1.8,0);
+    glTexCoord2f(1,1);
     glVertex3f(-1.2,1.8,0.0);
+    glTexCoord2f(0,1);
     glVertex3f(-1.2,1.8,0.5);
     glEnd();
 
     glBegin(GL_QUADS);
     glNormal3f(0,-1,0);
+    glTexCoord2f(0,0);
     glVertex3f(1.8,1.8,0);
+    glTexCoord2f(1,0);
     glVertex3f(1.8,1.8,0.5);
+    glTexCoord2f(1,1);
     glVertex3f(1.2,1.8,0.5);
+    glTexCoord2f(0,1);
     glVertex3f(1.2,1.8,0.0);
     glEnd();
 
      glBegin(GL_QUADS);
     glNormal3f(0,-1,0);
+    glTexCoord2f(0,0);
      glVertex3f(1.2,2.0,0.5);
+    glTexCoord2f(1,0);
     glVertex3f(1.2,2.0,0);
+    glTexCoord2f(1,1);
     glVertex3f(1.2,1.8,0.0);
+    glTexCoord2f(0,1);
     glVertex3f(1.2,1.8,0.5);
     glEnd();
 
     glBegin(GL_QUADS);
     glNormal3f(0,-1,0);
+    glTexCoord2f(0,0);
     glVertex3f(-1.2,2.0,0);
+    glTexCoord2f(1,0);
     glVertex3f(-1.2,2.0,0.5);
+    glTexCoord2f(1,1);
     glVertex3f(-1.2,1.8,0.5);
+    glTexCoord2f(0,1);
     glVertex3f(-1.2,1.8,0.0);
     glEnd();
 
  glPopMatrix();
-
+   textureManager->Disable();
 }
 
 
@@ -1445,8 +1479,9 @@ void display(void) {
     objectsHandler.drawObjects(objecstManager,textureManager,timerPosition);
      if(timerPosition<=0)
          timerPosition = 120;
-
+    handleColisionsWithObjects();
     drawSphere();
+    drawExits();
     drawBorderss1();
     drawFaces();
     drawHitter(centroRebatedor,0.6);

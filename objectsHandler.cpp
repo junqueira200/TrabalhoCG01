@@ -64,6 +64,7 @@ glcWavefrontObject* objectsHandler::initObjects() {
 void objectsHandler::drawObjects(glcWavefrontObject*objectManagerParam,glcTexture *textureManagerParam, int timerPosition){
     textureManagerParam->Bind(0);
     glPushMatrix();
+    if(!pause)
     updateObjects1Position(timerPosition);
     if(objectsALives[0]==0 && timerDeathObject1 ==0){
         positionXObject1 = -1.5;
