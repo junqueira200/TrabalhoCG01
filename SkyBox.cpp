@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "SkyBox.h"
-#define A 2
+#define A 4
 void renderSkyBox()
 {
 
@@ -15,9 +15,9 @@ void renderSkyBox()
     GLfloat objeto_especular[] = { 0.0, 0.0, 0.0, 1.0 };
     GLfloat objeto_brilho[]    = { 70.0f };*/
 
-    GLfloat objeto_ambient[]   = { 0.2, 0.2, 0.2, 1.0 };
+    GLfloat objeto_ambient[]   = { 1, 1, 1, 1.0 };
     GLfloat objeto_difusa[]    = { 0.8, 0.8, 0.8, 1.0 };
-    GLfloat objeto_especular[] = { 0.0, 0.0, 0.0, 1.0 };
+    GLfloat objeto_especular[] = { 0.5, 0.5, 0.5, 1.0 };
     GLfloat objeto_brilho[]    = { 70.0f };
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, objeto_ambient);
@@ -54,6 +54,12 @@ void renderSkyBox()
     glTexCoord2f(0.25, 0.66);
     glVertex3f(-A, A, 2.0);
     glEnd();
+
+
+    // igor faz a esquerda
+
+
+     //eu faço a direita
 
     textureManager->Disable();
 }

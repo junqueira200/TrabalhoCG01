@@ -82,7 +82,7 @@ void init(void) {
     textureManager->CreateTexture("./texturas/menu.png", 3);
     textureManager->CreateTexture("./texturas/hitter.png", 4);
     textureManager->CreateTexture("./texturas/exits.png", 5);
-    textureManager->CreateTexture("./texturas/space-skybox.png", 6);
+    textureManager->CreateTexture("./texturas/box.png", 6);
 
 
     // LOAD OBJECTS
