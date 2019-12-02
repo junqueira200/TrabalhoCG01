@@ -16,13 +16,13 @@ glcTexture *textureManagerObjects = NULL;
 
 char objectFiles[NUM_OBJECTS][50] =
         {
-                "./objects/Ladybug/BlueDragon.obj",
-                "./objects/Ladybug/BlueDragon.obj"
+                "./objects/ball/13517_Beach_Ball_v2_L3.obj",
+                "./objects/helmo/HelmetOBJ.obj"
         };
 char textureFiles[NUM_OBJECTS][50] =
         {
-                "./objects/ladybug/BlueDragon.png",
-                "./objects/ladybug/BlueDragon.png"
+                "./objects/ball/Beach_Ball_diffuse.png",
+                "./objects/helmo/BaseColor.png"
         };
 typedef struct
 {
@@ -62,7 +62,7 @@ glcWavefrontObject* objectsHandler::initObjects() {
 }
 
 void objectsHandler::drawObjects(glcWavefrontObject*objectManagerParam,glcTexture *textureManagerParam, int timerPosition){
-    textureManagerParam->Bind(2);
+    textureManagerParam->Bind(0);
     glPushMatrix();
     updateObjects1Position(timerPosition);
     if(objectsALives[0]==0 && timerDeathObject1 ==0){
@@ -73,7 +73,7 @@ void objectsHandler::drawObjects(glcWavefrontObject*objectManagerParam,glcTextur
         objectsALives[0] =1;
         i = NULL;
     }
-    
+
     objectManagerParam->SelectObject(0);
     objectManagerParam->SetShadingMode(SMOOTH_SHADING);
     objectManagerParam->SetRenderMode(USE_TEXTURE_AND_MATERIAL);

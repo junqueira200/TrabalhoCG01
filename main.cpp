@@ -76,9 +76,9 @@ void init(void) {
     textureManager->SetNumberOfTextures(5);       // Estabelece o número de texturas que será utilizado
     textureManager->SetWrappingMode(GL_REPEAT);
     textureManager->CreateTexture("./texturas/texturaPlano.png", 0);
-    textureManager->CreateTexture("./objects/Ladybug/BlueDragon.png", 2);
+    textureManager->CreateTexture("./texturas/texturaCima.png", 2);
     textureManager->CreateTexture("./texturas/menu.png", 3);
-
+    textureManager->CreateTexture("./texturas/hitter.png", 4);
 
 
     // LOAD OBJECTS
@@ -105,7 +105,6 @@ void init(void) {
     xAntigo = glutGet(GLUT_WINDOW_WIDTH)/2;
 
     glutSetCursor(GLUT_CURSOR_NONE);
-
 
 }
 
@@ -316,13 +315,12 @@ void drawArrow() {
     glPopMatrix();
 
 }
-
-
 void drawBorderss1()
 {
+    glPushMatrix();
     GLfloat objeto_especular[] = { 1.0, 1.0, 1.0, 1.0 };
     GLfloat objeto_brilho[]    = { 90.0f };
-    GLfloat objeto_ambient[]   = { 0, 0.4, 0.0, 0.3 };
+    GLfloat objeto_ambient[]   = {1,1,1,1};
 
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, objeto_ambient);
@@ -368,7 +366,7 @@ void drawBorderss1()
         normals[0].v[2]=v2;
         vertices.push_back(normals[0]);
     }
-     textureManager->Bind(0);
+     textureManager->Bind(2);
     glBegin(GL_TRIANGLES);
     glTexCoord2f(0.5,0);
     glNormal3f(normalBorder.x,normalBorder.y,normalBorder.z);
@@ -856,7 +854,7 @@ void drawFaces()
 {
     GLfloat objeto_especular[] = { 1.0, 1.0, 1.0, 1.0 };
     GLfloat objeto_brilho[]    = { 80.0f };
-    GLfloat objeto_ambient[]   = { 0, 0.3, 0.0, 0.05 };
+    GLfloat objeto_ambient[]   = { 1, 1, 1, 0.05 };
 
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, objeto_ambient);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, corRebatedorLaterais[fase].objeto_difusa);
@@ -966,7 +964,7 @@ void drawHitter(vertex center,float sizeHitter){
     glPushMatrix();
     GLfloat objeto_especular[] = { 0.8, 0.8, 0.8, 1.0 };
     GLfloat objeto_brilho[]    = { 90.0f };
-    GLfloat objeto_ambient[]   = { 0.1, 0.1, 0.1, 1.0};
+    GLfloat objeto_ambient[]   = { 1, 1, 1, 1.0};
 
     GLfloat objeto_difusa[]    = { 0.0, 1.0, 0.0, 1.0 };
 
@@ -1103,7 +1101,7 @@ void drawHitter(vertex center,float sizeHitter){
 
     /// parte de baixo( ou de trás)
 
-       textureManager->Bind(0);
+       textureManager->Bind(4);
        glBegin(GL_QUADS);
        //glNormal3f(0,-1,0);
         glTexCoord2f(1,1);
@@ -1122,7 +1120,7 @@ void drawHitter(vertex center,float sizeHitter){
     t4.v[1] = v1;
     t4.v[2] = v2;
     normalVector4 =calcNormal(t4);
-    textureManager->Bind(0);
+    textureManager->Bind(4);
     glNormal3f(0,0,1);
        if(cont ==0){
            glBegin(GL_TRIANGLES);

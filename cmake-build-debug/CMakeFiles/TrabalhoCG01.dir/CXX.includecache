@@ -18,6 +18,10 @@ objectsHandler.h
 vector
 -
 
+/home/ark/Faculdade/TrabalhoCG01/Normal.h
+Retangulo.h
+/home/ark/Faculdade/TrabalhoCG01/Retangulo.h
+
 /home/ark/Faculdade/TrabalhoCG01/OpenGL_CallBack.h
 Retangulo.h
 /home/ark/Faculdade/TrabalhoCG01/Retangulo.h
@@ -38,6 +42,8 @@ cor.h
 GL/gl.h
 -
 
+/home/ark/Faculdade/TrabalhoCG01/etc.h
+
 /home/ark/Faculdade/TrabalhoCG01/glcTexture.h
 string
 -
@@ -52,17 +58,41 @@ stdio.h
 GL/gl.h
 -
 
-/home/ark/Faculdade/TrabalhoCG01/objectsHandler.cpp
-objectsHandler.h
-/home/ark/Faculdade/TrabalhoCG01/objectsHandler.h
-glcWavefrontObject.h
-/home/ark/Faculdade/TrabalhoCG01/glcWavefrontObject.h
-Posicao.h
-/home/ark/Faculdade/TrabalhoCG01/Posicao.h
-Colisao.h
-/home/ark/Faculdade/TrabalhoCG01/Colisao.h
+/home/ark/Faculdade/TrabalhoCG01/main.cpp
+GL/glut.h
+-
+stdlib.h
+-
+stdio.h
+-
+ctype.h
+-
+math.h
+-
+float.h
+-
 glcTexture.h
 /home/ark/Faculdade/TrabalhoCG01/glcTexture.h
+etc.h
+/home/ark/Faculdade/TrabalhoCG01/etc.h
+iostream
+-
+cstring
+-
+vector
+-
+Retangulo.h
+/home/ark/Faculdade/TrabalhoCG01/Retangulo.h
+cor.h
+/home/ark/Faculdade/TrabalhoCG01/cor.h
+Normal.h
+/home/ark/Faculdade/TrabalhoCG01/Normal.h
+Posicao.h
+/home/ark/Faculdade/TrabalhoCG01/Posicao.h
+OpenGL_CallBack.h
+/home/ark/Faculdade/TrabalhoCG01/OpenGL_CallBack.h
+Colisao.h
+/home/ark/Faculdade/TrabalhoCG01/Colisao.h
 
 /home/ark/Faculdade/TrabalhoCG01/objectsHandler.h
 vector
