@@ -2,6 +2,7 @@
 // Created by igor on 12/11/19.
 //
 
+#include <iostream>
 #include "OpenGL_CallBack.h"
 
 //Definição de variáveis
@@ -83,7 +84,9 @@ void mouse(int button, int state, int x, int y)
         {
             if(onStartScreen){
                 onStartScreen =0;
+
             } else {
+
                 animate = !animate;
                 gameStarted = 1;
             }

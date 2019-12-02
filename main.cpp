@@ -15,7 +15,6 @@
 #include "Posicao.h"
 #include "OpenGL_CallBack.h"
 #include "Colisao.h"
-#include "SkyBox.h"
 
 using namespace std;
 
@@ -36,7 +35,7 @@ const int MaxRetanHorizontal = 10;//10
 int timerInicialColision = 30;
 const int MaxRetanVertical = 1;//4
 vertex v1,v2,v3,v4,v5,v6,v0;
-//int onStartScreen;
+
 
 int timerColision = 70;
 ///triangulo utilizado como modelo para organizar vertices para calcular normais das faces da parte oval
@@ -59,7 +58,7 @@ vertex trianglesNormals[60];
 int vidas = 5;
 
 glcTexture *textureManager;
-glcTexture *textureManager2;
+
 /// Functions
 
 float transformCoordenate(float v){
@@ -74,21 +73,15 @@ void init(void) {
     onStartScreen =1;
     objecstManager = objectsHandler.initObjects();
     textureManager =  new glcTexture;
-    textureManager2 = new glcTexture;
-
-    textureManager->SetNumberOfTextures(7);       // Estabelece o número de texturas que será utilizado
-    textureManager2->SetNumberOfTextures(1);
+    textureManager->SetNumberOfTextures(6);       // Estabelece o número de texturas que será utilizado
     textureManager->SetWrappingMode(GL_REPEAT);
-    textureManager2->SetWrappingMode(GL_REPEAT);
     textureManager->CreateTexture("./texturas/texturaPlano.png", 0);
     textureManager->CreateTexture("./texturas/parede.png", 1);
     textureManager->CreateTexture("./texturas/texturaCima.png", 2);
     textureManager->CreateTexture("./texturas/menu.png", 3);
     textureManager->CreateTexture("./texturas/hitter.png", 4);
     textureManager->CreateTexture("./texturas/exits.png", 5);
-    textureManager->CreateTexture("./texturas/cubo.png", 6);
-
-    textureManager2->CreateTexture("./texturas/cuboFront.png", 0);
+    textureManager->CreateTexture("./texturas/cubo.png", 5);
 
 
     // LOAD OBJECTS
@@ -287,16 +280,16 @@ void drawSphere() {
 
 }
 
-  void drawLifes(){
-      for(int i = 0; i < vidas; ++i)
-      {
+void drawLifes(){
+    for(int i = 0; i < vidas; ++i)
+    {
 
-          glPushMatrix();
-          glTranslatef(-5 + i*0.5, 2.5, BALL_RADIUS);
-          glutSolidSphere(BALL_RADIUS, 20, 20);
-          glPopMatrix();
+        glPushMatrix();
+        glTranslatef(-5 + i*0.5, 2.5, BALL_RADIUS);
+        glutSolidSphere(BALL_RADIUS, 20, 20);
+        glPopMatrix();
 
-      }
+    }
 
 
 }
@@ -380,7 +373,7 @@ void drawBorderss1()
         normals[0].v[2]=v2;
         vertices.push_back(normals[0]);
     }
-     textureManager->Bind(2);
+    textureManager->Bind(2);
     glBegin(GL_TRIANGLES);
     glTexCoord2f(0.5,0);
     glNormal3f(normalBorder.x,normalBorder.y,normalBorder.z);
@@ -461,15 +454,15 @@ void drawBorderss1()
         vertices.push_back(normals[4]);
     }
 
-   /* glBegin(GL_TRIANGLES);
-    glTexCoord2f(0.5,0);
-    glVertex3f(v0.x,v0.y,v0.z);
-    glTexCoord2f(0.6,1);
-    glVertex3f(v2.x,-v2.y,v2.z);
-    glTexCoord2f(0.5,1);
-    glVertex3f(v1.x,-v1.y,v1.z);
-    glEnd();
-    */
+    /* glBegin(GL_TRIANGLES);
+     glTexCoord2f(0.5,0);
+     glVertex3f(v0.x,v0.y,v0.z);
+     glTexCoord2f(0.6,1);
+     glVertex3f(v2.x,-v2.y,v2.z);
+     glTexCoord2f(0.5,1);
+     glVertex3f(v1.x,-v1.y,v1.z);
+     glEnd();
+     */
     if(verticeAdded == 0)
     {
         trianglesNormals[5].x = v0.x;
@@ -732,7 +725,7 @@ void drawBorderss1()
     // desenho a outra metade da parede
 
     glBegin(GL_TRIANGLES);
-     glTexCoord2f(0.5,0);
+    glTexCoord2f(0.5,0);
     glVertex3f(-v0.x,-v0.y,v0.z);
     glTexCoord2f(1,0);
     glVertex3f(-v1.x,-v1.y,v1.z);
@@ -874,7 +867,7 @@ void drawFaces()
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, corRebatedorLaterais[fase].objeto_difusa);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, objeto_especular);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
-   timerColision--;
+    timerColision--;
 
     textureIndexs[0]=0;
     textureIndexs[1]=1;
@@ -899,21 +892,21 @@ void drawFaces()
 
         textureManager->Bind(0);
         if(i>=0 && i< 5){
-        glBegin(GL_QUADS);
-        glTexCoord2f(textureIndexs[0]+textureIncrement,1);
-        glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,vertices[i].v[2].z);
+            glBegin(GL_QUADS);
+            glTexCoord2f(textureIndexs[0]+textureIncrement,1);
+            glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,vertices[i].v[2].z);
 
-        glTexCoord2f(textureIndexs[0],1);
-        glVertex3f(vertices[i].v[1].x,vertices[i].v[1].y,vertices[i].v[1].z);
+            glTexCoord2f(textureIndexs[0],1);
+            glVertex3f(vertices[i].v[1].x,vertices[i].v[1].y,vertices[i].v[1].z);
 
-        glTexCoord2f(textureIndexs[0],0);
-        glVertex3f(vertices[i].v[1].x,vertices[i].v[1].y,0);
+            glTexCoord2f(textureIndexs[0],0);
+            glVertex3f(vertices[i].v[1].x,vertices[i].v[1].y,0);
 
-        glTexCoord2f(textureIndexs[0]+textureIncrement,0);
-        glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,0);
-        glEnd();
-        textureManager->Disable();
-        textureIndexs[0] += textureIncrement;
+            glTexCoord2f(textureIndexs[0]+textureIncrement,0);
+            glVertex3f(vertices[i].v[2].x,vertices[i].v[2].y,0);
+            glEnd();
+            textureManager->Disable();
+            textureIndexs[0] += textureIncrement;
         }
         if(i>5 && i<10){
 
@@ -969,7 +962,7 @@ void drawFaces()
         }
         textureManager->Disable();
     }
-glPopMatrix();
+    glPopMatrix();
 }
 
 
@@ -988,271 +981,271 @@ void drawHitter(vertex center,float sizeHitter){
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
 
 
-  float deltaX = 0.2;
-  float deltaY = 0.13;
+    float deltaX = 0.2;
+    float deltaY = 0.13;
 
 
-   v1.z = v2.z =v3.z =v4.z =  0.3;
-   center.z= 0.3;
+    v1.z = v2.z =v3.z =v4.z =  0.3;
+    center.z= 0.3;
 
-   v1.x = center.x+sizeHitter;
-   v1.y =center.y;
+    v1.x = center.x+sizeHitter;
+    v1.y =center.y;
 
-   v2.x = v1.x -deltaX;
-   v2.y = v1.y +deltaY;
+    v2.x = v1.x -deltaX;
+    v2.y = v1.y +deltaY;
 
-   vertex aux1,normalVector,aux2,aux3;
+    vertex aux1,normalVector,aux2,aux3;
 
-   int cont =0;
-   textureIndexs[4] = 0;
-   textureIndexs[5] = 1;
+    int cont =0;
+    textureIndexs[4] = 0;
+    textureIndexs[5] = 1;
 
 
 
-   ///desenho a primeira metade do rebatedor
-   while(cont < 3){
-    aux1.x = v1.x;
-    aux1.y = v1.y;
-    aux1.z = 0;
+    ///desenho a primeira metade do rebatedor
+    while(cont < 3){
+        aux1.x = v1.x;
+        aux1.y = v1.y;
+        aux1.z = 0;
 
-    triangle r;
+        triangle r;
 
-    r.v[0] = v2;
-    r.v[1] = v1;
-    r.v[2] = aux1;
+        r.v[0] = v2;
+        r.v[1] = v1;
+        r.v[2] = aux1;
 
-    CalculaNormal2(v2,v1,aux1,&normalVector);
-     if(detecColisionLadoDireito(r) && timerInicialColision ==0){
-        direction[0] = direction[0]+normalVector.x;
-        direction[1] = direction[1]+normalVector.y;
-     }
-       glNormal3f(normalVector.x,normalVector.y,normalVector.z);
-       textureManager->Bind(0);
+        CalculaNormal2(v2,v1,aux1,&normalVector);
+        if(detecColisionLadoDireito(r) && timerInicialColision ==0){
+            direction[0] = direction[0]+normalVector.x;
+            direction[1] = direction[1]+normalVector.y;
+        }
+        glNormal3f(normalVector.x,normalVector.y,normalVector.z);
+        textureManager->Bind(0);
 
-       glBegin(GL_QUADS);
-       glTexCoord2f(textureIndexs[4]+textureIncrement,1);
-       glVertex3f(v2.x,v2.y,v2.z);
+        glBegin(GL_QUADS);
+        glTexCoord2f(textureIndexs[4]+textureIncrement,1);
+        glVertex3f(v2.x,v2.y,v2.z);
 
-       glTexCoord2f(textureIndexs[4],1);
-       glVertex3f(v1.x,v1.y,v1.z);
+        glTexCoord2f(textureIndexs[4],1);
+        glVertex3f(v1.x,v1.y,v1.z);
 
-       glTexCoord2f(textureIndexs[4],0.0);
-       glVertex3f(v1.x,v1.y,0.0);
+        glTexCoord2f(textureIndexs[4],0.0);
+        glVertex3f(v1.x,v1.y,0.0);
 
-       glTexCoord2f(textureIndexs[4]+textureIncrement,0);
-       glVertex3f(v2.x,v2.y,0.0);
-       glEnd();
+        glTexCoord2f(textureIndexs[4]+textureIncrement,0);
+        glVertex3f(v2.x,v2.y,0.0);
+        glEnd();
 
-       textureIndexs[4] += textureIncrement;
-         textureManager->Disable();
+        textureIndexs[4] += textureIncrement;
+        textureManager->Disable();
 
-    aux1.x = v1.x-2*(v1.x-center.x);
-    aux1.y = v1.y;
-    aux1.z = v1.z;
+        aux1.x = v1.x-2*(v1.x-center.x);
+        aux1.y = v1.y;
+        aux1.z = v1.z;
 
-    aux2.x = v2.x-2*(v2.x-center.x);
-    aux2.y = v2.y;
-    aux2.z = v2.z;
+        aux2.x = v2.x-2*(v2.x-center.x);
+        aux2.y = v2.y;
+        aux2.z = v2.z;
 
-    aux3.x = v2.x-2*(v2.x-center.x);
-    aux3.y = v2.y;
-    aux2.z = 0;
+        aux3.x = v2.x-2*(v2.x-center.x);
+        aux3.y = v2.y;
+        aux2.z = 0;
 
-    triangle r1;
+        triangle r1;
 
-    r1.v[0] = center;
-    r1.v[1] = aux1;
-    r1.v[2] = aux2;
+        r1.v[0] = center;
+        r1.v[1] = aux1;
+        r1.v[2] = aux2;
 
-    normalVector = calcNormal(r1);
+        normalVector = calcNormal(r1);
         CalculaNormal2(center,aux2,aux1,&normalVector);
-           if(detecColisionLadoEsquerdo(r1) && timerInicialColision ==0){
-        direction[0] = -direction[0] + normalVector.x*0.7;
-        direction[1] = -direction[1] + normalVector.y*0.7;     }
+        if(detecColisionLadoEsquerdo(r1) && timerInicialColision ==0){
+            direction[0] = -direction[0] + normalVector.x*0.7;
+            direction[1] = -direction[1] + normalVector.y*0.7;     }
 
-    glNormal3f(normalVector.x,normalVector.y,normalVector.z);
-       textureManager->Bind(0);
-       glBegin(GL_QUADS);
-       glTexCoord2f(textureIndexs[5],1);
-       glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
+        glNormal3f(normalVector.x,normalVector.y,normalVector.z);
+        textureManager->Bind(0);
+        glBegin(GL_QUADS);
+        glTexCoord2f(textureIndexs[5],1);
+        glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
 
-       glTexCoord2f(textureIndexs[5]-textureIncrement,1);
-       glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
+        glTexCoord2f(textureIndexs[5]-textureIncrement,1);
+        glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
 
-       glTexCoord2f(textureIndexs[5]-textureIncrement,0);
-       glVertex3f(v2.x-2*(v2.x-center.x),v2.y,0.0);
-       glTexCoord2f(textureIndexs[5],0);
-       glVertex3f(v1.x-2*(v1.x-center.x),v1.y,0.0);
-       glEnd();
-       textureManager->Disable();
-       textureIndexs[5]  -= textureIncrement;
-    //parte de baixo do rebatedor
-     aux1.x = v1.x;
-    aux1.y = v1.y;
-    aux1.z = 0;
-    triangle r3;
+        glTexCoord2f(textureIndexs[5]-textureIncrement,0);
+        glVertex3f(v2.x-2*(v2.x-center.x),v2.y,0.0);
+        glTexCoord2f(textureIndexs[5],0);
+        glVertex3f(v1.x-2*(v1.x-center.x),v1.y,0.0);
+        glEnd();
+        textureManager->Disable();
+        textureIndexs[5]  -= textureIncrement;
+        //parte de baixo do rebatedor
+        aux1.x = v1.x;
+        aux1.y = v1.y;
+        aux1.z = 0;
+        triangle r3;
 
-    vertex vaux, vaux2,vaux3;
+        vertex vaux, vaux2,vaux3;
 
-    vaux.x= center.x+sizeHitter;
-    vaux.y = center.y;
-    vaux.z =  center.z;
+        vaux.x= center.x+sizeHitter;
+        vaux.y = center.y;
+        vaux.z =  center.z;
 
-    vaux2.x= center.x-sizeHitter;
-    vaux2.y = center.y;
-    vaux2.z =  center.z;
+        vaux2.x= center.x-sizeHitter;
+        vaux2.y = center.y;
+        vaux2.z =  center.z;
 
-    vaux3.x= center.x+sizeHitter;
-    vaux3.y = center.y;
-    vaux3.z =  0;
+        vaux3.x= center.x+sizeHitter;
+        vaux3.y = center.y;
+        vaux3.z =  0;
 
-    r3.v[0] = v2;
-    r3.v[1] = aux1;
-    r3.v[2] = v1;
-    vertex normalVector3;
-    normalVector3 = calcNormal(r3);
-    glNormal3f(normalVector3.x,normalVector3.y,normalVector3.z);
+        r3.v[0] = v2;
+        r3.v[1] = aux1;
+        r3.v[2] = v1;
+        vertex normalVector3;
+        normalVector3 = calcNormal(r3);
+        glNormal3f(normalVector3.x,normalVector3.y,normalVector3.z);
 
-    /// parte de baixo( ou de trás)
+        /// parte de baixo( ou de trás)
 
-       textureManager->Bind(4);
-       glBegin(GL_QUADS);
-       //glNormal3f(0,-1,0);
+        textureManager->Bind(4);
+        glBegin(GL_QUADS);
+        //glNormal3f(0,-1,0);
         glTexCoord2f(1,1);
-       glVertex3f(center.x+sizeHitter,center.y,center.z);
-       glTexCoord2f(0,1);
-       glVertex3f(center.x-sizeHitter,center.y,center.z);
-       glTexCoord2f(0,0);
-       glVertex3f(center.x-sizeHitter,center.y,0.0);
-       glTexCoord2f(1,0);
-       glVertex3f(center.x+sizeHitter,center.y,0.0);
-       glEnd();
-     textureManager->Disable();
-    triangle t4;
-    vertex normalVector4;
-    t4.v[0] = center;
-    t4.v[1] = v1;
-    t4.v[2] = v2;
-    normalVector4 =calcNormal(t4);
-    textureManager->Bind(4);
-    glNormal3f(0,0,1);
-       if(cont ==0){
-           glBegin(GL_TRIANGLES);
-           glTexCoord2f(0.5,0);
-           glVertex3f(center.x,center.y,center.z);
-           glTexCoord2f(1,0.0);
-           glVertex3f(v1.x,v1.y,v1.z);
-           glTexCoord2f(0.875,0.25);
-           glVertex3f(v2.x,v2.y,v2.z);
-           glEnd();
+        glVertex3f(center.x+sizeHitter,center.y,center.z);
+        glTexCoord2f(0,1);
+        glVertex3f(center.x-sizeHitter,center.y,center.z);
+        glTexCoord2f(0,0);
+        glVertex3f(center.x-sizeHitter,center.y,0.0);
+        glTexCoord2f(1,0);
+        glVertex3f(center.x+sizeHitter,center.y,0.0);
+        glEnd();
+        textureManager->Disable();
+        triangle t4;
+        vertex normalVector4;
+        t4.v[0] = center;
+        t4.v[1] = v1;
+        t4.v[2] = v2;
+        normalVector4 =calcNormal(t4);
+        textureManager->Bind(4);
+        glNormal3f(0,0,1);
+        if(cont ==0){
+            glBegin(GL_TRIANGLES);
+            glTexCoord2f(0.5,0);
+            glVertex3f(center.x,center.y,center.z);
+            glTexCoord2f(1,0.0);
+            glVertex3f(v1.x,v1.y,v1.z);
+            glTexCoord2f(0.875,0.25);
+            glVertex3f(v2.x,v2.y,v2.z);
+            glEnd();
 
-           glBegin(GL_TRIANGLES);
+            glBegin(GL_TRIANGLES);
 
-           glTexCoord2f(0.5,0);
-           glVertex3f(center.x,center.y,center.z);
+            glTexCoord2f(0.5,0);
+            glVertex3f(center.x,center.y,center.z);
 
-           glTexCoord2f(0.125,0.25);
-           glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
+            glTexCoord2f(0.125,0.25);
+            glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
 
-           glTexCoord2f(0,0);
-           glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
-           glEnd();
-       }
+            glTexCoord2f(0,0);
+            glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
+            glEnd();
+        }
 
-       if(cont ==1){
-           glBegin(GL_TRIANGLES);
+        if(cont ==1){
+            glBegin(GL_TRIANGLES);
 
-           glTexCoord2f(0.5,0.0);
-           glVertex3f(center.x,center.y,center.z);
+            glTexCoord2f(0.5,0.0);
+            glVertex3f(center.x,center.y,center.z);
 
-           glTexCoord2f(0.875,0.25);
-           glVertex3f(v1.x,v1.y,v1.z);
+            glTexCoord2f(0.875,0.25);
+            glVertex3f(v1.x,v1.y,v1.z);
 
-           glTexCoord2f(0.75,0.5);
-           glVertex3f(v2.x,v2.y,v2.z);
-           glEnd();
-
-
-           glBegin(GL_TRIANGLES);
-
-           glTexCoord2f(0.5,0);
-           glVertex3f(center.x,center.y,center.z);
-
-           glTexCoord2f(0.25,0.5);
-           glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
-
-           glTexCoord2f(0.125,0.25);
-           glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
-           glEnd();
-       }
-       if(cont==2){
-           glBegin(GL_TRIANGLES);
-
-           glTexCoord2f(0.5,0.0);
-           glVertex3f(center.x,center.y,center.z);
-
-           glTexCoord2f(0.75,0.5);
-           glVertex3f(v1.x,v1.y,v1.z);
-
-           glTexCoord2f(0.5,0.6);
-           glVertex3f(v2.x,v2.y,v2.z);
-           glEnd();
+            glTexCoord2f(0.75,0.5);
+            glVertex3f(v2.x,v2.y,v2.z);
+            glEnd();
 
 
-           glBegin(GL_TRIANGLES);
+            glBegin(GL_TRIANGLES);
 
-           glTexCoord2f(0.5,0);
-           glVertex3f(center.x,center.y,center.z);
+            glTexCoord2f(0.5,0);
+            glVertex3f(center.x,center.y,center.z);
 
-           glTexCoord2f(0.5,0.6);
-           glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
+            glTexCoord2f(0.25,0.5);
+            glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
+
+            glTexCoord2f(0.125,0.25);
+            glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
+            glEnd();
+        }
+        if(cont==2){
+            glBegin(GL_TRIANGLES);
+
+            glTexCoord2f(0.5,0.0);
+            glVertex3f(center.x,center.y,center.z);
+
+            glTexCoord2f(0.75,0.5);
+            glVertex3f(v1.x,v1.y,v1.z);
+
+            glTexCoord2f(0.5,0.6);
+            glVertex3f(v2.x,v2.y,v2.z);
+            glEnd();
 
 
-           glTexCoord2f(0.25,0.5);
-           glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
-           glEnd();
+            glBegin(GL_TRIANGLES);
 
-       }
+            glTexCoord2f(0.5,0);
+            glVertex3f(center.x,center.y,center.z);
+
+            glTexCoord2f(0.5,0.6);
+            glVertex3f(v2.x-2*(v2.x-center.x),v2.y,v2.z);
 
 
+            glTexCoord2f(0.25,0.5);
+            glVertex3f(v1.x-2*(v1.x-center.x),v1.y,v1.z);
+            glEnd();
 
-    textureManager->Disable();
-    /// desenho a outra metade do rebatedor
-
-    triangle t2;
-
-    vertex normalVector2, aux11,aux12,aux13;
-    aux12.x = v2.x-2*(v2.x-center.x);
-    aux12.y= v2.y;
-    aux2.z = v2.z;
-
-    aux11.x = v1.x-2*(v1.x-center.x);
-    aux11.y= v1.y;
-    aux11.z = v1.z;
-
-    aux13.x= v2.x-2*(v2.x-center.x);
-    aux13.y = v2.y;
-    aux13.z =v2.z;
-
-    t2.v[0] = center;
-    t2.v[1] = aux11;
-    t2.v[2] = aux12;
-
-       CalculaNormal2(aux11,aux13,aux12,&normalVector2);
-  if(detecColisionLadoEsquerdo(t2) && timerInicialColision==0){
-        direction[0] = -direction[0] + normalVector2.x;
-        direction[1] = -direction[1] + normalVector2.y;
         }
 
 
 
-     v1.x = v2.x;
-     v1.y = v2.y;
-     v2.x = v2.x - deltaX;
-     v2.y = v2.y + deltaY/3;
-     cont++;
-   }
- glPopMatrix();
+        textureManager->Disable();
+        /// desenho a outra metade do rebatedor
+
+        triangle t2;
+
+        vertex normalVector2, aux11,aux12,aux13;
+        aux12.x = v2.x-2*(v2.x-center.x);
+        aux12.y= v2.y;
+        aux2.z = v2.z;
+
+        aux11.x = v1.x-2*(v1.x-center.x);
+        aux11.y= v1.y;
+        aux11.z = v1.z;
+
+        aux13.x= v2.x-2*(v2.x-center.x);
+        aux13.y = v2.y;
+        aux13.z =v2.z;
+
+        t2.v[0] = center;
+        t2.v[1] = aux11;
+        t2.v[2] = aux12;
+
+        CalculaNormal2(aux11,aux13,aux12,&normalVector2);
+        if(detecColisionLadoEsquerdo(t2) && timerInicialColision==0){
+            direction[0] = -direction[0] + normalVector2.x;
+            direction[1] = -direction[1] + normalVector2.y;
+        }
+
+
+
+        v1.x = v2.x;
+        v1.y = v2.y;
+        v2.x = v2.x - deltaX;
+        v2.y = v2.y + deltaY/3;
+        cont++;
+    }
+    glPopMatrix();
 
 }
 
@@ -1306,7 +1299,7 @@ void drawExits(){
     glVertex3f(1.8,2.0,0);
     glEnd();
 
-     glBegin(GL_QUADS);
+    glBegin(GL_QUADS);
     glNormal3f(-1,0,0);
     glTexCoord2f(0,0);
     glVertex3f(-1.8,2.0,0.5);
@@ -1342,10 +1335,10 @@ void drawExits(){
     glVertex3f(1.2,1.8,0.0);
     glEnd();
 
-     glBegin(GL_QUADS);
+    glBegin(GL_QUADS);
     glNormal3f(0,-1,0);
     glTexCoord2f(0,0);
-     glVertex3f(1.2,2.0,0.5);
+    glVertex3f(1.2,2.0,0.5);
     glTexCoord2f(1,0);
     glVertex3f(1.2,2.0,0);
     glTexCoord2f(1,1);
@@ -1366,8 +1359,8 @@ void drawExits(){
     glVertex3f(-1.2,1.8,0.0);
     glEnd();
 
- glPopMatrix();
-   textureManager->Disable();
+    glPopMatrix();
+    textureManager->Disable();
 }
 
 
@@ -1409,25 +1402,25 @@ void drawStartScreen(){
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, objeto_brilho);
 
     textureManager->Bind(3);
-  glPushMatrix();
-  glNormal3f(0,0,1);
-  glBegin(GL_QUADS);
+    glPushMatrix();
+    glNormal3f(0,0,1);
+    glBegin(GL_QUADS);
 
     glTexCoord2f(0,0);
     glVertex3f(-2,-2,0.9);
 
-   glTexCoord2f(1,0);
-   glVertex3f(2,-2,0.9);
+    glTexCoord2f(1,0);
+    glVertex3f(2,-2,0.9);
 
     glTexCoord2f(1,1);
     glVertex3f(2,2,0.9);
 
-   glTexCoord2f(0,1);
-   glVertex3f(-2,2,0.9);
+    glTexCoord2f(0,1);
+    glVertex3f(-2,2,0.9);
 
- glEnd();
- glPopMatrix();
- textureManager->Disable();
+    glEnd();
+    glPopMatrix();
+    textureManager->Disable();
 }
 
 
@@ -1447,7 +1440,7 @@ void display(void) {
     int ortho = 2;
     if(perspective){
         gluPerspective(60, (GLfloat) width / (GLfloat) height, 0.01, 200.0);
-        }
+    }
     else
     {
         if (width <= height)
@@ -1457,13 +1450,13 @@ void display(void) {
 
     }
 
-   glMatrixMode(GL_MODELVIEW);
+    glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-   gluLookAt (xCamera, yCamera, zdist, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    gluLookAt (xCamera, yCamera, zdist, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     if(pause ==0){
-             rotationX = 0.0;
-             rotationY=  0.0;
-            }
+        rotationX = 0.0;
+        rotationY=  0.0;
+    }
 
     glRotatef(rotationY, 0, 1, 1);
     glRotatef(rotationX, 1, 0, 1);
@@ -1475,14 +1468,14 @@ void display(void) {
         gameStarted =1;
     }
 
-     if(onStartScreen){
-         drawStartScreen();
-     } else{
-       drawLifes();
-     }
+    if(onStartScreen){
+        drawStartScreen();
+    } else{
+        drawLifes();
+    }
 
-     if(animate == true && timerInicialColision > 0)
-            timerInicialColision= timerInicialColision-1;
+    if(animate == true && timerInicialColision > 0)
+        timerInicialColision= timerInicialColision-1;
     glPushMatrix();
 
 
@@ -1490,8 +1483,8 @@ void display(void) {
         drawArrow();
     timerPosition--;
     objectsHandler.drawObjects(objecstManager,textureManager,timerPosition);
-     if(timerPosition<=0)
-         timerPosition = 120;
+    if(timerPosition<=0)
+        timerPosition = 120;
     handleColisionsWithObjects();
     drawSphere();
     drawExits();
@@ -1515,7 +1508,6 @@ void display(void) {
 
 
     drawBoard();
-    renderSkyBox();
 
     glPopMatrix();
 
@@ -1605,8 +1597,6 @@ void updateState() {
     position[0] = fixRange(position[0] + movement * direction[0], maxRange[0], maxRange[1]);
     position[1] = fixRange(position[1] + movement * direction[1], maxRange[0], maxRange[1]);
 
-    renderSkyBox();
-
     if(((position[1] - BALL_RADIUS) <= - BHF) && vidas > 0)
     {
         vidas -= 1;
@@ -1658,7 +1648,7 @@ void updateState() {
                 if(abs(position[0] - BALL_RADIUS) > abs(retangulos[j].pontosExtremos[2].x))
                 {
                     cout<<"+0.1\n";
-                   // pause = !pause;
+                    // pause = !pause;
                     continue;
 
                 }
@@ -1766,7 +1756,7 @@ void updateState() {
                     side = 4;
 
 
-} else if (((position[1]) - BALL_RADIUS <= (retangulos[j].pontosExtremos[2].y))&& (position[1] > retangulos[j].pontosExtremos[0].y))                {
+                } else if (((position[1]) - BALL_RADIUS <= (retangulos[j].pontosExtremos[2].y))&& (position[1] > retangulos[j].pontosExtremos[0].y))                {
                     side = 1;
 
 
@@ -1794,15 +1784,15 @@ void updateState() {
 
                 } else if (side == 2)
                 {
-                   if(direction[1] > 0)
+                    if(direction[1] > 0)
                         direction[1] = -direction[1];
                 } else if (side == 3)
                 {
-                     if(direction[0] < 0)
+                    if(direction[0] < 0)
                         direction[0] = -direction[0];
                 } else if (side == 4)
                 {
-                        if(direction[0] > 0)
+                    if(direction[0] > 0)
                         direction[0] = -direction[0];                }
             }
             else
@@ -1873,43 +1863,43 @@ void generatePrisms()
     //Desenha linha de retangulos
 
 
-        for (int i = 0; i < 9; ++i)
-        {  //4
+    for (int i = 0; i < 9; ++i)
+    {  //4
 
-            makeRetangulo(x, y, retangulos[i]);
-            x += 0.39;
+        makeRetangulo(x, y, retangulos[i]);
+        x += 0.39;
 
-            //cout<<"x = "<<x<<" ";
-        }
+        //cout<<"x = "<<x<<" ";
+    }
 
-        //  cout<<endl;
+    //  cout<<endl;
 
-        y += 0.4;
-        x = -1.9 + 0.35/2.0;
+    y += 0.4;
+    x = -1.9 + 0.35/2.0;
 
 
-        for (int i = 0; i < 10; ++i)
-        {  //4
+    for (int i = 0; i < 10; ++i)
+    {  //4
 
-            makeRetangulo(x, y, retangulos[9+i]);
-            x += 0.39;
+        makeRetangulo(x, y, retangulos[9+i]);
+        x += 0.39;
 
-            //cout<<"x = "<<x<<" ";
-        }
+        //cout<<"x = "<<x<<" ";
+    }
 
-        //  cout<<endl;
+    //  cout<<endl;
 
     x = -2 + 0.35/2.0;
     y += 0.4;
 
-        for (int i = 0; i < 10; ++i)
-        {  //4
+    for (int i = 0; i < 10; ++i)
+    {  //4
 
         makeRetangulo(x, y, retangulos[19+i]);
         x += 0.39;
 
         //cout<<"x = "<<x<<" ";
-         }
+    }
 
 /*    x = -2 + 0.35/2.0;
     y += 0.3;
@@ -2031,7 +2021,7 @@ void idle()
             return;
 
 
-
+        updateState();
 
         glutPostRedisplay();
     }

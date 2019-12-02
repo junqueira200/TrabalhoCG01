@@ -27,7 +27,7 @@ void renderSkyBox()
 
 
 
-    textureManager2->Bind(0);
+    textureManager->Bind(0);
 
     // Calculo abaixo funciona apenas se textura estiver centralizada na origem
     float h = 1.0f;
@@ -55,5 +55,5 @@ void renderSkyBox()
     glVertex3f(-A, A, 2.0);
     glEnd();
 
-    textureManager2->Disable();
+    textureManager->Disable();
 }
